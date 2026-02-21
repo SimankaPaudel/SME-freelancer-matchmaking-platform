@@ -1,0 +1,35 @@
+/* Dashboard.css */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f1ec; /* warm cream */
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* MAIN CONTENT */
+.dashboard-main {
+  flex: 1;
+  margin-left: 240px;       /* ✅ FIX: offset for fixed sidebar */
+  padding: 32px;
+  background-color: #faf8f4; /* softer cream */
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.dashboard-main h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #4a3728; /* sidebar brown */
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .dashboard-main {
+    margin-left: 0;        /* sidebar stacks on top */
+    padding: 20px;
+  }
+}

@@ -1,0 +1,304 @@
+/* Escrow.css - Styles for escrow management */
+
+.page-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.subtitle {
+  color: #666;
+  margin-top: -0.5rem;
+  margin-bottom: 2rem;
+}
+
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+/* Escrows Grid */
+.escrows-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+}
+
+/* Escrow Card */
+.escrow-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.escrow-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Escrow Header */
+.escrow-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.escrow-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.3rem;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.pending-deposit {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.funded {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-badge.in-progress {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.status-badge.submitted {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.released {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.disputed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Escrow Details */
+.escrow-details {
+  margin-bottom: 1.5rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.detail-row .label {
+  color: #666;
+  font-weight: 500;
+}
+
+.detail-row .value {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Timeline Section */
+.timeline-section {
+  margin: 1.5rem 0;
+}
+
+.timeline-section h4 {
+  margin-bottom: 1rem;
+  color: #555;
+  font-size: 1rem;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #e0e0e0;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -2rem;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4CAF50;
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px #4CAF50;
+}
+
+.timeline-content {
+  padding-left: 0.5rem;
+}
+
+.timeline-action {
+  font-weight: 500;
+  color: #333;
+  margin: 0 0 0.2rem 0;
+  font-size: 0.95rem;
+}
+
+.timeline-date {
+  color: #888;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* Escrow Actions */
+.escrow-actions {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.action-group {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-success,
+.btn-danger {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+  flex: 1;
+  min-width: 150px;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #218838;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+/* Info Messages */
+.info-text,
+.success-text,
+.warning-text {
+  padding: 0.75rem;
+  border-radius: 6px;
+  margin: 0;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.info-text {
+  background: #e7f3ff;
+  color: #004085;
+}
+
+.success-text {
+  background: #d4edda;
+  color: #155724;
+}
+
+.warning-text {
+  background: #fff3cd;
+  color: #856404;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .escrows-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .action-group {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-success,
+  .btn-danger {
+    width: 100%;
+  }
+}
+.btn-warning {
+  background: #ffa500;
+  color: white;
+  border: 2px dashed #ff8c00;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+  background: #ff8c00;
+  transform: scale(1.05);
+}
+
+.escrow-actions {
+  margin-top: 20px;
+}

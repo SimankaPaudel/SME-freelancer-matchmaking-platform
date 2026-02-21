@@ -1,0 +1,56 @@
+.home {
+  background-color: #f7f1e8;
+  padding: 80px 20px;
+}
+
+.home-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.home h1 {
+  font-size: 42px;
+  color: #4a3728;
+  margin-bottom: 16px;
+}
+
+.home p {
+  font-size: 16px;
+  color: #7a6a55;
+  margin-bottom: 30px;
+}
+
+.home-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.primary-btn {
+  background-color: #b08968;
+  color: white;
+  border: none;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background-color: #6b4f3f;
+}
+
+.secondary-btn {
+  background-color: transparent;
+  border: 1px solid #b08968;
+  color: #b08968;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  background-color: #e9dcc7;
+}
