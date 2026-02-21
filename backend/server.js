@@ -28,6 +28,10 @@ app.use("/api/escrows", escrowRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 app.get("/", (req, res) => res.send("Backend is working"));
+app.get("/",(req,res)=> {res.send({
+                                  acticeStatus: true,
+                                  error:false})
+})
 
 app.use((err, req, res, next) => {
   console.error("Error:", err.stack);
