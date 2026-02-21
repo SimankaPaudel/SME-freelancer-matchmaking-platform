@@ -1,0 +1,145 @@
+/* Sidebar container */
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background-color: #f7f1e8;
+  border-right: 1px solid #e0d3b8;
+  padding: 28px 20px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+/* Title */
+.sidebar-title {
+  font-size: 22px;
+  color: #4a3728;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+/* Navigation */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-nav a {
+  text-decoration: none;
+  color: #8a7a64;
+  font-size: 15px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-nav a:hover {
+  background-color: #e8dbc1;
+  color: #4a3728;
+}
+
+.sidebar-nav a.active {
+  background-color: #b08968;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* ── Bottom section (bell + logout) ── */
+.sidebar-bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 16px;
+  border-top: 1px solid #e0d3b8;
+}
+
+/* Bell row */
+.sidebar-bell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  color: #8a7a64;
+  font-size: 15px;
+  position: relative;
+}
+
+.sidebar-bell:hover {
+  background-color: #e8dbc1;
+  color: #4a3728;
+}
+
+/* Label next to bell icon */
+.sidebar-bell-label {
+  font-size: 15px;
+  color: #8a7a64;
+}
+
+.sidebar-bell:hover .sidebar-bell-label {
+  color: #4a3728;
+}
+
+/* Override NotificationBell button styles to match sidebar theme */
+.sidebar-bell button {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  font-size: 18px !important;
+  cursor: pointer;
+}
+
+/* Dropdown opens to the right so it doesn't go off screen */
+.sidebar-bell > div > div:last-child {
+  left: 220px;
+  right: auto;
+  top: auto;
+  bottom: 0;
+}
+
+/* Logout button */
+.logout-btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: transparent;
+  color: #b08968;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: left;
+}
+
+.logout-btn:hover {
+  background-color: #b08968;
+  color: #ffffff;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+
+  /* On mobile, dropdown opens downward normally */
+  .sidebar-bell > div > div:last-child {
+    left: 0;
+    right: auto;
+    bottom: auto;
+    top: calc(100% + 8px);
+  }
+}

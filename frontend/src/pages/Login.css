@@ -1,0 +1,110 @@
+/* Page background */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f7f1e8 0%, #f0e5d4 50%, #e8dbc1 100%);
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* Card container */
+.auth-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 460px;
+  padding: 40px 35px;
+  border-radius: 14px;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Titles */
+.auth-title {
+  font-size: 24px;
+  color: #4a3728;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: #8a7a64;
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+/* Form */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 14px;
+}
+
+/* Inputs */
+.auth-form input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #d8c7a7;
+  font-size: 14px;
+  background-color: #fff;
+  color: #3e3e3e;
+  transition: all 0.2s ease;
+}
+
+/* Placeholder styling */
+.auth-form input::placeholder {
+  color: #a08f77;
+}
+
+/* Focus state */
+.auth-form input:focus {
+  outline: none;
+  border-color: #b08968;
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.15);
+}
+
+/* Button */
+.auth-form button {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background-color: #b08968;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.1s ease;
+}
+
+.auth-form button:hover {
+  background-color: #6b4f3f;
+}
+
+.auth-form button:active {
+  transform: scale(0.98);
+}
+
+/* Sign up link below form */
+.signup-link {
+  margin-top: 18px;
+  font-size: 14px;
+  color: #8a7a64;
+  text-align: center;
+}
+
+.signup-link a {
+  color: #b08968;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}

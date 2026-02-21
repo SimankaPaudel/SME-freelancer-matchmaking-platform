@@ -1,0 +1,216 @@
+/* -------- Page Wrapper -------- */
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-container h1 {
+  font-size: 24px;
+  color: #4a3728;
+  margin-bottom: 20px;
+}
+
+/* -------- Forms (if used for filtering) -------- */
+.project-form {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(74, 55, 40, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.project-form input,
+.project-form textarea,
+.project-form select {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e0d3b8;
+  font-size: 14px;
+  background-color: #faf8f4;
+}
+
+.project-form textarea {
+  resize: none;
+}
+
+.project-form button {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #b08968;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.project-form button:hover {
+  background-color: #9c7558;
+}
+
+/* -------- Project Cards -------- */
+.project-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 5px 16px rgba(74, 55, 40, 0.08);
+  border: 1px solid #e6ddcf;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-card h3 {
+  margin: 0;
+  color: #4a3728;
+}
+
+.project-card p {
+  color: #6f5f4d;
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+/* -------- Status Badges -------- */
+.status {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status.open {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status.closed {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* -------- Action Buttons -------- */
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.actions button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  background-color: #f1e8da;
+  color: #4a3728;
+  transition: 0.2s;
+}
+
+.actions button:hover {
+  background-color: #e6d8c5;
+}
+
+/* Danger button */
+.actions .danger {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+.actions .danger:hover {
+  background-color: #c82333;
+}
+
+/* View Applicants button */
+.actions .info {
+  background-color: #17a2b8;
+  color: #ffffff;
+}
+
+.actions .info:hover {
+  background-color: #138496;
+}
+
+/* -------- Tags (optional) -------- */
+.tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.tags span {
+  background-color: #f1e8da;
+  color: #4a3728;
+  padding: 5px 12px;
+  border-radius: 18px;
+  font-size: 12px;
+  border: 1px solid #e0d3b8;
+}
+
+/* -------- Browse / Manage Layout -------- */
+.browse-layout {
+  display: flex;
+  gap: 20px;
+}
+
+.filters {
+  width: 240px;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(74, 55, 40, 0.08);
+}
+
+.filters h4 {
+  margin-bottom: 12px;
+  color: #4a3728;
+}
+
+.filters input,
+.filters button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e0d3b8;
+}
+
+.filters button {
+  background-color: #b08968;
+  color: #ffffff;
+  border: none;
+  font-weight: 600;
+}
+
+/* Flex container for project cards in manage page */
+.projects {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------- Responsive -------- */
+@media (max-width: 768px) {
+  .browse-layout {
+    flex-direction: column;
+  }
+
+  .filters {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}

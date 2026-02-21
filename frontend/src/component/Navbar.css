@@ -1,0 +1,41 @@
+.navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e6e0d6;
+}
+
+.nav-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6b4f3f;
+}
+
+.nav-links a {
+  margin-left: 20px;
+  font-weight: 500;
+  color: #4a3728;
+}
+
+.nav-links a:hover {
+  color: #b08968;
+}
+
+/* CTA button */
+.nav-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  background-color: #b08968;
+  color: #ffffff !important;
+}
+
+.nav-btn:hover {
+  background-color: #6b4f3f;
+}
