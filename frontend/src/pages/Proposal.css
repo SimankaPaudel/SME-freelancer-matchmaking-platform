@@ -268,3 +268,20 @@
 .actions .danger:hover {
   background-color: #c82333;
 }
+
+.chat-btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.chat-btn:hover {
+  background: #4338ca;
+}

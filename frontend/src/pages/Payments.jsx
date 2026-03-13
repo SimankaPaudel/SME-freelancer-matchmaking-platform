@@ -10,7 +10,7 @@ export default function Payments() {
   useEffect(() => {
     const fetchEscrows = async () => {
       try {
-        // ✅ FIXED: use /my-escrows — backend figures out role from JWT
+        // FIXED: use /my-escrows — backend figures out role from JWT
         const { data } = await axios.get("http://localhost:5000/api/escrows/my-escrows", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

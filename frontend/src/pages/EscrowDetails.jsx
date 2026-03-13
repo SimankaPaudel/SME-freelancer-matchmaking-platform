@@ -2,14 +2,24 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import EscrowTimeline from "../component/EscrowTimeline";
+import { getReviewByEscrow } from "../services/reviewService";
 
 export default function EscrowDetails() {
-  // ✅ FIXED: route is /dashboard/escrow/:escrowId so param is "escrowId"
   const { escrowId } = useParams();
   const navigate = useNavigate();
+
   const [escrow, setEscrow] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [alreadyReviewed, setAlreadyReviewed] = useState(false);
+
+  // Decode current user role from JWT
+  const currentUserRole = (() => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      return JSON.parse(atob(token.split(".")[1])).role || "";
+    } catch { return ""; }
+  })();
 
   const loadEscrow = async () => {
     if (!escrowId) {
@@ -19,16 +29,19 @@ export default function EscrowDetails() {
     }
 
     try {
-      // ✅ FIXED: call GET /api/escrows/:id (by escrow _id, not proposalId)
       const res = await axios.get(
         `http://localhost:5000/api/escrows/${escrowId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }
       );
       setEscrow(res.data);
+
+      // Check if current user already reviewed
+      if (res.data.status === "Released") {
+        try {
+          const reviewRes = await getReviewByEscrow(escrowId);
+          if (reviewRes.data.myReview) setAlreadyReviewed(true);
+        } catch {}
+      }
     } catch (err) {
       console.error("Failed to load escrow", err);
       setMessage("❌ Failed to load escrow details.");
@@ -52,70 +65,68 @@ export default function EscrowDetails() {
 
   const statusColors = {
     "Pending Deposit": { background: "#fefcbf", color: "#744210" },
-    Funded: { background: "#c6f6d5", color: "#22543d" },
-    "In Progress": { background: "#bee3f8", color: "#2a4365" },
-    Submitted: { background: "#e9d8fd", color: "#44337a" },
-    Released: { background: "#c6f6d5", color: "#22543d" },
-    Rejected: { background: "#fed7d7", color: "#742a2a" },
-    Disputed: { background: "#feebc8", color: "#7b341e" },
-    Refunded: { background: "#e2e8f0", color: "#2d3748" },
+    Funded:            { background: "#c6f6d5", color: "#22543d" },
+    "In Progress":     { background: "#bee3f8", color: "#2a4365" },
+    Submitted:         { background: "#e9d8fd", color: "#44337a" },
+    Released:          { background: "#c6f6d5", color: "#22543d" },
+    Rejected:          { background: "#fed7d7", color: "#742a2a" },
+    Disputed:          { background: "#feebc8", color: "#7b341e" },
+    Refunded:          { background: "#e2e8f0", color: "#2d3748" },
   };
   const statusStyle = statusColors[escrow.status] || { background: "#e2e8f0", color: "#2d3748" };
+
+  const isReleased = escrow.status === "Released";
 
   return (
     <div className="page-container" style={{ maxWidth: "700px" }}>
       <h2>Escrow Details</h2>
 
       {/* ── Summary card ── */}
-      <div
-        style={{
-          padding: "20px",
-          background: "#f7fafc",
-          border: "1px solid #e2e8f0",
-          borderRadius: "10px",
-          marginBottom: "24px",
-        }}
-      >
-        <h3 style={{ marginTop: 0 }}>
+      <div style={{
+        padding: "20px",
+        background: "#f7f1e8",
+        border: "1px solid #e0d4c0",
+        borderRadius: "10px",
+        marginBottom: "24px",
+      }}>
+        <h3 style={{ marginTop: 0, color: "#4a3728" }}>
           {escrow.projectId?.title || "Project"}
         </h3>
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
           <div>
-            <p style={{ margin: "4px 0", color: "#718096", fontSize: "13px" }}>Amount</p>
-            <p style={{ margin: 0, fontWeight: "bold", fontSize: "18px" }}>
+            <p style={{ margin: "4px 0", color: "#7a6a55", fontSize: "13px" }}>Amount</p>
+            <p style={{ margin: 0, fontWeight: "bold", fontSize: "18px", color: "#4a3728" }}>
               ₹{escrow.amount?.toLocaleString()}
             </p>
           </div>
           <div>
-            <p style={{ margin: "4px 0", color: "#718096", fontSize: "13px" }}>Status</p>
-            <span
-              style={{
-                ...statusStyle,
-                padding: "4px 12px",
-                borderRadius: "999px",
-                fontWeight: "bold",
-                fontSize: "13px",
-                display: "inline-block",
-              }}
-            >
+            <p style={{ margin: "4px 0", color: "#7a6a55", fontSize: "13px" }}>Status</p>
+            <span style={{
+              ...statusStyle,
+              padding: "4px 12px",
+              borderRadius: "999px",
+              fontWeight: "bold",
+              fontSize: "13px",
+              display: "inline-block",
+            }}>
               {escrow.status}
             </span>
           </div>
           <div>
-            <p style={{ margin: "4px 0", color: "#718096", fontSize: "13px" }}>Freelancer</p>
-            <p style={{ margin: 0 }}>
+            <p style={{ margin: "4px 0", color: "#7a6a55", fontSize: "13px" }}>Freelancer</p>
+            <p style={{ margin: 0, color: "#4a3728" }}>
               {escrow.freelancerId?.fullName || "N/A"}{" "}
-              <span style={{ color: "#718096", fontSize: "12px" }}>
+              <span style={{ color: "#a89880", fontSize: "12px" }}>
                 ({escrow.freelancerId?.email})
               </span>
             </p>
           </div>
           <div>
-            <p style={{ margin: "4px 0", color: "#718096", fontSize: "13px" }}>SME</p>
-            <p style={{ margin: 0 }}>
+            <p style={{ margin: "4px 0", color: "#7a6a55", fontSize: "13px" }}>SME</p>
+            <p style={{ margin: 0, color: "#4a3728" }}>
               {escrow.smeId?.fullName || "N/A"}{" "}
-              <span style={{ color: "#718096", fontSize: "12px" }}>
+              <span style={{ color: "#a89880", fontSize: "12px" }}>
                 ({escrow.smeId?.email})
               </span>
             </p>
@@ -124,29 +135,24 @@ export default function EscrowDetails() {
 
         {/* Payment verified */}
         {escrow.paymentVerifiedAt && (
-          <p style={{ marginTop: "12px", color: "#2f855a", fontSize: "13px" }}>
+          <p style={{ marginTop: "12px", color: "#276749", fontSize: "13px" }}>
             ✅ Payment verified on {new Date(escrow.paymentVerifiedAt).toLocaleString()}
           </p>
         )}
 
         {/* Released */}
         {escrow.releasedAt && (
-          <p style={{ marginTop: "4px", color: "#2f855a", fontSize: "13px" }}>
+          <p style={{ marginTop: "4px", color: "#276749", fontSize: "13px" }}>
             💸 Payment released on {new Date(escrow.releasedAt).toLocaleString()}
           </p>
         )}
 
         {/* Rejection reason */}
         {escrow.rejectionReason && (
-          <div
-            style={{
-              marginTop: "12px",
-              padding: "10px",
-              background: "#fff5f5",
-              border: "1px solid #feb2b2",
-              borderRadius: "6px",
-            }}
-          >
+          <div style={{
+            marginTop: "12px", padding: "10px",
+            background: "#fff5f5", border: "1px solid #feb2b2", borderRadius: "6px",
+          }}>
             <strong style={{ color: "#c53030" }}>Rejection Reason:</strong>
             <p style={{ margin: "4px 0 0 0" }}>{escrow.rejectionReason}</p>
           </div>
@@ -154,15 +160,10 @@ export default function EscrowDetails() {
 
         {/* Dispute reason */}
         {escrow.disputeReason && (
-          <div
-            style={{
-              marginTop: "12px",
-              padding: "10px",
-              background: "#fffbeb",
-              border: "1px solid #fcd34d",
-              borderRadius: "6px",
-            }}
-          >
+          <div style={{
+            marginTop: "12px", padding: "10px",
+            background: "#fffbeb", border: "1px solid #fcd34d", borderRadius: "6px",
+          }}>
             <strong style={{ color: "#d97706" }}>Dispute Reason:</strong>
             <p style={{ margin: "4px 0 0 0" }}>{escrow.disputeReason}</p>
           </div>
@@ -170,15 +171,10 @@ export default function EscrowDetails() {
 
         {/* Dispute resolution */}
         {escrow.disputeResolution && (
-          <div
-            style={{
-              marginTop: "12px",
-              padding: "10px",
-              background: "#f0fff4",
-              border: "1px solid #9ae6b4",
-              borderRadius: "6px",
-            }}
-          >
+          <div style={{
+            marginTop: "12px", padding: "10px",
+            background: "#f0fff4", border: "1px solid #9ae6b4", borderRadius: "6px",
+          }}>
             <strong style={{ color: "#276749" }}>Dispute Resolution:</strong>
             <p style={{ margin: "4px 0 0 0" }}>{escrow.disputeResolution}</p>
           </div>
@@ -193,13 +189,9 @@ export default function EscrowDetails() {
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                display: "inline-block",
-                padding: "8px 16px",
-                background: "#3182ce",
-                color: "white",
-                borderRadius: "6px",
-                textDecoration: "none",
-                fontSize: "14px",
+                display: "inline-block", padding: "8px 16px",
+                background: "#b08968", color: "white",
+                borderRadius: "6px", textDecoration: "none", fontSize: "14px",
               }}
             >
               📥 Download Submitted Work
@@ -213,9 +205,36 @@ export default function EscrowDetails() {
         )}
       </div>
 
+      {/* ── Leave a Review — shown to FREELANCER only after payment released ── */}
+      {isReleased && currentUserRole === "Freelancer" && (
+        <div style={{
+          padding: "16px 20px",
+          background: "#fdf3e3",
+          border: "1px solid #e0d4c0",
+          borderRadius: "10px",
+          marginBottom: "24px",
+        }}>
+          <p style={{ margin: "0 0 10px 0", fontWeight: "600", color: "#4a3728" }}>
+            ⭐ How was your experience with this client?
+          </p>
+          {!alreadyReviewed ? (
+            <button
+              className="btn-review"
+              onClick={() => navigate(`/dashboard/submit-review/${escrowId}`)}
+            >
+              ⭐ Leave a Review
+            </button>
+          ) : (
+            <p style={{ margin: 0, color: "#7a6a55", fontSize: "14px" }}>
+              ✓ You have already submitted your review for this project.
+            </p>
+          )}
+        </div>
+      )}
+
       {/* ── Timeline ── */}
       <div>
-        <h4>Timeline</h4>
+        <h4 style={{ color: "#4a3728" }}>Timeline</h4>
         <EscrowTimeline timeline={escrow.timeline} />
       </div>
 
@@ -223,13 +242,9 @@ export default function EscrowDetails() {
       <button
         onClick={() => navigate(-1)}
         style={{
-          marginTop: "24px",
-          padding: "10px 24px",
-          background: "#eee",
-          color: "#333",
-          border: "1px solid #ccc",
-          borderRadius: "6px",
-          cursor: "pointer",
+          marginTop: "24px", padding: "10px 24px",
+          background: "#f7f1e8", color: "#4a3728",
+          border: "1px solid #e0d4c0", borderRadius: "6px", cursor: "pointer",
         }}
       >
         ← Go Back

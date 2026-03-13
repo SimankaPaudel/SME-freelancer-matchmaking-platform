@@ -17,7 +17,7 @@ export default function RaiseDispute() {
     setMessage("");
 
     try {
-      // ✅ FIXED: endpoint is /raise-dispute not /dispute
+      // endpoint is /raise-dispute not /dispute
       const res = await axios.post(
         `http://localhost:5000/api/escrows/${escrowId}/raise-dispute`,
         { reason },
@@ -26,7 +26,7 @@ export default function RaiseDispute() {
         }
       );
 
-      setMessage("✅ Dispute raised successfully! An admin will review it shortly.");
+      setMessage(" Dispute raised successfully! An admin will review it shortly.");
       setTimeout(() => navigate("/dashboard/escrow-management"), 2500);
     } catch (err) {
       console.error(err);

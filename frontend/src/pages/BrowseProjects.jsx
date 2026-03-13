@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import "./project.css";
+import "./Project.css";
 
 export default function BrowseProjects() {
   const [projects, setProjects] = useState([]);
