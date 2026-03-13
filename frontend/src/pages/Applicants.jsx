@@ -1,11 +1,14 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "./proposal.css";
+import "./Proposal.css";
 
 export default function Applicants() {
   const { state } = useLocation();
   const [proposals, setProposals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
     if (!state?.projectId) return;
@@ -16,7 +19,7 @@ export default function Applicants() {
           `http://localhost:5000/api/proposals/project/${state.projectId}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -25,7 +28,6 @@ export default function Applicants() {
 
         const data = await res.json();
 
-        // ✅ FIXED: Fetch escrow for accepted proposals
         const dataWithEscrow = await Promise.all(
           data.map(async (p) => {
             if (p.status === "Accepted") {
@@ -34,29 +36,28 @@ export default function Applicants() {
                   `http://localhost:5000/api/escrows/proposal/${p._id}`,
                   {
                     headers: {
-                      Authorization: `Bearer ${localStorage.getItem(
-                        "accessToken"
-                      )}`,
+                      Authorization: `Bearer ${token}`,
                     },
                   }
                 );
 
                 if (escrowRes.ok) {
                   const escrowData = await escrowRes.json();
-                  
-                  // Handle both formats
-                  if (escrowData.escrow === null) {
+
+                  if (escrowData.escrow === null)
                     return { ...p, escrow: null };
-                  } else if (escrowData._id) {
+                  else if (escrowData._id)
                     return { ...p, escrow: escrowData };
-                  } else if (escrowData.escrow) {
+                  else if (escrowData.escrow)
                     return { ...p, escrow: escrowData.escrow };
-                  }
                 }
-                
+
                 return { ...p, escrow: null };
               } catch (err) {
-                console.error(`Error fetching escrow for proposal ${p._id}:`, err);
+                console.error(
+                  `Error fetching escrow for proposal ${p._id}:`,
+                  err
+                );
                 return { ...p, escrow: null };
               }
             }
@@ -73,18 +74,21 @@ export default function Applicants() {
     };
 
     fetchApplicants();
-  }, [state?.projectId]);
+  }, [state?.projectId, token]);
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/proposals/${id}/status`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-        body: JSON.stringify({ status }),
-      });
+      const res = await fetch(
+        `http://localhost:5000/api/proposals/${id}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ status }),
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();
@@ -93,22 +97,18 @@ export default function Applicants() {
 
       const data = await res.json();
 
-      // ✅ FIXED: Update state with escrow data from response
       setProposals((prev) =>
         prev.map((p) =>
           p._id === id
-            ? { 
-                ...p, 
-                status, 
-                escrow: data.escrow || p.escrow 
-              }
+            ? { ...p, status, escrow: data.escrow || p.escrow }
             : p
         )
       );
 
-      // Show success message
       if (status === "Accepted") {
-        alert("Proposal accepted! Escrow has been created. Please deposit funds to activate the project.");
+        alert(
+          "Proposal accepted! Escrow has been created. Please deposit funds to activate the project."
+        );
       }
     } catch (err) {
       console.error("Failed to update status:", err);
@@ -133,16 +133,20 @@ export default function Applicants() {
       {proposals.map((p) => (
         <div className="proposal-card" key={p._id}>
           <h3>{p.freelancerId?.fullName || "Freelancer Removed"}</h3>
+
           <p>
             <strong>Email:</strong> {p.freelancerId?.email || "N/A"}
           </p>
+
           <p>
             <strong>Bid Amount:</strong> ₹{p.bidAmount}
           </p>
+
           <p>
             <strong>Description:</strong> {p.description}
           </p>
 
+          {/* Proposal File */}
           {p.proposalFile && (
             <p>
               <strong>Proposal:</strong>{" "}
@@ -158,6 +162,7 @@ export default function Applicants() {
             </p>
           )}
 
+          {/* CV File */}
           {p.cvFile && (
             <p>
               <strong>CV:</strong>{" "}
@@ -173,9 +178,11 @@ export default function Applicants() {
             </p>
           )}
 
-          <span className={`status ${p.status.toLowerCase()}`}>{p.status}</span>
+          <span className={`status ${p.status.toLowerCase()}`}>
+            {p.status}
+          </span>
 
-          {/* ✅ Action buttons - disable after accepted */}
+          {/* Action buttons */}
           <div className="actions">
             {p.status !== "Accepted" && (
               <>
@@ -184,12 +191,14 @@ export default function Applicants() {
                     ⭐ Shortlist
                   </button>
                 )}
-                <button 
+
+                <button
                   onClick={() => updateStatus(p._id, "Accepted")}
                   className="success"
                 >
                   ✅ Accept
                 </button>
+
                 {p.status !== "Rejected" && (
                   <button
                     className="danger"
@@ -202,14 +211,30 @@ export default function Applicants() {
             )}
           </div>
 
-          {/* ✅ FIXED: Show escrow info for accepted proposals */}
+          {/* Chat button */}
+          {p.status === "Accepted" && (
+            <div style={{ marginTop: 10 }}>
+              <button
+                className="chat-btn"
+                onClick={() =>
+                  navigate(`/dashboard/chat/${state.projectId}`)
+                }
+              >
+                💬 Chat with Freelancer
+              </button>
+            </div>
+          )}
+
+          {/* Escrow section */}
           {p.status === "Accepted" && (
             <div className="escrow-info-section">
               {p.escrow ? (
                 <>
                   <p className="escrow-info">
-                    💰 Escrow Status: <strong>{p.escrow.status}</strong> | Amount: ₹{p.escrow.amount}
+                    Escrow Status: <strong>{p.escrow.status}</strong> |
+                    Amount: ₹{p.escrow.amount}
                   </p>
+
                   {p.escrow.status === "Pending Deposit" && (
                     <p className="warning-text">
                       ⚠️ Please deposit escrow funds to activate this project
@@ -218,7 +243,7 @@ export default function Applicants() {
                 </>
               ) : (
                 <p className="info-text">
-                  ✅ Proposal accepted! Escrow created. Please deposit funds.
+                  Proposal accepted! Escrow created. Please deposit funds.
                 </p>
               )}
             </div>
@@ -228,4 +253,3 @@ export default function Applicants() {
     </div>
   );
 }
-

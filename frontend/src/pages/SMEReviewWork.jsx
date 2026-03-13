@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { approveWork, rejectWork } from "../services/escrowService";
+import { getReviewByEscrow } from "../services/reviewService";
 import axios from "axios";
 
 export default function SMEReviewWork() {
@@ -12,6 +13,7 @@ export default function SMEReviewWork() {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
+  const [alreadyReviewed, setAlreadyReviewed] = useState(false);
 
   useEffect(() => {
     const fetchEscrow = async () => {
@@ -25,6 +27,14 @@ export default function SMEReviewWork() {
           }
         );
         setEscrow(res.data);
+
+        // Check if SME already left a review for this escrow
+        if (res.data.status === "Released") {
+          try {
+            const reviewRes = await getReviewByEscrow(escrowId);
+            if (reviewRes.data.myReview) setAlreadyReviewed(true);
+          } catch {}
+        }
       } catch (err) {
         setMessage("❌ Failed to load escrow details");
       } finally {
@@ -42,7 +52,12 @@ export default function SMEReviewWork() {
       setActionLoading(true);
       await approveWork(escrowId);
       setMessage("✅ Work approved and payment released!");
-      setTimeout(() => navigate("/dashboard/escrow-management"), 2000);
+      // Refresh escrow so the review button appears
+      const res = await axios.get(
+        `http://localhost:5000/api/escrows/${escrowId}`,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }
+      );
+      setEscrow(res.data);
     } catch (err) {
       const errMsg = err.response?.data?.message || "Failed to approve work";
       setMessage(`❌ ${errMsg}`);
@@ -55,7 +70,6 @@ export default function SMEReviewWork() {
     if (!reason.trim()) {
       return setMessage("❌ Please provide a reason for rejection");
     }
-
     if (!window.confirm("Are you sure you want to reject this submission? The freelancer will be notified.")) return;
 
     try {
@@ -86,36 +100,26 @@ export default function SMEReviewWork() {
       <h1>Review Submitted Work</h1>
 
       {/* Project / Escrow Info */}
-      <div
-        style={{
-          padding: "16px",
-          background: "#f7fafc",
-          border: "1px solid #e2e8f0",
-          borderRadius: "8px",
-          marginBottom: "24px",
-        }}
-      >
-        <h3 style={{ marginTop: 0 }}>{escrow.projectId?.title || "Project"}</h3>
-        <p>
-          <strong>Freelancer:</strong> {escrow.freelancerId?.fullName} (
-          {escrow.freelancerId?.email})
-        </p>
-        <p>
-          <strong>Escrow Amount:</strong> ₹{escrow.amount?.toLocaleString()}
-        </p>
+      <div style={{
+        padding: "16px",
+        background: "#f7f1e8",
+        border: "1px solid #e0d4c0",
+        borderRadius: "8px",
+        marginBottom: "24px",
+      }}>
+        <h3 style={{ marginTop: 0, color: "#4a3728" }}>
+          {escrow.projectId?.title || "Project"}
+        </h3>
+        <p><strong>Freelancer:</strong> {escrow.freelancerId?.fullName} ({escrow.freelancerId?.email})</p>
+        <p><strong>Escrow Amount:</strong> ₹{escrow.amount?.toLocaleString()}</p>
         <p>
           <strong>Status:</strong>{" "}
-          <span
-            style={{
-              fontWeight: "bold",
-              color:
-                escrow.status === "Released"
-                  ? "#2f855a"
-                  : escrow.status === "Rejected"
-                  ? "#c53030"
-                  : "#2b6cb0",
-            }}
-          >
+          <span style={{
+            fontWeight: "bold",
+            color: escrow.status === "Released" ? "#276749"
+                 : escrow.status === "Rejected"  ? "#c53030"
+                 : "#4a3728",
+          }}>
             {escrow.status}
           </span>
         </p>
@@ -132,7 +136,7 @@ export default function SMEReviewWork() {
             style={{
               display: "inline-block",
               padding: "10px 20px",
-              background: "#3182ce",
+              background: "#b08968",
               color: "white",
               borderRadius: "6px",
               textDecoration: "none",
@@ -145,15 +149,13 @@ export default function SMEReviewWork() {
       )}
 
       {escrow.submissionComment && (
-        <div
-          style={{
-            padding: "12px",
-            background: "#ebf8ff",
-            border: "1px solid #bee3f8",
-            borderRadius: "6px",
-            marginBottom: "16px",
-          }}
-        >
+        <div style={{
+          padding: "12px",
+          background: "#fdf3e3",
+          border: "1px solid #e0d4c0",
+          borderRadius: "6px",
+          marginBottom: "16px",
+        }}>
           <strong>Freelancer's Comment:</strong>
           <p style={{ margin: "8px 0 0 0" }}>{escrow.submissionComment}</p>
         </div>
@@ -161,17 +163,36 @@ export default function SMEReviewWork() {
 
       {/* ── Actions ── */}
       {isReleased ? (
-        <div
-          style={{
-            padding: "16px",
-            background: "#f0fff4",
-            border: "1px solid #9ae6b4",
-            borderRadius: "8px",
-            color: "#276749",
-          }}
-        >
-          ✅ Payment has already been released. No further action required.
+        <div style={{
+          padding: "16px",
+          background: "#f0fff4",
+          border: "1px solid #9ae6b4",
+          borderRadius: "8px",
+          color: "#276749",
+          marginBottom: "16px",
+        }}>
+          ✅ Payment has been released to the freelancer.
+
+          {/* ── Leave a Review button ── */}
+          {!alreadyReviewed ? (
+            <div style={{ marginTop: "14px" }}>
+              <p style={{ margin: "0 0 10px 0", color: "#4a3728", fontSize: "14px" }}>
+                Share your experience working with this freelancer:
+              </p>
+              <button
+                className="btn-review"
+                onClick={() => navigate(`/dashboard/submit-review/${escrowId}`)}
+              >
+                ⭐ Leave a Review
+              </button>
+            </div>
+          ) : (
+            <p style={{ marginTop: "12px", fontSize: "14px", color: "#7a6a55" }}>
+              ✓ You have already submitted your review for this project.
+            </p>
+          )}
         </div>
+
       ) : isSubmitted ? (
         <>
           {/* Approve */}
@@ -195,15 +216,13 @@ export default function SMEReviewWork() {
           </div>
 
           {/* Reject */}
-          <div
-            style={{
-              padding: "16px",
-              background: "#fff5f5",
-              border: "1px solid #feb2b2",
-              borderRadius: "8px",
-              marginBottom: "16px",
-            }}
-          >
+          <div style={{
+            padding: "16px",
+            background: "#fff5f5",
+            border: "1px solid #feb2b2",
+            borderRadius: "8px",
+            marginBottom: "16px",
+          }}>
             <h4 style={{ marginTop: 0, color: "#c53030" }}>❌ Reject Submission</h4>
             <textarea
               placeholder="Provide a detailed reason for rejection (required)"
@@ -213,11 +232,12 @@ export default function SMEReviewWork() {
               style={{
                 width: "100%",
                 padding: "10px",
-                border: "1px solid #ccc",
+                border: "1px solid #e0d4c0",
                 borderRadius: "6px",
                 fontSize: "14px",
                 resize: "vertical",
                 marginBottom: "10px",
+                boxSizing: "border-box",
               }}
             />
             <button
@@ -268,16 +288,14 @@ export default function SMEReviewWork() {
 
       {/* Feedback message */}
       {message && (
-        <p
-          style={{
-            marginTop: "16px",
-            padding: "12px",
-            borderRadius: "6px",
-            background: message.startsWith("✅") ? "#f0fff4" : "#fff5f5",
-            color: message.startsWith("✅") ? "#276749" : "#c53030",
-            border: `1px solid ${message.startsWith("✅") ? "#9ae6b4" : "#feb2b2"}`,
-          }}
-        >
+        <p style={{
+          marginTop: "16px",
+          padding: "12px",
+          borderRadius: "6px",
+          background: message.startsWith("✅") ? "#f0fff4" : "#fff5f5",
+          color: message.startsWith("✅") ? "#276749" : "#c53030",
+          border: `1px solid ${message.startsWith("✅") ? "#9ae6b4" : "#feb2b2"}`,
+        }}>
           {message}
         </p>
       )}
@@ -288,9 +306,9 @@ export default function SMEReviewWork() {
         style={{
           marginTop: "20px",
           padding: "10px 24px",
-          background: "#eee",
-          color: "#333",
-          border: "1px solid #ccc",
+          background: "#f7f1e8",
+          color: "#4a3728",
+          border: "1px solid #e0d4c0",
           borderRadius: "6px",
           cursor: "pointer",
         }}

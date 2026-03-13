@@ -12,6 +12,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Navbar from "./component/Navbar";
+
 import PostProject from "./pages/PostProject";
 import ManageProject from "./pages/ManageProject";
 import Applicants from "./pages/Applicants";
@@ -31,6 +32,14 @@ import ResolveDispute from "./pages/ResolveDispute";
 import DisputeList from "./pages/DisputeList";
 import Notifications from "./pages/Notifications";
 
+// Chat
+import MessageBubble from "./pages/Chat/MessageBubble";
+import ChatPage from "./pages/Chat/ChatPage";
+
+// ✅ Reviews — NEW
+import SubmitReview from "./pages/SubmitReview";
+import MyReviews from "./pages/MyReviews";
+
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("accessToken");
   return token ? children : <Navigate to="/login" replace />;
@@ -49,7 +58,7 @@ function Layout() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* eSewa payment */}
+        {/* Payments */}
         <Route path="/payment/esewa" element={<ProtectedRoute><Esewapaymentform /></ProtectedRoute>} />
         <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
         <Route path="/payment/failure" element={<ProtectedRoute><PaymentFailure /></ProtectedRoute>} />
@@ -58,13 +67,27 @@ function Layout() {
         <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
           <Route index element={<Profile />} />
           <Route path="profile" element={<Profile />} />
-          <Route path="my-proposals" element={<MyProposals />} />
+
+          {/* Freelancer */}
           <Route path="browse-projects" element={<BrowseProjects />} />
           <Route path="apply/:projectId" element={<ApplyProposal />} />
+          <Route path="my-proposals" element={<MyProposals />} />
+          <Route path="submit-work/:proposalId" element={<SubmitWork />} />
+
+          {/* SME */}
           <Route path="post-project" element={<PostProject />} />
           <Route path="manage-projects" element={<ManageProject />} />
           <Route path="applicants" element={<Applicants />} />
-          <Route path="submit-work/:proposalId" element={<SubmitWork />} />
+
+          {/* Chat */}
+          <Route path="messages" element={<MessageBubble />} />
+          <Route path="chat/:projectId" element={<ChatPage />} />
+
+          {/* ✅ Reviews — NEW */}
+          <Route path="submit-review/:escrowId" element={<SubmitReview />} />
+          <Route path="my-reviews" element={<MyReviews />} />
+
+          {/* Shared */}
           <Route path="payments" element={<Payments />} />
           <Route path="escrow/:escrowId" element={<EscrowDetails />} />
           <Route path="escrow-management" element={<EscrowManagement />} />
@@ -81,7 +104,6 @@ function Layout() {
   );
 }
 
-// ✅ FIXED: export default (not named export)
 export default function App() {
   return (
     <Router>

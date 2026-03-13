@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import FreelancerReviews from "./FreelancerReviews";
 import "./Profile.css";
 
 export default function Profile() {
@@ -28,23 +29,48 @@ export default function Profile() {
   if (!user) return <p>Loading profile...</p>;
 
   return (
-    <div className="profile-card">
-      <div className="profile-header">
-        <h1>{user.fullName}</h1>
-        <span className={`role-badge ${user.role.toLowerCase()}`}>
-          {user.role}
-        </span>
+    <div>
+      {/* ── Existing profile card ── */}
+      <div className="profile-card">
+        <div className="profile-header">
+          <h1>{user.fullName}</h1>
+          <span className={`role-badge ${user.role.toLowerCase()}`}>
+            {user.role}
+          </span>
+        </div>
+
+        <div className="profile-details">
+          <div className="profile-field">
+            <label>Email</label>
+            <p>{user.email}</p>
+          </div>
+          <div className="profile-field">
+            <label>Role</label>
+            <p>{user.role}</p>
+          </div>
+
+          {/* Show aggregate rating if they have reviews */}
+          {user.totalReviews > 0 && (
+            <div className="profile-field">
+              <label>Rating</label>
+              <p>
+                {"★".repeat(Math.round(user.averageRating))}
+                {"☆".repeat(5 - Math.round(user.averageRating))}{" "}
+                <strong>{user.averageRating}</strong> / 5
+                <span style={{ color: "#a89880", fontSize: "13px", marginLeft: "6px" }}>
+                  ({user.totalReviews} {user.totalReviews === 1 ? "review" : "reviews"})
+                </span>
+              </p>
+            </div>
+          )}
+        </div>
       </div>
-      <div className="profile-details">
-        <div className="profile-field">
-          <label>Email</label>
-          <p>{user.email}</p>
-        </div>
-        <div className="profile-field">
-          <label>Role</label>
-          <p>{user.role}</p>
-        </div>
+
+      {/* ── Reviews section ── */}
+      <div style={{ maxWidth: "860px", padding: "0 0 40px" }}>
+        <FreelancerReviews userId={user._id} />
       </div>
     </div>
   );
 }
+

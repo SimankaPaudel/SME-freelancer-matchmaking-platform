@@ -2,29 +2,29 @@ const crypto = require("crypto");
 const fetch = require("node-fetch");
 
 /**
- * ✅ FIXED: Generate eSewa payment signature with proper encoding
+ * : Generate eSewa payment signature with proper encoding
  */
 function generateEsewaSignature(total_amount, transaction_uuid, product_code) {
   const secret_key = process.env.ESEWA_SECRET_KEY;
 
   if (!secret_key) {
-    throw new Error("❌ ESEWA_SECRET_KEY is not configured in environment variables");
+    throw new Error(" ESEWA_SECRET_KEY is not configured in environment variables");
   }
 
-  // ✅ Ensure values are strings and remove any whitespace
+  // Ensure values are strings and remove any whitespace
   const amount_str = String(total_amount).trim();
   const uuid_str = String(transaction_uuid).trim();
   const code_str = String(product_code).trim();
 
-  // ✅ CRITICAL: Message must match signed_field_names order EXACTLY
+  // CRITICAL: Message must match signed_field_names order EXACTLY
   // Format: "total_amount=VALUE,transaction_uuid=VALUE,product_code=VALUE"
   const message = `total_amount=${amount_str},transaction_uuid=${uuid_str},product_code=${code_str}`;
 
-  console.log("\n🔐 Generating Signature:");
+  console.log("\n Generating Signature:");
   console.log("  Message:", message);
   console.log("  Secret Key Length:", secret_key.length);
 
-  // ✅ Generate HMAC-SHA256 signature
+  // Generate HMAC-SHA256 signature
   const signature = crypto
     .createHmac("sha256", secret_key)
     .update(message)
@@ -37,10 +37,10 @@ function generateEsewaSignature(total_amount, transaction_uuid, product_code) {
 }
 
 /**
- * ✅ FIXED: Create eSewa payment form data with validation
+ * FIXED: Create eSewa payment form data with validation
  */
 function createEsewaPaymentForm(amount, escrowId) {
-  console.log("\n💰 Creating eSewa Payment Form");
+  console.log("\n Creating eSewa Payment Form");
   console.log("=".repeat(60));
 
   // Validate inputs
@@ -48,11 +48,11 @@ function createEsewaPaymentForm(amount, escrowId) {
     throw new Error("Invalid amount provided");
   }
 
-  // ✅ Generate unique transaction UUID
+  // Generate unique transaction UUID
   const transaction_uuid = crypto.randomUUID();
   const product_code = process.env.ESEWA_MERCHANT_CODE || "EPAYTEST";
 
-  // ✅ Amount must be a whole number STRING
+  // Amount must be a whole number STRING
   const total_amount = String(Math.floor(Number(amount)));
   
   console.log("Escrow ID:", escrowId);
@@ -60,12 +60,12 @@ function createEsewaPaymentForm(amount, escrowId) {
   console.log("Transaction UUID:", transaction_uuid);
   console.log("Product Code:", product_code);
 
-  // ✅ All additional amounts as strings (set to 0)
+  // All additional amounts as strings (set to 0)
   const tax_amount = "0";
   const product_service_charge = "0";
   const product_delivery_charge = "0";
 
-  // ✅ Generate signature
+  // Generate signature
   const signature = generateEsewaSignature(
     total_amount,
     transaction_uuid,

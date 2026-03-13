@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import "./proposal.css";
+import "./Proposal.css";
 
 export default function ApplyProposal() {
   const { projectId } = useParams();
@@ -56,7 +56,7 @@ export default function ApplyProposal() {
     <div className="page-container">
       <h1>Apply for Project</h1>
       <form className="proposal-form" onSubmit={submitProposal}>
-        {/* ✅ FIXED: Label shows NPR */}
+        {/* FIXED: Label shows NPR */}
         <div className="form-group">
           <label htmlFor="bidAmount">Bid Amount (NPR - ₹)</label>
           <input

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./project.css";
+import "./Project.css";
 
 export default function PostProject() {
   const [form, setForm] = useState({
