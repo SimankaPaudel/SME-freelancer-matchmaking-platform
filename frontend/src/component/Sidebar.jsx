@@ -22,84 +22,86 @@ export default function Sidebar({ role }) {
       <h2 className="sidebar-title">TaskHive</h2>
 
       <nav className="sidebar-nav">
-        <Link to="/dashboard/profile" className={isActive("/dashboard/profile") ? "active" : ""}>
-          Profile
-        </Link>
 
-        {/* Freelancer */}
+        {/* ── Freelancer ──────────────────────────────── */}
         {role === "Freelancer" && (
           <>
+            <Link to="/dashboard/profile" className={isActive("/dashboard/profile") ? "active" : ""}>
+              Profile
+            </Link>
             <Link to="/dashboard/browse-projects" className={isActive("/dashboard/browse-projects") ? "active" : ""}>
               Browse Projects
             </Link>
-
             <Link to="/dashboard/my-proposals" className={isActive("/dashboard/my-proposals") ? "active" : ""}>
-              📋 My Proposals
+              My Proposals
             </Link>
-
             <Link to="/dashboard/messages" className={isActive("/dashboard/messages") ? "active" : ""}>
-              💬 Messages
+              Messages
             </Link>
-
-            <Link to="/dashboard/payments" className={isActive("/dashboard/payments") ? "active" : ""}>
-              💳 Payments
-            </Link>
-
-            {/* ✅ NEW — shows freelancer's received reviews */}
-            <Link to="/dashboard/my-reviews" className={isActive("/dashboard/my-reviews") ? "active" : ""}>
-              ⭐ My Reviews
-            </Link>
-          </>
-        )}
-
-        {/* SME */}
-        {role === "SME" && (
-          <>
-            <Link to="/dashboard/post-project" className={isActive("/dashboard/post-project") ? "active" : ""}>
-              Post Project
-            </Link>
-
-            <Link to="/dashboard/manage-projects" className={isActive("/dashboard/manage-projects") ? "active" : ""}>
-              Manage Projects
-            </Link>
-
-            <Link to="/dashboard/messages" className={isActive("/dashboard/messages") ? "active" : ""}>
-              💬 Messages
-            </Link>
-
-            <Link to="/dashboard/escrow-management" className={isActive("/dashboard/escrow-management") ? "active" : ""}>
-              Escrow Management
-            </Link>
-
             <Link to="/dashboard/payments" className={isActive("/dashboard/payments") ? "active" : ""}>
               Payments
             </Link>
-
-            {/* ✅ NEW — shows reviews the SME has received from freelancers */}
             <Link to="/dashboard/my-reviews" className={isActive("/dashboard/my-reviews") ? "active" : ""}>
               ⭐ My Reviews
+            </Link>
+            <Link to="/dashboard/notifications" className={isActive("/dashboard/notifications") ? "active" : ""}>
+              🔔 Notifications
             </Link>
           </>
         )}
 
-        {/* Admin */}
-        {role === "Admin" && (
-          <Link to="/dashboard/disputes" className={isActive("/dashboard/disputes") ? "active" : ""}>
-            Disputes
-          </Link>
+        {/* ── SME ─────────────────────────────────────── */}
+        {role === "SME" && (
+          <>
+            <Link to="/dashboard/profile" className={isActive("/dashboard/profile") ? "active" : ""}>
+              Profile
+            </Link>
+            <Link to="/dashboard/post-project" className={isActive("/dashboard/post-project") ? "active" : ""}>
+              Post Project
+            </Link>
+            <Link to="/dashboard/manage-projects" className={isActive("/dashboard/manage-projects") ? "active" : ""}>
+              Manage Projects
+            </Link>
+            <Link to="/dashboard/messages" className={isActive("/dashboard/messages") ? "active" : ""}>
+              Messages
+            </Link>
+            <Link to="/dashboard/escrow-management" className={isActive("/dashboard/escrow-management") ? "active" : ""}>
+              Escrow Management
+            </Link>
+            <Link to="/dashboard/payments" className={isActive("/dashboard/payments") ? "active" : ""}>
+              Payments
+            </Link>
+            <Link to="/dashboard/my-reviews" className={isActive("/dashboard/my-reviews") ? "active" : ""}>
+              ⭐ My Reviews
+            </Link>
+            <Link to="/dashboard/notifications" className={isActive("/dashboard/notifications") ? "active" : ""}>
+              🔔 Notifications
+            </Link>
+          </>
         )}
 
-        {/* Notifications — all roles */}
-        <Link to="/dashboard/notifications" className={isActive("/dashboard/notifications") ? "active" : ""}>
-          🔔 Notifications
-        </Link>
+        {/* ── Admin ───────────────────────────────────── */}
+        {role === "Admin" && (
+          <>
+            <Link to="/dashboard/admin" className={isActive("/dashboard/admin") ? "active" : ""}>
+              🛡 Admin Panel
+            </Link>
+            <Link to="/dashboard/disputes" className={isActive("/dashboard/disputes") ? "active" : ""}>
+              ⚠️ Disputes
+            </Link>
+          </>
+        )}
+
       </nav>
 
       <div className="sidebar-bottom">
-        <div className="sidebar-bell">
-          <NotificationBell />
-          <span className="sidebar-bell-label">Notifications</span>
-        </div>
+        {/* Only show bell for non-admin roles */}
+        {role !== "Admin" && (
+          <div className="sidebar-bell">
+            <NotificationBell />
+            <span className="sidebar-bell-label">Notifications</span>
+          </div>
+        )}
 
         <button className="logout-btn" onClick={handleLogout}>
           Logout

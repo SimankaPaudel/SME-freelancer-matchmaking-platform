@@ -16,7 +16,11 @@ const proposalRoutes = require("./routes/ProposalRoutes");
 const escrowRoutes = require("./routes/escrowRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const chatRoutes = require("./routes/chatRoutes"); 
-const reviewRoutes = require("./routes/reviewRoutes");         // ← NEW
+const reviewRoutes = require("./routes/reviewRoutes"); 
+const adminRoutes = require("./routes/adminRoutes");
+const estimationRoutes = require("./routes/estimationRoutes");
+
+       // ← NEW
 
 const { startDeadlineReminders } = require("./utils/deadlineReminder");
 
@@ -53,6 +57,8 @@ app.use("/api/escrows", escrowRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/chat", chatRoutes); 
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/estimate", estimationRoutes);
                           // ← NEW
 
 app.get("/", (req, res) =>

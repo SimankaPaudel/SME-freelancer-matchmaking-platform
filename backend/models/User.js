@@ -11,6 +11,8 @@ const userSchema = new mongoose.Schema(
     isEmailVerified: { type: Boolean, default: false },
     kycStatus: { type: String, enum: ["Pending", "Approved", "Rejected"], default: "Pending" },
     kycDocument: { type: String }, // file path or URL
+    isActive: { type: Boolean, default: true },
+    kycNote:  { type: String, default: "" },
 
     // refresh token
     refreshToken: { type: String },

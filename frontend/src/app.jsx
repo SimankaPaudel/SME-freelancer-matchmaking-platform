@@ -31,6 +31,8 @@ import RaiseDispute from "./pages/RaiseDispute";
 import ResolveDispute from "./pages/ResolveDispute";
 import DisputeList from "./pages/DisputeList";
 import Notifications from "./pages/Notifications";
+import AdminDashboard from "./pages/AdminDashboard";
+
 
 // Chat
 import MessageBubble from "./pages/Chat/MessageBubble";
@@ -96,6 +98,7 @@ function Layout() {
           <Route path="disputes" element={<DisputeList />} />
           <Route path="resolve-dispute/:escrowId" element={<ResolveDispute />} />
           <Route path="notifications" element={<Notifications />} />
+          <Route path="admin" element={<AdminDashboard />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

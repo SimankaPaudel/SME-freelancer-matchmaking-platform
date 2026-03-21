@@ -11,12 +11,19 @@
   margin-bottom: 20px;
 }
 
-/* -------- Forms (if used for filtering) -------- */
+.page-container h2 {
+  font-size: 20px;
+  color: #4a3728;
+  margin-bottom: 16px;
+}
+
+/* -------- Forms -------- */
 .project-form {
   background: #ffffff;
   padding: 28px;
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(74, 55, 40, 0.08);
+  border: 1px solid #e0d4c0;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -27,13 +34,24 @@
 .project-form select {
   padding: 12px 14px;
   border-radius: 10px;
-  border: 1px solid #e0d3b8;
+  border: 1px solid #e0d4c0;
   font-size: 14px;
-  background-color: #faf8f4;
+  background-color: #f7f1e8;
+  color: #4a3728;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.project-form input:focus,
+.project-form textarea:focus,
+.project-form select:focus {
+  outline: none;
+  border-color: #b08968;
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.15);
+  background-color: #ffffff;
 }
 
 .project-form textarea {
-  resize: none;
+  resize: vertical;
 }
 
 .project-form button {
@@ -45,10 +63,11 @@
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .project-form button:hover {
-  background-color: #9c7558;
+  background-color: #6b4f3f;
 }
 
 /* -------- Project Cards -------- */
@@ -57,29 +76,39 @@
   border-radius: 14px;
   padding: 22px;
   margin-bottom: 18px;
-  box-shadow: 0 5px 16px rgba(74, 55, 40, 0.08);
-  border: 1px solid #e6ddcf;
+  box-shadow: 0 4px 16px rgba(74, 55, 40, 0.07);
+  border: 1px solid #e0d4c0;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.project-card:hover {
+  box-shadow: 0 8px 28px rgba(74, 55, 40, 0.12);
+  transform: translateY(-2px);
 }
 
 .project-card h3 {
   margin: 0;
   color: #4a3728;
+  font-size: 17px;
 }
 
 .project-card p {
-  color: #6f5f4d;
+  color: #7a6a55;
   font-size: 14px;
   margin: 4px 0;
+}
+
+.project-card strong {
+  color: #4a3728;
 }
 
 /* -------- Status Badges -------- */
 .status {
   display: inline-block;
-  margin-top: 6px;
-  padding: 4px 10px;
+  padding: 4px 12px;
   font-size: 12px;
   border-radius: 20px;
   font-weight: 600;
@@ -87,14 +116,41 @@
 }
 
 .status.open {
-  background: #d4edda;
-  color: #155724;
+  background: #d4f0e0;
+  color: #1a5c38;
 }
 
 .status.closed {
   background: #f8d7da;
   color: #721c24;
 }
+
+.status.active,
+.status.in-progress {
+  background: #fdf3e3;
+  color: #6b4f3f;
+  border: 1px solid #e0d4c0;
+}
+
+.status.pending {
+  background: #fef9ec;
+  color: #7a5c1e;
+  border: 1px solid #f0e0b0;
+}
+
+.status.completed {
+  background: #d4f0e0;
+  color: #1a5c38;
+}
+
+/* Proposal-specific statuses */
+.status.accepted    { background: #d4f0e0; color: #1a5c38; }
+.status.rejected    { background: #f8d7da; color: #721c24; }
+.status.shortlisted { background: #fdf3e3; color: #6b4f3f; border: 1px solid #e0d4c0; }
+.status.submitted   { background: #e8e4f8; color: #3b2f7a; }
+.status.funded      { background: #d4f0e0; color: #1a5c38; }
+.status.released    { background: #d4f0e0; color: #1a5c38; }
+.status.disputed    { background: #fef3c7; color: #7a4f1a; }
 
 /* -------- Action Buttons -------- */
 .actions {
@@ -104,8 +160,9 @@
   margin-top: 10px;
 }
 
+/* Default action button */
 .actions button {
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -113,34 +170,75 @@
   font-weight: 600;
   background-color: #f1e8da;
   color: #4a3728;
-  transition: 0.2s;
+  transition: background-color 0.2s;
 }
 
 .actions button:hover {
-  background-color: #e6d8c5;
+  background-color: #e9dcc7;
 }
 
-/* Danger button */
+/* Primary / success */
+.actions .success,
+.actions .primary {
+  background-color: #b08968;
+  color: #ffffff;
+}
+
+.actions .success:hover,
+.actions .primary:hover {
+  background-color: #6b4f3f;
+}
+
+/* Danger */
 .actions .danger {
-  background-color: #dc3545;
+  background-color: #c0392b;
   color: #ffffff;
 }
 
 .actions .danger:hover {
-  background-color: #c82333;
+  background-color: #922b21;
 }
 
-/* View Applicants button */
+/* Info — replaced teal with TaskHive brown-blue */
 .actions .info {
-  background-color: #17a2b8;
+  background-color: #4a3728;
   color: #ffffff;
 }
 
 .actions .info:hover {
-  background-color: #138496;
+  background-color: #6b4f3f;
 }
 
-/* -------- Tags (optional) -------- */
+/* Outline variant */
+.actions .outline {
+  background-color: transparent;
+  color: #b08968;
+  border: 1px solid #b08968;
+}
+
+.actions .outline:hover {
+  background-color: #e9dcc7;
+}
+
+/* Chat button */
+.chat-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #b08968;
+  background-color: transparent;
+  color: #b08968;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.chat-btn:hover {
+  background-color: #b08968;
+  color: #ffffff;
+}
+
+/* -------- Tags -------- */
 .tags {
   display: flex;
   gap: 8px;
@@ -151,10 +249,60 @@
 .tags span {
   background-color: #f1e8da;
   color: #4a3728;
-  padding: 5px 12px;
+  padding: 4px 12px;
   border-radius: 18px;
   font-size: 12px;
-  border: 1px solid #e0d3b8;
+  border: 1px solid #e0d4c0;
+}
+
+/* -------- File Links -------- */
+.file-link {
+  color: #b08968;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.file-link:hover {
+  color: #6b4f3f;
+  text-decoration: underline;
+}
+
+/* -------- Escrow Info Section -------- */
+.escrow-info-section {
+  margin-top: 10px;
+  padding: 12px 16px;
+  background: #f7f1e8;
+  border: 1px solid #e0d4c0;
+  border-radius: 10px;
+}
+
+.escrow-info {
+  font-size: 13px;
+  color: #4a3728;
+  margin: 0;
+}
+
+.warning-text {
+  font-size: 13px;
+  color: #b08968;
+  margin: 6px 0 0;
+  font-weight: 600;
+}
+
+.info-text {
+  font-size: 13px;
+  color: #7a6a55;
+  margin: 6px 0 0;
+}
+
+.error-msg {
+  color: #c0392b;
+  font-size: 14px;
+  padding: 10px 14px;
+  background: #fdf0ee;
+  border: 1px solid #f5c6c0;
+  border-radius: 8px;
 }
 
 /* -------- Browse / Manage Layout -------- */
@@ -168,35 +316,114 @@
   background: #ffffff;
   padding: 20px;
   border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(74, 55, 40, 0.08);
+  border: 1px solid #e0d4c0;
+  box-shadow: 0 4px 12px rgba(74, 55, 40, 0.07);
+  height: fit-content;
 }
 
 .filters h4 {
-  margin-bottom: 12px;
+  margin: 0 0 12px;
   color: #4a3728;
+  font-size: 15px;
 }
 
 .filters input,
-.filters button {
+.filters select {
   width: 100%;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 10px 12px;
   border-radius: 8px;
-  border: 1px solid #e0d3b8;
+  border: 1px solid #e0d4c0;
+  background: #f7f1e8;
+  color: #4a3728;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.filters input:focus,
+.filters select:focus {
+  outline: none;
+  border-color: #b08968;
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.12);
 }
 
 .filters button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
   background-color: #b08968;
   color: #ffffff;
-  border: none;
   font-weight: 600;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background-color 0.2s;
+  box-sizing: border-box;
 }
 
-/* Flex container for project cards in manage page */
+.filters button:hover {
+  background-color: #6b4f3f;
+}
+
 .projects {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+/* -------- Proposal Cards (shared) -------- */
+.proposal-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 16px rgba(74, 55, 40, 0.07);
+  border: 1px solid #e0d4c0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: box-shadow 0.2s;
+}
+
+.proposal-card:hover {
+  box-shadow: 0 8px 28px rgba(74, 55, 40, 0.11);
+}
+
+.proposal-card h3 {
+  margin: 0;
+  color: #4a3728;
+  font-size: 17px;
+}
+
+.proposal-card p {
+  color: #7a6a55;
+  font-size: 14px;
+  margin: 4px 0;
+}
+
+.proposal-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.files-section {
+  padding: 12px 16px;
+  background: #f7f1e8;
+  border: 1px solid #e0d4c0;
+  border-radius: 10px;
+}
+
+.files-section h4 {
+  margin: 0 0 8px;
+  color: #4a3728;
+  font-size: 14px;
+}
+
+.file-label {
+  font-weight: 600;
+  color: #4a3728;
+  font-size: 13px;
 }
 
 /* -------- Responsive -------- */
@@ -207,10 +434,13 @@
 
   .filters {
     width: 100%;
-    margin-bottom: 20px;
   }
 
   .actions {
     flex-direction: column;
+  }
+
+  .reviews-summary {
+    grid-template-columns: 1fr;
   }
 }
