@@ -19,6 +19,7 @@ const chatRoutes = require("./routes/chatRoutes");
 const reviewRoutes = require("./routes/reviewRoutes"); 
 const adminRoutes = require("./routes/adminRoutes");
 const estimationRoutes = require("./routes/estimationRoutes");
+const KycRoutes = require("./routes/KycRoutes");
 
        // ← NEW
 
@@ -59,6 +60,7 @@ app.use("/api/chat", chatRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/estimate", estimationRoutes);
+app.use("/api/kyc", KycRoutes);
                           // ← NEW
 
 app.get("/", (req, res) =>

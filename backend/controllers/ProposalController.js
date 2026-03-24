@@ -174,3 +174,16 @@ exports.updateProposalStatus = async (req, res) => {
 exports.downloadFile = async (req, res) => {
   res.status(200).json({ message: "Download endpoint placeholder" });
 };
+
+// Add this function to your existing ProposalController.js
+// and add this route to ProposalRoutes.js:
+// router.get("/project/:projectId/count", auth, proposalCtrl.getProposalCount);
+
+exports.getProposalCount = async (req, res) => {
+  try {
+    const count = await Proposal.countDocuments({ projectId: req.params.projectId });
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

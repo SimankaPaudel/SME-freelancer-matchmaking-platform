@@ -1,32 +1,364 @@
+/* ─── Base ───────────────────────────────────────────────── */
 .home {
   background-color: #f7f1e8;
-  padding: 80px 20px;
+  min-height: 100vh;
 }
 
-.home-container {
-  max-width: 800px;
+/* ─── Hero ───────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(160deg, #fdf8f2 0%, #eddfc8 100%);
+  padding: 90px 24px 80px;
+  border-bottom: 1px solid #e0d4c0;
+}
+
+.hero-inner {
+  max-width: 720px;
   margin: 0 auto;
   text-align: center;
 }
 
-.home h1 {
-  font-size: 42px;
-  color: #4a3728;
-  margin-bottom: 16px;
+.hero-badge {
+  display: inline-block;
+  background: #ffffff;
+  border: 1px solid #e0d4c0;
+  color: #6b4f3f;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 18px;
+  border-radius: 999px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 8px rgba(74, 55, 40, 0.08);
+  letter-spacing: 0.02em;
 }
 
-.home p {
-  font-size: 16px;
+.hero h1 {
+  font-size: 58px;
+  font-weight: 900;
+  color: #3a2a1e;
+  line-height: 1.1;
+  margin: 0 0 22px;
+  letter-spacing: -2px;
+  font-family: inherit;
+}
+
+.hero-highlight {
+  color: #b08968;
+  display: inline-block;
+}
+
+.hero-desc {
+  font-size: 17px;
   color: #7a6a55;
-  margin-bottom: 30px;
+  line-height: 1.75;
+  margin: 0 auto 38px;
+  max-width: 580px;
 }
 
-.home-actions {
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+
+.hero-btn-primary {
+  padding: 15px 36px;
+  background: #4a3728;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+  letter-spacing: 0.01em;
+}
+
+.hero-btn-primary:hover {
+  background: #b08968;
+  transform: translateY(-2px);
+}
+
+.hero-btn-secondary {
+  padding: 15px 32px;
+  background: transparent;
+  color: #4a3728;
+  border: 2px solid #c9b49a;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.hero-btn-secondary:hover {
+  background: #ffffff;
+  border-color: #b08968;
+}
+
+.hero-trust {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #7a6a55;
+  font-weight: 600;
+}
+
+/* ─── Stats ──────────────────────────────────────────────── */
+.stats-section {
+  background: #3a2a1e;
+  padding: 44px 24px;
+}
+
+.stats-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 38px;
+  font-weight: 900;
+  color: #f7c98b;
+  margin: 0 0 6px;
+  letter-spacing: -1px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #c9b49a;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ─── Shared section ─────────────────────────────────────── */
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section-inner h2 {
+  font-size: 36px;
+  font-weight: 800;
+  color: #3a2a1e;
+  text-align: center;
+  margin: 0 0 10px;
+  letter-spacing: -0.5px;
+}
+
+.section-sub {
+  text-align: center;
+  color: #a89880;
+  font-size: 16px;
+  margin: 0 0 52px;
+}
+
+/* ─── How it works ───────────────────────────────────────── */
+.how-section {
+  padding: 84px 24px;
+  background: #ffffff;
+}
+
+.how-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.how-col h3 {
+  font-size: 19px;
+  font-weight: 700;
+  color: #4a3728;
+  margin: 0 0 28px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #e0d4c0;
+}
+
+.how-divider {
+  width: 1px;
+  background: #e0d4c0;
+  align-self: stretch;
+  margin-top: 54px;
+}
+
+.how-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.how-step {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.step-num {
+  width: 34px;
+  height: 34px;
+  background: #b08968;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.how-step strong {
+  display: block;
+  font-size: 15px;
+  color: #3a2a1e;
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+
+.how-step p {
+  font-size: 13px;
+  color: #7a6a55;
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ─── Features ───────────────────────────────────────────── */
+.features-section {
+  padding: 84px 24px;
+  background: #f7f1e8;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.feature-card {
+  background: #ffffff;
+  border: 1px solid #e0d4c0;
+  border-radius: 16px;
+  padding: 30px 24px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(74, 55, 40, 0.1);
+}
+
+.feature-icon {
+  font-size: 38px;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.feature-card h4 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #3a2a1e;
+  margin: 0 0 10px;
+}
+
+.feature-card p {
+  font-size: 14px;
+  color: #7a6a55;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ─── CTA ────────────────────────────────────────────────── */
+.cta-section {
+  background: linear-gradient(135deg, #3a2a1e 0%, #6b4f3f 100%);
+  padding: 84px 24px;
+  text-align: center;
+}
+
+.cta-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.cta-inner h2 {
+  font-size: 38px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 14px;
+  letter-spacing: -0.5px;
+}
+
+.cta-inner p {
+  font-size: 17px;
+  color: #c9b49a;
+  margin: 0 0 38px;
+}
+
+.cta-actions {
   display: flex;
   justify-content: center;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
+.cta-btn-primary {
+  padding: 15px 30px;
+  background: #b08968;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.cta-btn-primary:hover {
+  background: #f7c98b;
+  color: #3a2a1e;
+  transform: translateY(-2px);
+}
+
+.cta-btn-secondary {
+  padding: 15px 30px;
+  background: transparent;
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.cta-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ─── Footer ─────────────────────────────────────────────── */
+.home-footer {
+  background: #3a2a1e;
+  padding: 28px 24px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.home-footer p {
+  color: #7a6a55;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ─── Legacy button classes (used elsewhere) ─────────────── */
 .primary-btn {
   background-color: #b08968;
   color: white;
@@ -35,11 +367,11 @@
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
 }
 
-.primary-btn:hover {
-  background-color: #6b4f3f;
-}
+.primary-btn:hover { background-color: #6b4f3f; }
 
 .secondary-btn {
   background-color: transparent;
@@ -49,8 +381,29 @@
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
 }
 
-.secondary-btn:hover {
-  background-color: #e9dcc7;
+.secondary-btn:hover { background-color: #e9dcc7; }
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .hero h1       { font-size: 42px; letter-spacing: -1px; }
+  .how-grid      { grid-template-columns: 1fr; }
+  .how-divider   { display: none; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-grid    { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+}
+
+@media (max-width: 560px) {
+  .hero          { padding: 60px 20px 56px; }
+  .hero h1       { font-size: 32px; letter-spacing: -0.5px; }
+  .hero-desc     { font-size: 15px; }
+  .hero-actions  { flex-direction: column; align-items: center; }
+  .hero-trust    { flex-direction: column; gap: 8px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .cta-actions   { flex-direction: column; align-items: center; }
+  .section-inner h2 { font-size: 28px; }
+  .cta-inner h2  { font-size: 28px; }
 }

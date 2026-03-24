@@ -56,6 +56,7 @@
   background-color: #fff;
   color: #3e3e3e;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 .register-form input::placeholder {
@@ -69,8 +70,8 @@
   box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.15);
 }
 
-/* Button */
-.register-form button {
+/* ── Submit button only — NOT the eye button ── */
+.register-form button[type="submit"] {
   margin-top: 10px;
   padding: 14px;
   border-radius: 8px;
@@ -81,17 +82,18 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.25s ease, transform 0.1s ease;
+  width: 100%;
 }
 
-.register-form button:hover {
+.register-form button[type="submit"]:hover {
   background-color: #6b4f3f;
 }
 
-.register-form button:active {
+.register-form button[type="submit"]:active {
   transform: scale(0.98);
 }
 
-/* Login link below form */
+/* Login link */
 .login-link {
   margin-top: 18px;
   font-size: 14px;
@@ -106,4 +108,58 @@
 
 .login-link a:hover {
   text-decoration: underline;
+}
+
+/* ─── Password wrapper + eye button ─────────────────────── */
+.auth-password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.auth-password-wrapper input {
+  width: 100%;
+  padding-right: 46px !important;
+  box-sizing: border-box;
+  margin: 0 !important;
+}
+
+.auth-eye-btn {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  bottom: 1px;
+  width: 42px;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 7px 7px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #a08f77 !important;
+  transition: color 0.15s, background-color 0.15s;
+  padding: 0 !important;
+  margin: 0 !important;
+  z-index: 2;
+  font-size: 0;
+}
+
+.auth-eye-btn:hover {
+  color: #4a3728 !important;
+  background: rgba(176, 137, 104, 0.08) !important;
+  transform: none !important;
+}
+
+/* Error box */
+.register-error {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background: #fdf0ee;
+  border: 1px solid #f5c6c0;
+  border-radius: 8px;
+  color: #c0392b;
+  font-size: 14px;
+  line-height: 1.5;
+  box-sizing: border-box;
 }

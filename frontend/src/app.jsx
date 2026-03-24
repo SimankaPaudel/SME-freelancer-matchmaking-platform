@@ -33,14 +33,17 @@ import DisputeList from "./pages/DisputeList";
 import Notifications from "./pages/Notifications";
 import AdminDashboard from "./pages/AdminDashboard";
 
-
 // Chat
 import MessageBubble from "./pages/Chat/MessageBubble";
 import ChatPage from "./pages/Chat/ChatPage";
 
-// ✅ Reviews — NEW
+// Reviews
 import SubmitReview from "./pages/SubmitReview";
 import MyReviews from "./pages/MyReviews";
+
+// ── NEW ──────────────────────────────────────────────────
+import VerifyEmail  from "./pages/VerifyEmail";
+import ProfileSetup from "./pages/ProfileSetup";
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("accessToken");
@@ -49,56 +52,67 @@ function ProtectedRoute({ children }) {
 
 function Layout() {
   const location = useLocation();
-  const hideNavbar = location.pathname.startsWith("/dashboard");
+  const hideNavbar =
+    location.pathname.startsWith("/dashboard") ||
+    location.pathname === "/profile-setup" ||
+    location.pathname === "/verify-email";
 
   return (
     <>
       {!hideNavbar && <Navbar />}
       <Routes>
-        {/* Public */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        {/* ── Public ── */}
+        <Route path="/"          element={<Home />} />
+        <Route path="/login"     element={<Login />} />
+        <Route path="/register"  element={<Register />} />
 
-        {/* Payments */}
-        <Route path="/payment/esewa" element={<ProtectedRoute><Esewapaymentform /></ProtectedRoute>} />
+        {/* ── Email verification (no auth needed) ── */}
+        <Route path="/verify-email" element={<VerifyEmail />} />
+
+        {/* ── Profile setup (after first login) ── */}
+        <Route path="/profile-setup" element={
+          <ProtectedRoute><ProfileSetup /></ProtectedRoute>
+        } />
+
+        {/* ── Payments ── */}
+        <Route path="/payment/esewa"   element={<ProtectedRoute><Esewapaymentform /></ProtectedRoute>} />
         <Route path="/payment/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
         <Route path="/payment/failure" element={<ProtectedRoute><PaymentFailure /></ProtectedRoute>} />
 
-        {/* Dashboard */}
+        {/* ── Dashboard ── */}
         <Route path="/dashboard/*" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}>
           <Route index element={<Profile />} />
           <Route path="profile" element={<Profile />} />
 
           {/* Freelancer */}
-          <Route path="browse-projects" element={<BrowseProjects />} />
-          <Route path="apply/:projectId" element={<ApplyProposal />} />
-          <Route path="my-proposals" element={<MyProposals />} />
+          <Route path="browse-projects"        element={<BrowseProjects />} />
+          <Route path="apply/:projectId"        element={<ApplyProposal />} />
+          <Route path="my-proposals"            element={<MyProposals />} />
           <Route path="submit-work/:proposalId" element={<SubmitWork />} />
 
           {/* SME */}
-          <Route path="post-project" element={<PostProject />} />
+          <Route path="post-project"    element={<PostProject />} />
           <Route path="manage-projects" element={<ManageProject />} />
-          <Route path="applicants" element={<Applicants />} />
+          <Route path="applicants"      element={<Applicants />} />
 
           {/* Chat */}
-          <Route path="messages" element={<MessageBubble />} />
-          <Route path="chat/:projectId" element={<ChatPage />} />
+          <Route path="messages"          element={<MessageBubble />} />
+          <Route path="chat/:projectId"   element={<ChatPage />} />
 
-          {/* ✅ Reviews — NEW */}
+          {/* Reviews */}
           <Route path="submit-review/:escrowId" element={<SubmitReview />} />
-          <Route path="my-reviews" element={<MyReviews />} />
+          <Route path="my-reviews"              element={<MyReviews />} />
 
           {/* Shared */}
-          <Route path="payments" element={<Payments />} />
-          <Route path="escrow/:escrowId" element={<EscrowDetails />} />
-          <Route path="escrow-management" element={<EscrowManagement />} />
-          <Route path="review-work/:escrowId" element={<SMEReviewWork />} />
-          <Route path="raise-dispute/:escrowId" element={<RaiseDispute />} />
-          <Route path="disputes" element={<DisputeList />} />
-          <Route path="resolve-dispute/:escrowId" element={<ResolveDispute />} />
-          <Route path="notifications" element={<Notifications />} />
-          <Route path="admin" element={<AdminDashboard />} />
+          <Route path="payments"                  element={<Payments />} />
+          <Route path="escrow/:escrowId"           element={<EscrowDetails />} />
+          <Route path="escrow-management"          element={<EscrowManagement />} />
+          <Route path="review-work/:escrowId"      element={<SMEReviewWork />} />
+          <Route path="raise-dispute/:escrowId"    element={<RaiseDispute />} />
+          <Route path="disputes"                   element={<DisputeList />} />
+          <Route path="resolve-dispute/:escrowId"  element={<ResolveDispute />} />
+          <Route path="notifications"              element={<Notifications />} />
+          <Route path="admin"                      element={<AdminDashboard />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
@@ -114,4 +128,3 @@ export default function App() {
     </Router>
   );
 }
-

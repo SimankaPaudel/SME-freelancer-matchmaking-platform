@@ -1,0 +1,251 @@
+/* ─── Page ───────────────────────────────────────────────── */
+.ps-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f7f1e8 0%, #eddfc8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.ps-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 36px 32px;
+  max-width: 560px;
+  width: 100%;
+  box-shadow: 0 12px 40px rgba(74, 55, 40, 0.12);
+  border: 1px solid #e0d4c0;
+}
+
+/* ─── Header ─────────────────────────────────────────────── */
+.ps-header { text-align: center; margin-bottom: 24px; }
+.ps-logo   { font-size: 24px; font-weight: 800; color: #4a3728; margin-bottom: 12px; }
+
+.ps-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #4a3728;
+  margin: 0 0 6px;
+}
+
+.ps-header p {
+  font-size: 14px;
+  color: #a89880;
+  margin: 0;
+}
+
+/* ─── Progress ───────────────────────────────────────────── */
+.ps-progress {
+  height: 6px;
+  background: #e0d4c0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.ps-progress-bar {
+  height: 100%;
+  background: #b08968;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.ps-step-label {
+  font-size: 12px;
+  color: #a89880;
+  text-align: right;
+  margin: 0 0 20px;
+}
+
+/* ─── Error ──────────────────────────────────────────────── */
+.ps-error {
+  background: #fdf0ee;
+  border: 1px solid #f5c6c0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #c0392b;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ─── Step ───────────────────────────────────────────────── */
+.ps-step h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #4a3728;
+  margin: 0 0 20px;
+}
+
+/* ─── Fields ─────────────────────────────────────────────── */
+.ps-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.ps-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3728;
+}
+
+.ps-required { color: #c0392b; }
+.ps-optional { color: #a89880; font-weight: 400; font-size: 12px; }
+.ps-hint     { font-size: 11px; color: #a89880; }
+
+.ps-char-count {
+  font-size: 11px;
+  color: #a89880;
+  text-align: right;
+}
+
+.ps-field input,
+.ps-field textarea,
+.ps-field select {
+  padding: 11px 14px;
+  border: 1px solid #e0d4c0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #f7f1e8;
+  color: #4a3728;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.ps-field input:focus,
+.ps-field textarea:focus,
+.ps-field select:focus {
+  outline: none;
+  border-color: #b08968;
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.15);
+  background: #ffffff;
+}
+
+.ps-field textarea { resize: vertical; min-height: 90px; }
+
+/* ─── Side by side row ───────────────────────────────────── */
+.ps-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* ─── Skill/tech tags preview ────────────────────────────── */
+.ps-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.ps-tag {
+  background: #fdf3e3;
+  color: #6b4f3f;
+  border: 1px solid #e0d4c0;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ─── Team size pills ────────────────────────────────────── */
+.ps-pill-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ps-pill {
+  padding: 7px 16px;
+  border: 1px solid #e0d4c0;
+  border-radius: 20px;
+  background: #f7f1e8;
+  color: #7a6a55;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ps-pill.active {
+  background: #b08968;
+  color: #ffffff;
+  border-color: #b08968;
+}
+
+.ps-pill:hover:not(.active) {
+  border-color: #b08968;
+  color: #4a3728;
+}
+
+/* ─── Navigation buttons ─────────────────────────────────── */
+.ps-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+  align-items: center;
+}
+
+.ps-btn-back {
+  padding: 11px 20px;
+  background: #f7f1e8;
+  color: #4a3728;
+  border: 1px solid #e0d4c0;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ps-btn-back:hover { background: #e9dcc7; }
+
+.ps-btn-skip {
+  padding: 11px 16px;
+  background: transparent;
+  color: #a89880;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: auto;
+  text-decoration: underline;
+}
+
+.ps-btn-next {
+  padding: 11px 24px;
+  background: #4a3728;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ps-btn-next:hover { background: #b08968; }
+
+.ps-btn-submit {
+  padding: 11px 24px;
+  background: #b08968;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.ps-btn-submit:hover:not(:disabled) { background: #6b4f3f; }
+.ps-btn-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .ps-card { padding: 24px 18px; }
+  .ps-row  { grid-template-columns: 1fr; }
+  .ps-nav  { flex-wrap: wrap; }
+}

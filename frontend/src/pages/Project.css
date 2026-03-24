@@ -444,3 +444,95 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ─── Browse Projects extras ─────────────────────────────── */
+.bp-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  margin: 4px 0;
+}
+
+.bp-info-label {
+  color: #a89880;
+  font-weight: 600;
+  min-width: 90px;
+  font-size: 12px;
+}
+
+.bp-info-value {
+  color: #4a3728;
+  font-weight: 500;
+}
+
+.bp-urgent-badge {
+  background: #fff3e0;
+  color: #c0392b;
+  border: 1px solid #f0c090;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.bp-expired-badge {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.bp-apply-btn {
+  padding: 9px 20px;
+  background: #b08968;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.bp-apply-btn:hover {
+  background: #6b4f3f;
+  transform: translateY(-1px);
+}
+
+.success-msg {
+  color: #1a5c38;
+  background: #d4f0e0;
+  border: 1px solid #a8dfc0;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ─── Filter labels ──────────────────────────────────────── */
+.filter-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #7a6a55;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 10px 0 4px;
+}
+
+.filter-label:first-of-type { margin-top: 0; }
+
+/* ─── Browse info grid ───────────────────────────────────── */
+.bp-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 16px;
+  margin: 10px 0;
+}

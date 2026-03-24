@@ -1,41 +1,86 @@
+/* ─── Navbar ─────────────────────────────────────────────── */
 .navbar {
-  background-color: #ffffff;
-  border-bottom: 1px solid #e6e0d6;
+  background: #ffffff;
+  border-bottom: 1px solid #e0d4c0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(74, 55, 40, 0.06);
 }
 
 .nav-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 14px 20px;
+  padding: 0 24px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+/* ─── Logo ───────────────────────────────────────────────── */
 .logo {
   font-size: 20px;
-  font-weight: 600;
-  color: #6b4f3f;
-}
-
-.nav-links a {
-  margin-left: 20px;
-  font-weight: 500;
+  font-weight: 800;
   color: #4a3728;
+  text-decoration: none;
+  letter-spacing: -0.3px;
 }
 
-.nav-links a:hover {
+.logo:hover {
   color: #b08968;
 }
 
-/* CTA button */
+/* ─── Links ──────────────────────────────────────────────── */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-links a {
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a3728;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.nav-links a:hover {
+  background-color: #f7f1e8;
+  color: #b08968;
+}
+
+.nav-links a.nav-active {
+  color: #b08968;
+  font-weight: 600;
+}
+
+/* ─── Register CTA button ────────────────────────────────── */
 .nav-btn {
-  padding: 6px 14px;
-  border-radius: 6px;
-  background-color: #b08968;
+  padding: 8px 20px !important;
+  background: #b08968 !important;
   color: #ffffff !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  transition: background-color 0.2s, transform 0.15s !important;
 }
 
 .nav-btn:hover {
-  background-color: #6b4f3f;
+  background: #6b4f3f !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .nav-links a:not(.nav-btn) {
+    display: none;
+  }
+
+  .nav-container {
+    padding: 0 16px;
+  }
 }
