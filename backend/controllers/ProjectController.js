@@ -5,6 +5,12 @@ exports.createProject = async (req, res) => {
     if (req.user.role?.toLowerCase() !== "sme")
       return res.status(403).json({ message: "Only SMEs can post projects" });
 
+    // Check KYC verification
+    const user = await require("../models/User").findById(req.user.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (user.kycStatus !== "Approved")
+      return res.status(403).json({ message: "KYC verification is required before posting projects. Please complete your KYC verification." });
+
     const project = await Project.create({
       title:           req.body.title,
       description:     req.body.description,

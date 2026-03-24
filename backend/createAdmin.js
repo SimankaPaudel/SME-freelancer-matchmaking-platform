@@ -26,8 +26,8 @@ async function createAdmin() {
     password:  hashed,
     role:      "Admin",
     isEmailVerified: true,
+    isProfileComplete: true,
     kycStatus: "Approved",
-    
   });
 
   console.log("Admin created!");

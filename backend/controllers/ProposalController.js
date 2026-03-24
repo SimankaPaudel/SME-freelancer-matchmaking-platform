@@ -47,7 +47,7 @@ exports.submitProposal = async (req, res) => {
 exports.getProjectProposals = async (req, res) => {
   try {
     const proposals = await Proposal.find({ projectId: req.params.projectId })
-      .populate("freelancerId", "fullName email")
+      .populate("freelancerId", "fullName email skills portfolio averageRating totalReviews hourlyRate bio socialLinks")
       .sort({ createdAt: -1 });
 
     res.json(proposals);

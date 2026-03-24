@@ -42,7 +42,7 @@ import SubmitReview from "./pages/SubmitReview";
 import MyReviews from "./pages/MyReviews";
 
 // ── NEW ──────────────────────────────────────────────────
-import VerifyEmail  from "./pages/VerifyEmail";
+
 import ProfileSetup from "./pages/ProfileSetup";
 
 function ProtectedRoute({ children }) {
@@ -54,8 +54,8 @@ function Layout() {
   const location = useLocation();
   const hideNavbar =
     location.pathname.startsWith("/dashboard") ||
-    location.pathname === "/profile-setup" ||
-    location.pathname === "/verify-email";
+    location.pathname === "/profile-setup" 
+    
 
   return (
     <>
@@ -66,8 +66,7 @@ function Layout() {
         <Route path="/login"     element={<Login />} />
         <Route path="/register"  element={<Register />} />
 
-        {/* ── Email verification (no auth needed) ── */}
-        <Route path="/verify-email" element={<VerifyEmail />} />
+       
 
         {/* ── Profile setup (after first login) ── */}
         <Route path="/profile-setup" element={

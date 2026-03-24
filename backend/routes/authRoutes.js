@@ -5,7 +5,7 @@ const multer  = require("multer");
 const path    = require("path");
 
 const { userController, verifyEmailController, loginController } = require("../controllers/userController");
-const { getProfile, saveProfile, addPortfolioItem, deletePortfolioItem, getPublicProfile } = require("../controllers/ProfileController");
+const { getProfile, saveProfile, addPortfolioItem, deletePortfolioItem, getPublicProfile, uploadCVFile, deleteCVFile } = require("../controllers/ProfileController");
 const User = require("../models/User");
 const jwt  = require("jsonwebtoken");
 
@@ -47,6 +47,8 @@ router.put ("/profile/setup",                      auth, saveProfile);
 router.put ("/profile/update",                     auth, saveProfile);
 router.post("/profile/portfolio",                  auth, uploadPortfolio.single("file"), addPortfolioItem);
 router.delete("/profile/portfolio/:itemId",        auth, deletePortfolioItem);
+router.post("/profile/cv",                         auth, uploadCVFile);
+router.delete("/profile/cv",                       auth, deleteCVFile);
 router.get ("/profile/:userId",                         getPublicProfile);
 
 module.exports = router;

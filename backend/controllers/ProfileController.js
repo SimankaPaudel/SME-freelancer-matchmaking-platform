@@ -88,6 +88,83 @@ async function addPortfolioItem(req, res) {
 }
 
 // ─────────────────────────────────────────────────────────
+// POST /api/profile/cv  — upload CV (Freelancer only)
+// ─────────────────────────────────────────────────────────
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+
+const cvStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = "uploads/cv/";
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, `cv-${req.user.userId}-${Date.now()}${path.extname(file.originalname)}`);
+  },
+});
+
+const uploadCV = multer({
+  storage: cvStorage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    const allowed = /pdf|doc|docx/;
+    if (allowed.test(path.extname(file.originalname).toLowerCase())) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only PDF, DOC, DOCX files are allowed"));
+    }
+  },
+}).single("cv");
+
+async function uploadCVFile(req, res) {
+  uploadCV(req, res, async (err) => {
+    if (err) return res.status(400).json({ message: err.message });
+    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+
+    try {
+      const user = await User.findById(req.user.userId);
+      if (!user) return res.status(404).json({ message: "User not found" });
+      if (user.role !== "Freelancer") return res.status(403).json({ message: "Only freelancers can upload CV" });
+
+      user.cv = req.file.path.replace(/\\/g, "/");
+      await user.save();
+
+      res.json({
+        message: "CV uploaded successfully",
+        cv: user.cv,
+      });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// DELETE /api/profile/cv  — delete CV
+// ─────────────────────────────────────────────────────────
+async function deleteCVFile(req, res) {
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    if (user.role !== "Freelancer") return res.status(403).json({ message: "Only freelancers can delete CV" });
+
+    // Delete file from system
+    if (user.cv && fs.existsSync(user.cv)) {
+      fs.unlinkSync(user.cv);
+    }
+
+    user.cv = "";
+    await user.save();
+
+    res.json({ message: "CV deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
+// ─────────────────────────────────────────────────────────
 // DELETE /api/profile/portfolio/:itemId
 // ─────────────────────────────────────────────────────────
 async function deletePortfolioItem(req, res) {
@@ -120,4 +197,4 @@ async function getPublicProfile(req, res) {
   }
 }
 
-module.exports = { getProfile, saveProfile, addPortfolioItem, deletePortfolioItem, getPublicProfile };
+module.exports = { getProfile, saveProfile, addPortfolioItem, deletePortfolioItem, getPublicProfile, uploadCVFile, deleteCVFile };

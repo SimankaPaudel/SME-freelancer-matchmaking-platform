@@ -40,8 +40,10 @@ export default function Login() {
       localStorage.setItem("refreshToken", data.refreshToken);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      // Redirect based on profile completion
-      if (!data.user.isProfileComplete) {
+      // Redirect based on role and profile completion
+      if (data.user.role === "Admin") {
+        navigate("/dashboard/admin", { replace: true });
+      } else if (!data.user.isProfileComplete) {
         navigate("/profile-setup", { replace: true });
       } else {
         navigate("/dashboard", { replace: true });

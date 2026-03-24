@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Project.css";
 import "./PostProject.css";
 
 
 export default function PostProject() {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loadingUser, setLoadingUser] = useState(true);
+  
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -20,6 +25,26 @@ export default function PostProject() {
   const [estimating,  setEstimating]  = useState(false);
   const [estimation,  setEstimation]  = useState(null);
   const [estError,    setEstError]    = useState("");
+
+  // Fetch user data to check KYC
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/profile", {
+          headers: { "Authorization": `Bearer ${localStorage.getItem("accessToken")}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch user:", err);
+      } finally {
+        setLoadingUser(false);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -109,7 +134,11 @@ export default function PostProject() {
       try { data = JSON.parse(text); }
       catch { throw new Error("Server returned invalid response"); }
 
-      if (!response.ok) throw new Error(data.message || "Failed to post project");
+      if (!response.ok) {
+        const err = new Error(data.message || "Failed to post project");
+        err.isKYCError = data.message?.includes("KYC");
+        throw err;
+      }
 
       setSuccess("✅ Project posted successfully!");
       setForm({ title: "", description: "", skills: "", experienceLevel: "", budgetMin: "", budgetMax: "", deadline: "" });
@@ -143,6 +172,38 @@ export default function PostProject() {
 
         {/* ── Left: Form ── */}
         <div className="pp-form-col">
+          {/* KYC Warning Banner */}
+          {!loadingUser && user?.role === "SME" && user?.kycStatus !== "Approved" && (
+            <div style={{
+              background: "#fef9ec",
+              border: "2px solid #f0a500",
+              borderRadius: "10px",
+              padding: "16px",
+              marginBottom: "20px",
+              color: "#7a5c1e"
+            }}>
+              <strong>⚠️ KYC Verification Required</strong>
+              <p style={{ margin: "8px 0 0 0", fontSize: "14px", lineHeight: "1.5" }}>
+                Your KYC verification must be approved before posting projects. 
+                <button 
+                  type="button"
+                  onClick={() => navigate("/profile")}
+                  style={{
+                    marginLeft: "8px",
+                    background: "none",
+                    border: "none",
+                    color: "#b08968",
+                    fontWeight: "700",
+                    cursor: "pointer",
+                    textDecoration: "underline"
+                  }}
+                >
+                  Complete KYC Now →
+                </button>
+              </p>
+            </div>
+          )}
+
           <form className="project-form" onSubmit={handleSubmit}>
 
             <div className="form-group">
@@ -248,7 +309,39 @@ export default function PostProject() {
               {loading ? "Posting..." : "📤 Post Project"}
             </button>
 
-            {error   && <p className="error-msg">{error}</p>}
+            {error && (
+              <div style={{
+                background: "#fdf0ee",
+                border: "2px solid #c0392b",
+                borderRadius: "10px",
+                padding: "14px 16px",
+                marginTop: "14px",
+                color: "#c0392b",
+                fontSize: "14px"
+              }}>
+                <strong>❌ {error}</strong>
+                {error.includes("KYC") && (
+                  <button 
+                    type="button"
+                    onClick={() => navigate("/profile")}
+                    style={{
+                      display: "block",
+                      marginTop: "10px",
+                      padding: "8px 16px",
+                      background: "#c0392b",
+                      color: "#ffffff",
+                      border: "none",
+                      borderRadius: "6px",
+                      fontWeight: "700",
+                      cursor: "pointer",
+                      width: "100%"
+                    }}
+                  >
+                    Go to Profile & Verify KYC →
+                  </button>
+                )}
+              </div>
+            )}
             {success && <p className="pp-success">{success}</p>}
           </form>
         </div>

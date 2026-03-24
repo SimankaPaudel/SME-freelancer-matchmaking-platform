@@ -53,6 +53,7 @@ const userSchema = new mongoose.Schema(
       website:  { type: String, default: "" },
     },
     bio: { type: String, default: "", maxlength: 500 },
+    cv: { type: String, default: "" }, // CV file path
 
     // ════════════════════════════════════════════════════
     // SME PROFILE
