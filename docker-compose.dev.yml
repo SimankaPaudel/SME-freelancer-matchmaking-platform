@@ -1,0 +1,46 @@
+version: '3.8'
+
+# Override for development use. Stack with main docker-compose.yml:
+# docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: DockerFile
+    container_name: fyp-backend-dev
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: development
+      DEBUG: "app:*"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: npm run dev
+    stdin_open: true
+    tty: true
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: fyp-frontend-dev
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_ENV: development
+      VITE_API_URL: http://localhost:5000/api
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/dist
+    command: npm run dev
+    stdin_open: true
+    tty: true
+
+  mongodb:
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
