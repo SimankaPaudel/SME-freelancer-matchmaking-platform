@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import PublicProfile from "./pages/PublicProfile";
 import Navbar from "./component/Navbar";
 
 import PostProject from "./pages/PostProject";
@@ -41,6 +42,9 @@ import ChatPage from "./pages/Chat/ChatPage";
 import SubmitReview from "./pages/SubmitReview";
 import MyReviews from "./pages/MyReviews";
 
+// Analytics
+import ProposalAnalytics from "./pages/ProposalAnalytics";
+
 // ── NEW ──────────────────────────────────────────────────
 
 import ProfileSetup from "./pages/ProfileSetup";
@@ -65,6 +69,7 @@ function Layout() {
         <Route path="/"          element={<Home />} />
         <Route path="/login"     element={<Login />} />
         <Route path="/register"  element={<Register />} />
+        <Route path="/profile/:userId" element={<PublicProfile />} />
 
        
 
@@ -87,6 +92,7 @@ function Layout() {
           <Route path="browse-projects"        element={<BrowseProjects />} />
           <Route path="apply/:projectId"        element={<ApplyProposal />} />
           <Route path="my-proposals"            element={<MyProposals />} />
+          <Route path="proposal-analytics"      element={<ProposalAnalytics />} />
           <Route path="submit-work/:proposalId" element={<SubmitWork />} />
 
           {/* SME */}

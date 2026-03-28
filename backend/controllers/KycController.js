@@ -1,6 +1,5 @@
 const User   = require("../models/User");
-const multer = require("multer");
-const path   = require("path");
+const multer = require("multer");const { createNotification } = require("../utils/notificationHelper");const path   = require("path");
 const fs     = require("fs");
 
 // ── Multer storage for KYC docs ───────────────────────────
@@ -44,6 +43,15 @@ exports.uploadKYCDocument = (req, res) => {
       user.kycStatus   = "Pending";
       user.kycNote     = "";
       await user.save();
+      
+      // Notify user that KYC has been submitted
+      await createNotification({
+        userId: user._id,
+        title: "📋 KYC Submitted",
+        message: "Your KYC verification has been submitted. Please wait for admin approval.",
+        type: "general",
+        link: "/profile",
+      });
 
       res.json({
         message:     "KYC document uploaded successfully. Awaiting admin review.",

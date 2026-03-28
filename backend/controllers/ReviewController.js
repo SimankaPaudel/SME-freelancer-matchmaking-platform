@@ -1,6 +1,7 @@
 const Review = require("../models/Review");
 const Escrow = require("../models/EscrowPayment");
 const User   = require("../models/User");
+const { createNotification } = require("../utils/notificationHelper");
 
 // ─── helper: compute average from a list of numeric values ───
 function computeAvg(values) {
@@ -110,6 +111,20 @@ exports.submitReview = async (req, res) => {
 
     // 6. Update reviewee's aggregate on User doc
     await recalcUserRating(revieweeId);
+    
+    // 7. Notify the reviewed party
+    const reviewer = await User.findById(reviewerId).select("fullName role");
+    const reviewee = await User.findById(revieweeId).select("fullName");
+    
+    const notificationType = reviewType === "SME_TO_FREELANCER" ? "Freelancer" : "Client";
+    
+    await createNotification({
+      userId: revieweeId,
+      title: `⭐ New Review from ${reviewer.role}`,
+      message: `${reviewer.fullName} left a ${averageRating}/5 star review: "${(comment || "No comment").substring(0, 50)}..."`,
+      type: "general",
+      link: `/dashboard/my-reviews`,
+    });
 
     return res.status(201).json({ message: "Review submitted successfully.", review });
 

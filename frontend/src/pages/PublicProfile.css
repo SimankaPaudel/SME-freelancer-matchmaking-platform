@@ -1,0 +1,302 @@
+.public-profile-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #fff;
+}
+
+.back-btn {
+  background: #b08968;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 24px;
+  transition: background 0.2s;
+}
+
+.back-btn:hover {
+  background: #8b6f54;
+}
+
+.public-profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid #f0e5d8;
+}
+
+.header-info h1 {
+  margin: 0 0 8px 0;
+  color: #4a3728;
+  font-size: 32px;
+}
+
+.header-info .email {
+  color: #666;
+  font-size: 14px;
+  margin: 0 0 8px 0;
+}
+
+.kyc-badge {
+  display: inline-block;
+  background: #27ae60;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.profile-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.profile-section {
+  padding: 20px;
+  background: #fdf7f0;
+  border-radius: 12px;
+  border-left: 4px solid #b08968;
+}
+
+.profile-section h2 {
+  margin: 0 0 16px 0;
+  color: #4a3728;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.profile-section p {
+  margin: 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-badge {
+  background: #e8d4c4;
+  color: #4a3728;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.rates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.rate-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0d4c0;
+}
+
+.rate-label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rate-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #b08968;
+  margin-top: 4px;
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.portfolio-item {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0d4c0;
+}
+
+.portfolio-item h3 {
+  margin: 0 0 8px 0;
+  color: #4a3728;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.portfolio-item p {
+  margin: 0 0 12px 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.portfolio-links {
+  display: flex;
+  gap: 8px;
+}
+
+.portfolio-link {
+  display: inline-block;
+  background: #b08968;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+  transition: background 0.2s;
+}
+
+.portfolio-link:hover {
+  background: #8b6f54;
+}
+
+.cv-download-btn {
+  display: inline-block;
+  background: #27ae60;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.cv-download-btn:hover {
+  background: #229954;
+}
+
+.social-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: white;
+}
+
+.social-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.social-btn.linkedin {
+  background: #0a66c2;
+}
+
+.social-btn.github {
+  background: #333;
+}
+
+.social-btn.website {
+  background: #b08968;
+}
+
+.website-link {
+  display: inline-block;
+  color: #b08968;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 0;
+  border-bottom: 2px solid #b08968;
+  transition: color 0.2s;
+}
+
+.website-link:hover {
+  color: #8b6f54;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0d4c0;
+}
+
+.info-item .label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-item .value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4a3728;
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .public-profile-container {
+    padding: 16px;
+  }
+
+  .public-profile-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .header-info h1 {
+    font-size: 24px;
+  }
+
+  .profile-section {
+    padding: 16px;
+  }
+
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rates-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .social-links {
+    flex-direction: column;
+  }
+
+  .social-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

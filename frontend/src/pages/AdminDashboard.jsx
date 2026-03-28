@@ -248,12 +248,14 @@ function UsersPanel() {
           <option value="Freelancer">Freelancer</option>
           <option value="SME">SME</option>
         </select>
-        <select className="ad-select" value={kyc} onChange={(e) => { setKyc(e.target.value); setPage(1); }}>
-          <option value="">All KYC</option>
-          <option value="Pending">Pending</option>
-          <option value="Approved">Approved</option>
-          <option value="Rejected">Rejected</option>
-        </select>
+        {role !== "Freelancer" && (
+          <select className="ad-select" value={kyc} onChange={(e) => { setKyc(e.target.value); setPage(1); }}>
+            <option value="">All KYC</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        )}
         <span className="ad-total">{total} users</span>
       </div>
 
@@ -272,9 +274,9 @@ function UsersPanel() {
                 <td><strong>{u.fullName}</strong></td>
                 <td>{u.email}</td>
                 <td><span className={`ad-badge ${u.role === "SME" ? "ad-badge-blue" : "ad-badge-brown"}`}>{u.role}</span></td>
-                <td>{kycBadge(u.kycStatus)}</td>
+                <td>{u.role === "SME" ? kycBadge(u.kycStatus) : <span className="ad-muted">N/A</span>}</td>
                 <td>
-                  {u.kycDocument
+                  {u.role === "SME" && u.kycDocument
                     ? <a href={`http://localhost:5000/${u.kycDocument}`} target="_blank" rel="noreferrer" className="ad-link">📄 View</a>
                     : <span className="ad-muted">None</span>}
                 </td>
@@ -292,8 +294,8 @@ function UsersPanel() {
                     {u.isActive === false ? "Activate" : "Deactivate"}
                   </button>
 
-                  {/* KYC actions — only if doc uploaded and pending */}
-                  {u.kycDocument && u.kycStatus === "Pending" && (
+                  {/* KYC actions — only for SME with doc uploaded and pending */}
+                  {u.role === "SME" && u.kycDocument && u.kycStatus === "Pending" && (
                     <>
                       <button
                         className="ad-btn-sm success"

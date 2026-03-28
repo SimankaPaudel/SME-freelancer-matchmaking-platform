@@ -574,6 +574,114 @@
   transition: background-color 0.2s;
 }
 
+.sw-btn-submit:hover {
+  background: #6b4f3f;
+}
+
+/* ─── Edit Form Styling ──────────────────────────────────── */
+.edit-form {
+  background: linear-gradient(135deg, #fffbf7 0%, #faf8f5 100%);
+  padding: 28px;
+  border-radius: 16px;
+  border: 2px solid #b08968;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.edit-form h3 {
+  margin: 0;
+  color: #4a3728;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.edit-form .form-group label {
+  color: #4a3728;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.edit-form input,
+.edit-form textarea {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #e0d4c0;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #4a3728;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus {
+  outline: none;
+  border-color: #b08968;
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.15);
+  background-color: #fffbf7;
+}
+
+.edit-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.edit-form input[type="file"] {
+  padding: 8px 14px;
+}
+
+.edit-form small {
+  display: block;
+  margin-top: 6px;
+  color: #b08968;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.edit-actions button {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.edit-actions .success {
+  background: linear-gradient(135deg, #b08968 0%, #9d7559 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(176, 137, 104, 0.25);
+}
+
+.edit-actions .success:hover {
+  background: linear-gradient(135deg, #9d7559 0%, #6b4f3f 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(176, 137, 104, 0.35);
+}
+
+.edit-actions .cancel {
+  background: #e9dcc7;
+  color: #4a3728;
+}
+
+.edit-actions .cancel:hover {
+  background: #e0d4c0;
+}
+}
+
 .sw-btn-submit:hover:not(:disabled) { background: #6b4f3f; }
 .sw-btn-submit:disabled { opacity: 0.55; cursor: not-allowed; }
 

@@ -5,8 +5,10 @@ const projectCtrl = require("../controllers/ProjectController");
 // SME routes
 router.post("/", auth, projectCtrl.createProject);
 router.get("/mine", auth, projectCtrl.getMyProjects);
+// More specific routes must come BEFORE generic :id route
 router.patch("/:id/deadline", auth, projectCtrl.extendDeadline);
 router.patch("/:id/status", auth, projectCtrl.updateStatus);
+router.patch("/:id", auth, projectCtrl.updateProject);
 
 // Freelancer routes
 router.get("/", auth, projectCtrl.getOpenProjects);

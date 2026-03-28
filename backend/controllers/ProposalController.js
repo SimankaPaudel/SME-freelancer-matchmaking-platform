@@ -1,6 +1,7 @@
 const Proposal = require("../models/Proposal");
 const Project = require("../models/Project");
 const Escrow = require("../models/EscrowPayment");
+const { createNotification } = require("../utils/notificationHelper");
 
 /**
  * Submit proposal (Freelancer only)
@@ -12,27 +13,38 @@ exports.submitProposal = async (req, res) => {
     }
 
     const proposalFile = req.files?.proposalFile?.[0];
-    const cvFile = req.files?.cvFile?.[0];
 
-    if (!proposalFile || !cvFile) {
+    if (!proposalFile) {
       return res
         .status(400)
-        .json({ message: "Both proposal and CV files are required" });
+        .json({ message: "Proposal document is required" });
     }
 
     const normalizePath = (p) => p.replace(/\\/g, "/");
 
-    const proposal = await Proposal.create({
+    const proposalData = {
       projectId: req.body.projectId,
       bidAmount: req.body.bidAmount,
       description: req.body.description,
       freelancerId: req.user.userId,
       proposalFile: normalizePath(proposalFile.path),
       proposalFileName: proposalFile.originalname,
-      cvFile: normalizePath(cvFile.path),
-      cvFileName: cvFile.originalname,
       status: "Submitted",
-    });
+    };
+
+    const proposal = await Proposal.create(proposalData);
+    
+    // Notify SME that a new proposal was received
+    const project = await Project.findById(req.body.projectId).select("postedBy title");
+    if (project) {
+      await createNotification({
+        userId: project.postedBy,
+        title: "📩 New Proposal Received",
+        message: `Your project "${project.title}" has received a new proposal for ₹${req.body.bidAmount}`,
+        type: "proposal_received",
+        link: `/dashboard/manage-projects/${req.body.projectId}`,
+      });
+    }
 
     res.status(201).json(proposal);
   } catch (err) {
@@ -109,6 +121,28 @@ exports.updateProposalStatus = async (req, res) => {
     // Update proposal status
     proposal.status = status;
     await proposal.save();
+    
+    // Populate freelancer info for notification
+    const populatedProposal = await Proposal.findById(proposal._id).populate("freelancerId", "fullName");
+    
+    // Send notification based on status change
+    if (status === "Accepted") {
+      await createNotification({
+        userId: proposal.freelancerId,
+        title: "✅ Proposal Accepted",
+        message: `Your proposal for "${project.title}" has been accepted! Escrow will be created shortly.`,
+        type: "proposal_accepted",
+        link: "/dashboard/escrow-management",
+      });
+    } else if (status === "Rejected") {
+      await createNotification({
+        userId: proposal.freelancerId,
+        title: "❌ Proposal Rejected",
+        message: `Your proposal for "${project.title}" was not selected. Keep trying!`,
+        type: "general",
+        link: "/dashboard/my-proposals",
+      });
+    }
 
     let escrow = null;
 
@@ -185,5 +219,95 @@ exports.getProposalCount = async (req, res) => {
     res.json({ count });
   } catch (err) {
     res.status(500).json({ message: err.message });
+  }
+};
+
+/**
+ * Cancel proposal (Freelancer only - only when status is "Submitted")
+ */
+exports.cancelProposal = async (req, res) => {
+  try {
+    const proposal = await Proposal.findById(req.params.id);
+    if (!proposal) {
+      return res.status(404).json({ message: "Proposal not found" });
+    }
+
+    // Only freelancer who submitted can cancel
+    if (proposal.freelancerId.toString() !== req.user.userId) {
+      return res.status(403).json({ message: "Only the freelancer who submitted the proposal can cancel it" });
+    }
+
+    // Only allow cancelling when status is "Submitted"
+    if (proposal.status !== "Submitted") {
+      return res.status(400).json({ 
+        message: `Cannot cancel proposal with status "${proposal.status}". Only proposals with "Submitted" status can be cancelled.` 
+      });
+    }
+
+    // Soft delete - change status to Cancelled
+    proposal.status = "Cancelled";
+    await proposal.save();
+
+    res.json({ message: "Proposal cancelled successfully", proposal });
+  } catch (err) {
+    console.error("Cancel proposal error:", err);
+    res.status(500).json({ message: "Failed to cancel proposal" });
+  }
+};
+
+/**
+ * Update proposal (Freelancer only - only when status is "Submitted")
+ */
+exports.updateProposal = async (req, res) => {
+  try {
+    const { bidAmount, description } = req.body;
+
+    // Validate inputs
+    if (bidAmount && (isNaN(bidAmount) || bidAmount <= 0)) {
+      return res.status(400).json({ message: "Bid amount must be a positive number" });
+    }
+    if (description && !description.trim()) {
+      return res.status(400).json({ message: "Description cannot be empty" });
+    }
+
+    const proposal = await Proposal.findById(req.params.id);
+    if (!proposal) {
+      return res.status(404).json({ message: "Proposal not found" });
+    }
+
+    // Only freelancer who submitted can edit
+    if (proposal.freelancerId.toString() !== req.user.userId) {
+      return res.status(403).json({ message: "Only the freelancer who submitted the proposal can edit it" });
+    }
+
+    // Only allow editing when status is "Submitted"
+    if (proposal.status !== "Submitted") {
+      return res.status(400).json({ message: `Cannot edit proposal with status "${proposal.status}". Only proposals with "Submitted" status can be edited.` });
+    }
+
+    // Update fields
+    if (bidAmount !== undefined) proposal.bidAmount = Number(bidAmount);
+    if (description !== undefined) proposal.description = description.trim();
+
+    // Update file if provided
+    const proposalFile = req.files?.proposalFile?.[0];
+    if (proposalFile) {
+      const normalizePath = (p) => p.replace(/\\/g, "/");
+      proposal.proposalFile = normalizePath(proposalFile.path);
+      proposal.proposalFileName = proposalFile.originalname;
+    }
+
+    const cvFile = req.files?.cvFile?.[0];
+    if (cvFile) {
+      const normalizePath = (p) => p.replace(/\\/g, "/");
+      proposal.cvFile = normalizePath(cvFile.path);
+      proposal.cvFileName = cvFile.originalname;
+    }
+
+    await proposal.save();
+    res.json({ message: "Proposal updated successfully", proposal });
+  } catch (err) {
+    console.error("Update proposal error:", err);
+    res.status(500).json({ message: "Failed to update proposal" });
   }
 };

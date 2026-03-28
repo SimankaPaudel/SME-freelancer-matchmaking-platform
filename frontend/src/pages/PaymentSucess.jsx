@@ -18,7 +18,7 @@ export default function PaymentSuccess() {
   const verifyPayment = async () => {
     try {
       // Extract payment data from URL parameters
-      const paymentData = {
+      let paymentData = {
         transaction_uuid: searchParams.get("transaction_uuid"),
         transaction_code: searchParams.get("transaction_code"),
         total_amount: searchParams.get("total_amount"),
@@ -31,6 +31,23 @@ export default function PaymentSuccess() {
       console.log("🔍 Payment Success Page Loaded");
       console.log("Payment data from URL:", paymentData);
       console.log("Full URL:", window.location.href);
+
+      // ✅ If individual params not found, try to decode base64 'data' parameter
+      if (!paymentData.transaction_uuid && searchParams.get("data")) {
+        try {
+          const encodedData = searchParams.get("data");
+          const decodedData = atob(encodedData); // Decode base64
+          paymentData = JSON.parse(decodedData);
+          console.log("✅ Decoded payment data from base64:", paymentData);
+        } catch (e) {
+          console.error("❌ Failed to decode base64 data:", e);
+          setSuccess(false);
+          setMessage("Payment data not found. eSewa may not have redirected properly.");
+          setVerifying(false);
+          setShowTestModeOption(true);
+          return;
+        }
+      }
 
       // ✅ Check if we have transaction_uuid at minimum
       if (!paymentData.transaction_uuid) {

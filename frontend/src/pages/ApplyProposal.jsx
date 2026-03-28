@@ -9,7 +9,6 @@ export default function ApplyProposal() {
   const [bidAmount, setBidAmount] = useState("");
   const [description, setDescription] = useState("");
   const [proposalFile, setProposalFile] = useState(null);
-  const [cvFile, setCVFile] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,8 +17,8 @@ export default function ApplyProposal() {
     setError("");
     setLoading(true);
 
-    if (!proposalFile || !cvFile) {
-      setError("Both proposal and CV files are required");
+    if (!proposalFile) {
+      setError("Proposal document is required");
       setLoading(false);
       return;
     }
@@ -30,7 +29,6 @@ export default function ApplyProposal() {
       formData.append("bidAmount", bidAmount);
       formData.append("description", description);
       formData.append("proposalFile", proposalFile);
-      formData.append("cvFile", cvFile);
 
       const res = await fetch("http://localhost:5000/api/proposals", {
         method: "POST",
@@ -92,23 +90,6 @@ export default function ApplyProposal() {
           />
           {proposalFile && (
             <span className="file-name">Selected: {proposalFile.name}</span>
-          )}
-        </div>
-
-        {/* CV File Upload */}
-        <div className="file-input-wrapper">
-          <label htmlFor="cvFile" className="file-label">
-            CV/Resume (PDF/DOC/DOCX)
-          </label>
-          <input
-            id="cvFile"
-            type="file"
-            accept=".pdf,.doc,.docx"
-            onChange={(e) => setCVFile(e.target.files[0])}
-            required
-          />
-          {cvFile && (
-            <span className="file-name">Selected: {cvFile.name}</span>
           )}
         </div>
 

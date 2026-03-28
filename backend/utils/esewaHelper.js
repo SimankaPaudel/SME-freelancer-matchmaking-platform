@@ -1,5 +1,5 @@
 const crypto = require("crypto");
-const fetch = require("node-fetch");
+const axios = require("axios");
 
 /**
  * : Generate eSewa payment signature with proper encoding
@@ -126,8 +126,7 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
     
     console.log("Verification URL:", url);
 
-    const response = await fetch(url, {
-      method: "GET",
+    const response = await axios.get(url, {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
@@ -136,23 +135,7 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
 
     console.log("Response Status:", response.status, response.statusText);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("❌ HTTP Error:", errorText);
-      throw new Error(`eSewa verification failed: ${response.statusText}`);
-    }
-
-    const responseText = await response.text();
-    console.log("📡 Raw Response:", responseText);
-
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (parseError) {
-      console.error("❌ JSON Parse Error:", parseError);
-      throw new Error("Invalid response from eSewa");
-    }
-
+    const data = response.data;
     console.log("📦 Parsed Response:", JSON.stringify(data, null, 2));
 
     // ✅ Verify payment status and match transaction details

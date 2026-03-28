@@ -22,7 +22,7 @@ const proposalSchema = new mongoose.Schema(
 
     status: {
       type: String,
-      enum: ["Submitted", "Viewed", "Shortlisted", "Accepted", "Rejected"],
+      enum: ["Submitted", "Viewed", "Shortlisted", "Accepted", "Rejected", "Cancelled"],
       default: "Submitted",
     },
   },

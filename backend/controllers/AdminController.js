@@ -159,6 +159,22 @@ exports.updateKYC = async (req, res) => {
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
+    // Notify user about KYC decision from admin
+    const { createNotification } = require("../utils/notificationHelper");
+    
+    const kycMessages = {
+      "Approved": "✅ Congratulations! Your KYC has been APPROVED! You can now post projects and access all features.",
+      "Rejected": `❌ Your KYC verification was REJECTED. ${note ? `Reason: ${note}` : "Please resubmit with updated documents."}`,
+    };
+    
+    await createNotification({
+      userId: user._id,
+      title: `📋 KYC Update: ${status}`,
+      message: kycMessages[status] || "Your KYC status has been updated.",
+      type: "general",
+      link: "/profile",
+    });
+
     res.json({ message: `KYC ${status}`, user });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -222,6 +238,27 @@ exports.resolveDispute = async (req, res) => {
     if (resolution === "release") escrow.releasedAt = new Date();
     escrow.timeline.push({ action: `Admin resolved dispute: ${escrow.status}`, date: new Date() });
     await escrow.save();
+    
+    // Notify both parties about dispute resolution
+    const { createNotification } = require("../utils/notificationHelper");
+    
+    const notifyMessage = `Your dispute has been resolved: ${resolution === "release" ? "Payment released to freelancer" : "Payment refunded to you"}.`;
+    
+    await createNotification({
+      userId: escrow.smeId,
+      title: "⚖️ Dispute Resolved",
+      message: notifyMessage,
+      type: "dispute_resolved",
+      link: "/dashboard/escrow-management",
+    });
+    
+    await createNotification({
+      userId: escrow.freelancerId,
+      title: "⚖️ Dispute Resolved",
+      message: notifyMessage,
+      type: "dispute_resolved",
+      link: "/dashboard/escrow-management",
+    });
 
     res.json({ message: `Dispute resolved — ${escrow.status}`, escrow });
   } catch (err) {

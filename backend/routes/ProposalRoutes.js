@@ -23,6 +23,8 @@ router.post("/", auth, uploadFiles, proposalCtrl.submitProposal);
 router.get("/download", auth, proposalCtrl.downloadFile); 
 router.get("/project/:projectId", auth, proposalCtrl.getProjectProposals);
 router.get("/mine", auth, proposalCtrl.getMyProposals);
+router.patch("/:id", auth, uploadFiles, proposalCtrl.updateProposal);
+router.delete("/:id", auth, proposalCtrl.cancelProposal);
 router.patch("/:id/status", auth, proposalCtrl.updateProposalStatus);
 router.get("/project/:projectId/count", auth, proposalCtrl.getProposalCount);
 

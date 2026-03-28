@@ -86,9 +86,6 @@ export default function Sidebar({ role }) {
             <Link to="/dashboard/admin" className={isActive("/dashboard/admin") ? "active" : ""}>
               🛡 Admin Panel
             </Link>
-            <Link to="/dashboard/disputes" className={isActive("/dashboard/disputes") ? "active" : ""}>
-              ⚠️ Disputes
-            </Link>
           </>
         )}
 

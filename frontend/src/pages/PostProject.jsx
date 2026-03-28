@@ -359,7 +359,7 @@ export default function PostProject() {
                 <li>👤 Freelancer skill level</li>
                 <li>⚠️ Risk warnings</li>
               </ul>
-              <p className="pp-placeholder-note">Powered by Groq (Llama 3) + real platform data</p>
+              <p className="pp-placeholder-note">Powered by TaskHive Intelligent Estimation Engine + Real Platform Data</p>
             </div>
           )}
 
