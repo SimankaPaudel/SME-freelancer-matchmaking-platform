@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./MatchedFreelancers.css";
 
 export default function MatchedFreelancers() {
   const { projectId } = useParams();
+  const navigate = useNavigate();
   const [matches, setMatches] = useState([]);
   const [filteredMatches, setFilteredMatches] = useState([]);
   const [project, setProject] = useState(null);
@@ -12,6 +13,7 @@ export default function MatchedFreelancers() {
   const [error, setError] = useState("");
   const [expandedId, setExpandedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [invitingId, setInvitingId] = useState(null);
 
   useEffect(() => {
     const fetchMatchedFreelancers = async () => {
@@ -43,6 +45,39 @@ export default function MatchedFreelancers() {
 
     fetchMatchedFreelancers();
   }, [projectId]);
+
+  // Handle invite to project
+  const handleInvite = async (freelancerId) => {
+    try {
+      setInvitingId(freelancerId);
+      const res = await fetch(
+        "http://localhost:5000/api/matchmaking/send-invite",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+          body: JSON.stringify({
+            projectId: projectId,
+            freelancerId: freelancerId,
+            message: `We think you'd be great for this project!`,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Failed to send invite");
+      }
+
+      alert("✓ Invite sent successfully!");
+    } catch (err) {
+      alert(`❌ Error: ${err.message}`);
+    } finally {
+      setInvitingId(null);
+    }
+  };
 
   // Filter matches based on search query
   useEffect(() => {
@@ -85,7 +120,7 @@ export default function MatchedFreelancers() {
 
   return (
     <div className="page-container mf-container">
-      <h1>🎯 Matched Freelancers</h1>
+      <h1>Matched Freelancers</h1>
 
       {error && <div className="error-message">{error}</div>}
 
@@ -94,8 +129,8 @@ export default function MatchedFreelancers() {
         <div className="mf-project-summary">
           <h2>{project.title}</h2>
           <div className="mf-project-details">
-            <span>💰 {project.budgetRange} NPR</span>
-            <span>👤 Level: {project.experienceLevel}</span>
+            <span>₹{project.budgetRange} NPR</span>
+            <span>Level: {project.experienceLevel}</span>
             <span>📅 Deadline: {new Date(project.deadline).toLocaleDateString()}</span>
           </div>
           <div className="mf-skills">
@@ -195,6 +230,18 @@ export default function MatchedFreelancers() {
               </div>
 
               <div className="mf-card-body">
+                {/* Proposal Status Alert */}
+                {match.hasProposal && (
+                  <div className="mf-proposal-status">
+                    <span className="mf-proposal-badge">✓ Already Applied</span>
+                    {match.proposalDetails && (
+                      <div className="mf-proposal-details">
+                        <small>Bid: ₹{match.proposalDetails.bidAmount} • Status: <strong>{match.proposalDetails.status}</strong></small>
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {/* Ratings */}
                 <div className="mf-ratings">
                   <span className="mf-rating">
@@ -241,7 +288,7 @@ export default function MatchedFreelancers() {
                   className="mf-metrics-toggle"
                   onClick={() => setExpandedId(expandedId === match.id ? null : match.id)}
                 >
-                  <span>📊 Match Breakdown</span>
+                  <span>Match Breakdown</span>
                   <span className="mf-toggle-icon">{expandedId === match.id ? "▼" : "▶"}</span>
                 </div>
 
@@ -282,10 +329,18 @@ export default function MatchedFreelancers() {
               </div>
 
               <div className="mf-card-footer">
-                <button className="mf-btn-invite">
-                  💌 Invite to Project
+                <button 
+                  className="mf-btn-invite"
+                  onClick={() => handleInvite(match._id || match.id)}
+                  disabled={invitingId === (match._id || match.id) || match.hasProposal}
+                  title={match.hasProposal ? "This freelancer has already applied to this project" : "Send an invite to this freelancer"}
+                >
+                  {match.hasProposal ? "✓ Already Applied" : invitingId === (match._id || match.id) ? "⏳ Sending..." : "💌 Invite to Project"}
                 </button>
-                <button className="mf-btn-view">
+                <button 
+                  className="mf-btn-view"
+                  onClick={() => navigate(`/profile/${match._id || match.id}`)}
+                >
                   👤 View Profile
                 </button>
               </div>

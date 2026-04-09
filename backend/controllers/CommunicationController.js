@@ -157,7 +157,7 @@ exports.sendMessage = async (req, res) => {
     const populated = await msg.populate("senderId", "fullName role");
 
     await Conversation.findByIdAndUpdate(conversationId, {
-      lastMessage: content || "📎 File sent",
+      lastMessage: content || "[File] sent",
       lastMessageAt: new Date(),
     });
 
@@ -169,7 +169,7 @@ exports.sendMessage = async (req, res) => {
         .map((p) => p.toString())
         .filter((p) => p !== userId);
       
-      console.log(`💬 Message sent from ${userId}, notifying ${otherParticipants.length} participants:`, otherParticipants);
+      console.log(`Message sent from ${userId}, notifying ${otherParticipants.length} participants:`, otherParticipants);
       
       if (otherParticipants.length > 0) {
         const sender = await User.findById(userId).select("fullName");
@@ -181,7 +181,7 @@ exports.sendMessage = async (req, res) => {
             try {
               await createNotification({
                 userId: participantId,
-                title: `💬 New Message from ${sender.fullName}`,
+                title: `New Message from ${sender.fullName}`,
                 message: content.substring(0, 50) + (content.length > 50 ? "..." : ""),
                 type: "general",
                 link: `/dashboard/messages`,

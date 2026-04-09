@@ -169,7 +169,7 @@ exports.updateKYC = async (req, res) => {
     
     await createNotification({
       userId: user._id,
-      title: `📋 KYC Update: ${status}`,
+      title: `KYC Update: ${status}`,
       message: kycMessages[status] || "Your KYC status has been updated.",
       type: "general",
       link: "/profile",
@@ -246,7 +246,7 @@ exports.resolveDispute = async (req, res) => {
     
     await createNotification({
       userId: escrow.smeId,
-      title: "⚖️ Dispute Resolved",
+      title: "Dispute Resolved",
       message: notifyMessage,
       type: "dispute_resolved",
       link: "/dashboard/escrow-management",
@@ -254,7 +254,7 @@ exports.resolveDispute = async (req, res) => {
     
     await createNotification({
       userId: escrow.freelancerId,
-      title: "⚖️ Dispute Resolved",
+      title: "Dispute Resolved",
       message: notifyMessage,
       type: "dispute_resolved",
       link: "/dashboard/escrow-management",

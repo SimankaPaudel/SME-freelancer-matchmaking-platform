@@ -30,7 +30,7 @@ export default function MessageBubble() {
 
   return (
     <div style={{ padding: 20, maxWidth: 620, margin: "0 auto" }}>
-      <h2 style={{ marginBottom: 16 }}>💬 Messages</h2>
+      <h2 style={{ marginBottom: 16 }}>Messages</h2>
 
       {conversations.length === 0 && (
         <p style={{ color: "#6b7280" }}>No conversations yet.</p>
@@ -64,7 +64,7 @@ export default function MessageBubble() {
               }}
             >
               <div style={{ fontWeight: 600, marginBottom: 4, fontSize: 15 }}>
-                📁 {c.projectId?.title || "Untitled Project"}
+                [Folder] {c.projectId?.title || "Untitled Project"}
               </div>
               <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 4 }}>
                 {c.lastMessage || "No messages yet"}

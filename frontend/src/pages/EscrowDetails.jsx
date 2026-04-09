@@ -143,7 +143,7 @@ export default function EscrowDetails() {
         {/* Released */}
         {escrow.releasedAt && (
           <p style={{ marginTop: "4px", color: "#276749", fontSize: "13px" }}>
-            💸 Payment released on {new Date(escrow.releasedAt).toLocaleString()}
+            Payment released on {new Date(escrow.releasedAt).toLocaleString()}
           </p>
         )}
 
@@ -194,7 +194,7 @@ export default function EscrowDetails() {
                 borderRadius: "6px", textDecoration: "none", fontSize: "14px",
               }}
             >
-              📥 Download Submitted Work
+              Download Submitted Work
             </a>
             {escrow.submissionComment && (
               <p style={{ marginTop: "8px", color: "#4a5568" }}>

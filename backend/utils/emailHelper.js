@@ -18,7 +18,7 @@ async function sendVerificationEmail({ to, fullName, token }) {
     subject: "✅ Verify your TaskHive email address",
     html: `
       <div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;padding:32px;border:1px solid #e0d4c0;border-radius:12px;background:#ffffff;">
-        <h2 style="color:#4a3728;margin-top:0;">Welcome to TaskHive, ${fullName}! 🐝</h2>
+        <h2 style="color:#4a3728;margin-top:0;">Welcome to TaskHive, ${fullName}!</h2>
         <p style="color:#7a6a55;font-size:15px;line-height:1.6;">
           Thanks for signing up. Please verify your email address to activate your account.
         </p>
@@ -35,7 +35,7 @@ async function sendVerificationEmail({ to, fullName, token }) {
     `,
   });
 
-  console.log(`📧 Verification email sent to ${to}`);
+  console.log(`[INFO] Verification email sent to ${to}`);
 }
 
 module.exports = { transporter, sendVerificationEmail };

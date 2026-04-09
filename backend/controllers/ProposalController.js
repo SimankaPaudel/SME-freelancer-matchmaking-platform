@@ -39,7 +39,7 @@ exports.submitProposal = async (req, res) => {
     if (project) {
       await createNotification({
         userId: project.postedBy,
-        title: "📩 New Proposal Received",
+        title: "New Proposal Received",
         message: `Your project "${project.title}" has received a new proposal for ₹${req.body.bidAmount}`,
         type: "proposal_received",
         link: `/dashboard/manage-projects/${req.body.projectId}`,
@@ -113,7 +113,7 @@ exports.updateProposalStatus = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
-    console.log("\n📝 Updating Proposal Status");
+    console.log("\n[INFO] Updating Proposal Status");
     console.log("   Proposal ID:", proposal._id);
     console.log("   New Status:", status);
     console.log("   Bid Amount (NPR):", proposal.bidAmount);

@@ -65,7 +65,7 @@ export default function Home() {
           <p className="section-sub">Simple, transparent, and secure — from posting to payment</p>
           <div className="how-grid">
             <div className="how-col">
-              <h3>🏢 For SMEs</h3>
+              <h3>For SMEs</h3>
               <div className="how-steps">
                 {[
                   ["Post a Project", "Describe your project, set a budget and deadline. Get AI-powered cost estimation instantly."],
@@ -82,7 +82,7 @@ export default function Home() {
             </div>
             <div className="how-divider" />
             <div className="how-col">
-              <h3>👨‍💻 For Freelancers</h3>
+              <h3>For Freelancers</h3>
               <div className="how-steps">
                 {[
                   ["Browse Projects", "Find projects matching your skills. Filter by budget, deadline, and required expertise."],
@@ -108,12 +108,12 @@ export default function Home() {
           <p className="section-sub">Built for Nepal's growing freelance economy</p>
           <div className="features-grid">
             {[
-              ["🔒", "Escrow Protection", "Payments are held securely in escrow and only released when you approve the work. No more payment disputes."],
-              ["🤖", "AI Cost Estimation", "Get instant AI-powered budget and timeline estimates based on project type, complexity, and real market data."],
-              ["💬", "Real-time Chat", "Built-in messaging with file sharing keeps SMEs and freelancers connected throughout the project."],
+              ["[LOCK]", "Escrow Protection", "Payments are held securely in escrow and only released when you approve the work. No more payment disputes."],
+              ["[AI]", "AI Cost Estimation", "Get instant AI-powered budget and timeline estimates based on project type, complexity, and real market data."],
+              ["[CHAT]", "Real-time Chat", "Built-in messaging with file sharing keeps SMEs and freelancers connected throughout the project."],
               ["⭐", "Review System", "Transparent ratings and reviews help build trust. See who the top performers are before hiring."],
-              ["📱", "eSewa Payments", "Pay and receive money using Nepal's most popular digital wallet. Fast, local, and familiar."],
-              ["🛡️", "Dispute Resolution", "Admin-mediated dispute resolution ensures fair outcomes for both parties if issues arise."],
+              ["[MOBILE]", "eSewa Payments", "Pay and receive money using Nepal's most popular digital wallet. Fast, local, and familiar."],
+              ["[SHIELD]", "Dispute Resolution", "Admin-mediated dispute resolution ensures fair outcomes for both parties if issues arise."],
             ].map(([icon, title, desc]) => (
               <div className="feature-card" key={title}>
                 <div className="feature-icon">{icon}</div>
@@ -132,10 +132,10 @@ export default function Home() {
           <p>Join TaskHive today — it's free to sign up</p>
           <div className="cta-actions">
             <button className="cta-btn-primary" onClick={() => navigate("/register")}>
-              🏢 I'm an SME — Post a Project
+              I'm an SME — Post a Project
             </button>
             <button className="cta-btn-secondary" onClick={() => navigate("/register")}>
-              👨‍💻 I'm a Freelancer — Find Work
+              I'm a Freelancer — Find Work
             </button>
           </div>
         </div>

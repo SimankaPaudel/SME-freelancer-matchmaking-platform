@@ -217,7 +217,7 @@ export default function ChatWindow({ projectId }) {
       {/* Reply preview */}
       {replyTo && (
         <div className="reply-preview">
-          <span>↩ Replying to: <em>{replyTo.content || "📎 File"}</em></span>
+          <span>↩ Replying to: <em>{replyTo.content || "[File]"}</em></span>
           <button className="cancel-reply" onClick={() => setReplyTo(null)}>
             ✕
           </button>
@@ -235,7 +235,7 @@ export default function ChatWindow({ projectId }) {
         />
 
         <label className="file-upload-label" title="Attach file">
-          📎
+          [File]
           <input
             type="file"
             accept="image/*,.pdf,.doc,.docx,.zip,.txt"

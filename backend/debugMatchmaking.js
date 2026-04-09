@@ -10,7 +10,7 @@ async function debugMatchmaking() {
     console.log("✅ MongoDB connected\n");
 
     // 1. Check all freelancers
-    console.log("📋 ALL FREELANCERS IN DATABASE:");
+    console.log("[INFO] ALL FREELANCERS IN DATABASE:");
     const allFreelancers = await User.find({ role: "Freelancer" }).select(
       "fullName email skills isEmailVerified kycStatus isActive hourlyRate weeklyAvailability totalReviews averageRating"
     );
@@ -27,7 +27,7 @@ async function debugMatchmaking() {
     });
 
     // 2. Check filtered freelancers (what matchmaking sees)
-    console.log("🔍 FILTERED FREELANCERS (Matchmaking Filter):");
+    console.log("[DEBUG] FILTERED FREELANCERS (Matchmaking Filter):");
     const filteredFreelancers = await User.find({
       role: "Freelancer",
       isActive: true,
@@ -44,7 +44,7 @@ async function debugMatchmaking() {
     // 3. Check sample project
     const anyProject = await Project.findOne().lean();
     if (anyProject) {
-      console.log("📌 SAMPLE PROJECT:");
+      console.log("[INFO] SAMPLE PROJECT:");
       console.log(`Title: ${anyProject.title}`);
       console.log(`Skills: ${anyProject.skills?.join(", ") || "NONE"}`);
       console.log(`Experience Level: ${anyProject.experienceLevel}`);

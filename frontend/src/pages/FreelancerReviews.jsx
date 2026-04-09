@@ -88,7 +88,7 @@ function ReviewCard({ review }) {
                 {review.reviewerId?.role || "User"}
               </span>
               {review.projectId?.title && (
-                <span className="project-tag">📁 {review.projectId.title}</span>
+                <span className="project-tag">{review.projectId.title}</span>
               )}
             </div>
           </div>

@@ -29,7 +29,7 @@ export default function Login() {
 
       if (!res.ok) {
         if (data.code === "EMAIL_NOT_VERIFIED") {
-          setError("📧 Please verify your email before logging in. Check your inbox.");
+          setError("Please verify your email before logging in. Check your inbox.");
         } else {
           setError(data.message || "Login failed");
         }

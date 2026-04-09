@@ -109,7 +109,7 @@ exports.extendDeadline = async (req, res) => {
     for (const prop of proposals) {
       await createNotification({
         userId: prop.freelancerId,
-        title: "📅 Project Deadline Extended",
+        title: "Project Deadline Extended",
         message: `The deadline for "${project.title}" has been extended to ${new Date(newDeadline).toLocaleDateString()}`,
         type: "general",
         link: `/dashboard/browse-projects/${project._id}`,
@@ -143,7 +143,7 @@ exports.updateStatus = async (req, res) => {
         if (prop.status !== "Accepted") {
           await createNotification({
             userId: prop.freelancerId,
-            title: "🔒 Project Closed",
+            title: "Project Closed",
             message: `The project "${project.title}" has been closed and is no longer accepting proposals`,
             type: "general",
             link: "/dashboard/browse-projects",

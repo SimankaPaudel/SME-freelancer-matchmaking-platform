@@ -34,9 +34,9 @@ export default function AdminDashboard() {
   }, [navigate]);
 
   const tabs = [
-    { id: "analytics", label: "📊 Analytics" },
-    { id: "users",     label: "👥 Users" },
-    { id: "projects",  label: "📁 Projects" },
+    { id: "analytics", label: "Analytics" },
+    { id: "users",     label: "Users" },
+    { id: "projects",  label: "Projects" },
     { id: "disputes",  label: "⚠️ Disputes" },
   ];
 
@@ -239,7 +239,7 @@ function UsersPanel() {
       <div className="ad-filters">
         <input
           className="ad-search"
-          placeholder="🔍 Search name or email..."
+          placeholder="Search name or email..."
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
         />
@@ -277,7 +277,7 @@ function UsersPanel() {
                 <td>{(u.role === "SME" || u.role === "Freelancer") ? kycBadge(u.kycStatus) : <span className="ad-muted">N/A</span>}</td>
                 <td>
                   {(u.role === "SME" || u.role === "Freelancer") && u.kycDocument
-                    ? <a href={`http://localhost:5000/${u.kycDocument}`} target="_blank" rel="noreferrer" className="ad-link">📄 View</a>
+                    ? <a href={`http://localhost:5000/${u.kycDocument}`} target="_blank" rel="noreferrer" className="ad-link">View</a>
                     : <span className="ad-muted">None</span>}
                 </td>
                 <td>
@@ -338,7 +338,7 @@ function UsersPanel() {
                 className="ad-link"
                 style={{ display: "block", marginBottom: 12 }}
               >
-                📄 Open KYC Document
+                Open KYC Document
               </a>
             )}
             <textarea
@@ -396,7 +396,7 @@ function ProjectsPanel() {
       <div className="ad-filters">
         <input
           className="ad-search"
-          placeholder="🔍 Search project title..."
+          placeholder="Search project title..."
           value={search}
           onChange={(e) => { setSearch(e.target.value); setPage(1); }}
         />
@@ -511,7 +511,7 @@ function DisputesPanel() {
                 <td>{new Date(d.updatedAt).toLocaleDateString()}</td>
                 <td>
                   <button className="ad-btn-sm primary" onClick={() => setModal(d)}>
-                    🛠 Resolve
+                    Resolve
                   </button>
                 </td>
               </tr>
@@ -524,7 +524,7 @@ function DisputesPanel() {
       {modal && (
         <div className="ad-modal-overlay" onClick={() => setModal(null)}>
           <div className="ad-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>🛠 Resolve Dispute</h3>
+            <h3>Resolve Dispute</h3>
             <p><strong>Project:</strong> {modal.projectId?.title}</p>
             <p><strong>Amount:</strong> ₹{modal.amount?.toLocaleString()}</p>
             <p><strong>Reason:</strong> {modal.disputeReason || "Not specified"}</p>
@@ -532,11 +532,11 @@ function DisputesPanel() {
             <div className="ad-radio-group">
               <label className={`ad-radio-option ${resolution === "release" ? "selected" : ""}`}>
                 <input type="radio" value="release" checked={resolution === "release"} onChange={() => setResolution("release")} />
-                💸 Release payment to Freelancer
+                Release payment to Freelancer
               </label>
               <label className={`ad-radio-option ${resolution === "refund" ? "selected" : ""}`}>
                 <input type="radio" value="refund" checked={resolution === "refund"} onChange={() => setResolution("refund")} />
-                🔄 Refund payment to SME
+                Refund payment to SME
               </label>
             </div>
 

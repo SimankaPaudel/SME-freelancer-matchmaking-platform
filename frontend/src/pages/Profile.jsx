@@ -334,7 +334,7 @@ export default function Profile() {
                   cursor: "pointer",
                 }}
               >
-                🗑️ Remove Photo
+                Remove Photo
               </button>
             </div>
           ) : (
@@ -814,7 +814,7 @@ export default function Profile() {
                   cursor: "pointer",
                 }}
               >
-                🗑️ Delete
+                Delete
               </button>
             </div>
           ) : (

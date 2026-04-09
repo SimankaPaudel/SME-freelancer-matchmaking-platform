@@ -6,7 +6,6 @@ import "./Project.css";
 export default function BrowseProjects() {
   const [projects, setProjects] = useState([]);
   const [matchedProjects, setMatchedProjects] = useState([]);
-  const [filteredMatchedProjects, setFilteredMatchedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [matchedLoading, setMatchedLoading] = useState(false);
   const [counts, setCounts] = useState({});
@@ -15,12 +14,11 @@ export default function BrowseProjects() {
   const [maxBudget, setMaxBudget] = useState("");
   const [expLevel, setExpLevel] = useState("");
   const [deadlineDays, setDeadlineDays] = useState("");
+  const [view, setView] = useState("all"); // "all" or "recommended"
   const [selectedSme, setSelectedSme] = useState(null);
   const [showSmeProfileModal, setShowSmeProfileModal] = useState(false);
   const [smeLoading, setSmeLoading] = useState(false);
   const [smeError, setSmeError] = useState("");
-  const [view, setView] = useState("all"); // "all" or "recommended"
-  const [recommendedSearchQuery, setRecommendedSearchQuery] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,7 +58,6 @@ export default function BrowseProjects() {
       if (!res.ok) throw new Error("Failed to fetch matched projects");
 
       const data = await res.json();
-      console.log("Matched projects response:", data);
       setMatchedProjects(data.matches || []);
     } catch (err) {
       console.error("Error fetching matched projects:", err);
@@ -111,22 +108,11 @@ export default function BrowseProjects() {
   };
 
   useEffect(() => {
-    fetchProjects();
-    fetchMatchedProjects();
-  }, [location.key]);
-
-  // Filter matched projects based on search query
-  useEffect(() => {
-    const filtered = matchedProjects.filter(p => {
-      const searchLower = recommendedSearchQuery.toLowerCase();
-      return (
-        p.title?.toLowerCase().includes(searchLower) ||
-        p.skills?.some(skill => skill.toLowerCase().includes(searchLower)) ||
-        p.postedBy?.toLowerCase().includes(searchLower)
-      );
-    });
-    setFilteredMatchedProjects(filtered);
-  }, [recommendedSearchQuery, matchedProjects]);
+    if (token) {
+      fetchProjects();
+      fetchMatchedProjects();
+    }
+  }, [token, location.key]);
 
   const clearFilters = () => {
     setSkill("");
@@ -169,10 +155,10 @@ export default function BrowseProjects() {
               transition: "all 0.2s ease"
             }}
           >
-            📋 All Projects
+            All Projects
           </button>
           <button
-            onClick={() => { setView("recommended"); fetchMatchedProjects(); }}
+            onClick={() => setView("recommended")}
             style={{
               padding: "8px 16px",
               borderRadius: "6px",
@@ -184,7 +170,7 @@ export default function BrowseProjects() {
               transition: "all 0.2s ease"
             }}
           >
-            🎯 Recommended For You
+            Recommended For You
           </button>
         </div>
       </div>
@@ -227,46 +213,6 @@ export default function BrowseProjects() {
         </div>
       )}
 
-      {/* Search Bar - Only for "Recommended" view */}
-      {view === "recommended" && (
-        <div style={{
-          marginBottom: "20px",
-          display: "flex",
-          gap: "10px"
-        }}>
-          <input
-            type="text"
-            placeholder="🔍 Search by project name or skill..."
-            value={recommendedSearchQuery}
-            onChange={(e) => setRecommendedSearchQuery(e.target.value)}
-            style={{
-              flex: 1,
-              padding: "12px 16px",
-              borderRadius: "8px",
-              border: "1px solid #d4c4b0",
-              fontSize: "14px",
-              fontFamily: "inherit"
-            }}
-          />
-          {recommendedSearchQuery && (
-            <button
-              onClick={() => setRecommendedSearchQuery("")}
-              style={{
-                padding: "12px 16px",
-                background: "#e8dfd0",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontWeight: "600",
-                color: "#333"
-              }}
-            >
-              Clear
-            </button>
-          )}
-        </div>
-      )}
-
       {/* Projects */}
       <div>
         {view === "all" && loading && (
@@ -301,14 +247,6 @@ export default function BrowseProjects() {
           </div>
         )}
 
-        {view === "recommended" && !matchedLoading && matchedProjects.length > 0 && filteredMatchedProjects.length === 0 && (
-          <div style={{ padding: "60px 20px", textAlign: "center" }}>
-            <div style={{ fontSize: "16px", color: "#7a6a55" }}>
-              No projects match your search. Try different keywords.
-            </div>
-          </div>
-        )}
-
         {view === "all" && !loading && projects.length > 0 && (
           <div className="projects">
             {projects.map((p) => {
@@ -329,7 +267,7 @@ export default function BrowseProjects() {
                     margin: "8px 0"
                   }}>
                     <p style={{ margin: "4px 0" }}>
-                      <strong>💰 Budget:</strong> <span style={{ color: "#b08968", fontWeight: "700" }}>₹{p.budgetMin?.toLocaleString()} - ₹{p.budgetMax?.toLocaleString()}</span>
+                    <p><strong>Budget:</strong> <span style={{ color: "#b08968", fontWeight: "700" }}>₹{p.budgetMin?.toLocaleString()} - ₹{p.budgetMax?.toLocaleString()}</span></p>
                     </p>
                     {days !== null && (
                       <p style={{ margin: "4px 0", fontSize: "13px" }}>
@@ -340,7 +278,7 @@ export default function BrowseProjects() {
 
                   <div style={{ margin: "12px 0", paddingBottom: "12px", borderBottom: "1px solid #ede5d9" }}>
                     <p style={{ margin: "4px 0 8px 0", fontSize: "13px" }}>
-                      <strong style={{ color: "#4a3728" }}>📌 Required Skills:</strong>
+                      <strong style={{ color: "#4a3728" }}>Required Skills:</strong>
                     </p>
                     {p.skills && p.skills.length > 0 ? (
                       <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
@@ -368,7 +306,7 @@ export default function BrowseProjects() {
 
                   <div style={{ margin: "12px 0", paddingBottom: "12px" }}>
                     <p style={{ margin: "4px 0", fontSize: "13px" }}>
-                      <strong style={{ color: "#4a3728" }}>📊 Experience Level:</strong>
+                      <strong style={{ color: "#4a3728" }}>Experience Level:</strong>
                       <span style={{
                         marginLeft: "8px",
                         background: "#fff3e0",
@@ -420,7 +358,7 @@ export default function BrowseProjects() {
                         e.target.style.color = "#b08968";
                       }}
                     >
-                      👁️ View
+                      View
                     </button>
                   </div>
 
@@ -451,7 +389,7 @@ export default function BrowseProjects() {
                         e.target.style.boxShadow = "0 4px 12px rgba(176, 137, 104, 0.25)";
                       }}
                     >
-                      📋 Apply Now
+                      Apply Now
                     </button>
                   )}
                 </div>
@@ -460,14 +398,14 @@ export default function BrowseProjects() {
           </div>
         )}
 
-        {view === "recommended" && !matchedLoading && matchedProjects.length > 0 && filteredMatchedProjects.length > 0 && (
+        {view === "recommended" && !matchedLoading && matchedProjects.length > 0 && (
           <div className="projects">
-            {filteredMatchedProjects.map((project, idx) => {
+            {matchedProjects.map((project, idx) => {
               const days = daysLeft(project.deadline);
               const isExpired = days !== null && days < 0;
 
               return (
-                <div className="project-card" key={project.id || idx} style={{ borderLeft: "4px solid #b08968" }}>
+                <div className="project-card" key={project.id} style={{ borderLeft: "4px solid #b08968" }}>
                   <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "12px" }}>
                     <h3 style={{ margin: 0 }}>{project.title}</h3>
                     <div style={{
@@ -478,17 +416,42 @@ export default function BrowseProjects() {
                       fontWeight: "700",
                       fontSize: "14px"
                     }}>
-                      {project.overallMatch}% Match
+                      {project.overallMatch}%
                     </div>
                   </div>
-                  
-                  <p style={{ color: "#a89880", fontSize: "13px", margin: "4px 0 12px 0", fontStyle: "italic" }}>
-                    💡 Recommended based on your profile
-                  </p>
 
                   <p style={{ color: "#a89880", fontSize: "13px", margin: "4px 0 12px 0" }}>
-                    {project.description}
+                    {project.description?.substring(0, 100)}...
                   </p>
+
+                  {project.hasExistingProposal && (
+                    <div style={{
+                      background: "#e8f5e9",
+                      border: "1px solid #2d7a52",
+                      borderLeft: "4px solid #2d7a52",
+                      padding: "12px",
+                      borderRadius: "4px",
+                      marginBottom: "12px"
+                    }}>
+                      <span style={{
+                        display: "inline-block",
+                        background: "#2d7a52",
+                        color: "white",
+                        padding: "6px 12px",
+                        borderRadius: "20px",
+                        fontSize: "12px",
+                        fontWeight: "600"
+                      }}>
+                        ✓ Already Applied
+                      </span>
+                      {project.proposalStatus && (
+                        <div style={{ marginTop: "6px", fontSize: "12px", color: "#2d7a52" }}>
+                          Status: <strong>{project.proposalStatus}</strong>
+                          {project.proposalBid && <span> • Bid: ₹{project.proposalBid}</span>}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   <div style={{
                     background: "#f7f1e8",
@@ -497,31 +460,30 @@ export default function BrowseProjects() {
                     margin: "8px 0"
                   }}>
                     <p style={{ margin: "4px 0" }}>
-                      <strong>💰 Budget:</strong> <span style={{ color: "#b08968", fontWeight: "700" }}>{project.budgetRange}</span>
+                      <strong>Budget:</strong> {project.budgetRange}
                     </p>
                     {days !== null && (
                       <p style={{ margin: "4px 0", fontSize: "13px" }}>
-                        <strong>⏰ Deadline:</strong> <span style={{ color: isExpired ? "#c0392b" : "#1a5c38" }}>{isExpired ? "Expired" : days + " days left"}</span>
+                        <strong>Deadline:</strong> <span style={{ color: isExpired ? "#c0392b" : "#1a5c38" }}>{isExpired ? "Expired" : days + " days left"}</span>
                       </p>
                     )}
                   </div>
 
                   <div style={{ margin: "12px 0", paddingBottom: "12px", borderBottom: "1px solid #ede5d9" }}>
                     <p style={{ margin: "4px 0 8px 0", fontSize: "13px" }}>
-                      <strong style={{ color: "#4a3728" }}>📌 Required Skills:</strong>
+                      <strong style={{ color: "#4a3728" }}>Required Skills:</strong>
                     </p>
                     <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                      {project.skills?.map((skill, i) => (
+                      {project.skills?.slice(0, 5).map((skill, i) => (
                         <span
                           key={i}
                           style={{
-                            background: "#e8dfd0",
-                            color: "#4a3728",
-                            padding: "4px 12px",
-                            borderRadius: "16px",
-                            fontSize: "12px",
-                            fontWeight: "600",
-                            border: "1px solid #d4c4b0"
+                            background: "#b08968",
+                            color: "white",
+                            padding: "4px 10px",
+                            borderRadius: "14px",
+                            fontSize: "11px",
+                            fontWeight: "600"
                           }}
                         >
                           {skill}
@@ -530,67 +492,34 @@ export default function BrowseProjects() {
                     </div>
                   </div>
 
-                  <div style={{ margin: "12px 0", paddingBottom: "12px" }}>
-                    <p style={{ margin: "4px 0", fontSize: "13px" }}>
-                      <strong style={{ color: "#4a3728" }}>📊 Experience Level:</strong>
-                      <span style={{
-                        marginLeft: "8px",
-                        background: "#fff3e0",
-                        color: "#6b4f3f",
-                        padding: "3px 10px",
-                        borderRadius: "12px",
-                        fontSize: "12px",
-                        fontWeight: "600",
-                        border: "1px solid #f0e0b0"
-                      }}>
-                        {project.experienceLevel || "Not specified"}
-                      </span>
-                    </p>
-                  </div>
-
-                  <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingTop: "12px",
-                    borderTop: "1px solid #ede5d9",
-                    marginBottom: "12px"
-                  }}>
-                    <div style={{ fontSize: "13px", color: "#7a6a55" }}>
-                      <span style={{ display: "block", marginBottom: "4px" }}><strong style={{ color: "#4a3728" }}>Posted by:</strong></span>
-                      <span style={{ fontWeight: "600", color: "#4a3728" }}>{project.postedBy || "SME"}</span>
-                    </div>
-                  </div>
-
-                  {!isExpired && (
-                    <button
-                      onClick={() => navigate(`/dashboard/apply/${project.id}`)}
-                      style={{
-                        width: "100%",
-                        padding: "12px 16px",
-                        background: "linear-gradient(135deg, #b08968 0%, #9d7559 100%)",
-                        color: "#ffffff",
-                        border: "none",
-                        borderRadius: "8px",
-                        fontWeight: "700",
-                        fontSize: "13px",
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.4px"
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.transform = "translateY(-2px)";
-                        e.target.style.boxShadow = "0 6px 16px rgba(176, 137, 104, 0.35)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.transform = "translateY(0)";
-                        e.target.style.boxShadow = "0 4px 12px rgba(176, 137, 104, 0.25)";
-                      }}
-                    >
-                      ✨ Apply Now
-                    </button>
-                  )}
+                  <button
+                    onClick={() => navigate(`/dashboard/project/${project.id}`)}
+                    disabled={project.hasExistingProposal}
+                    style={{
+                      width: "100%",
+                      padding: "12px 16px",
+                      background: project.hasExistingProposal ? "#d9d9d9" : "linear-gradient(135deg, #b08968 0%, #9d7559 100%)",
+                      color: project.hasExistingProposal ? "#999" : "white",
+                      border: "none",
+                      borderRadius: "6px",
+                      fontSize: "13px",
+                      fontWeight: "700",
+                      cursor: project.hasExistingProposal ? "not-allowed" : "pointer",
+                      transition: "all 0.2s",
+                      opacity: project.hasExistingProposal ? 0.7 : 1
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!project.hasExistingProposal) {
+                        e.target.style.boxShadow = "0 4px 12px rgba(176, 137, 104, 0.3)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.boxShadow = "none";
+                    }}
+                    title={project.hasExistingProposal ? "You have already applied to this project" : "View project details"}
+                  >
+                    {project.hasExistingProposal ? "✓ Already Applied" : "View Project"}
+                  </button>
                 </div>
               );
             })}

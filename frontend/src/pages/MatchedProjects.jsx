@@ -82,7 +82,7 @@ export default function MatchedProjects() {
 
   return (
     <div className="page-container mp-container">
-      <h1>🎯 Recommended Projects for You</h1>
+      <h1>Recommended Projects for You</h1>
 
       {error && <div className="mp-error-message">{error}</div>}
 

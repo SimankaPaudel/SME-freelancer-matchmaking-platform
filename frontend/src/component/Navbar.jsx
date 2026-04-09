@@ -8,7 +8,7 @@ export default function Navbar() {
   return (
     <nav className={`navbar ${isHome ? "navbar-home" : ""}`}>
       <div className="nav-container">
-        <Link to="/" className="logo">🐝 TaskHive</Link>
+        <Link to="/" className="logo">TaskHive</Link>
 
         <div className="nav-links">
           <Link to="/" className={location.pathname === "/" ? "nav-active" : ""}>

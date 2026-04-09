@@ -245,12 +245,12 @@ export default function Applicants() {
                   cursor: "pointer"
                 }}
               >
-                <option value="date">📅 Newest First</option>
-                <option value="price-asc">💰 Price: Low to High</option>
-                <option value="price-desc">💰 Price: High to Low</option>
+                <option value="date">Newest First</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
                 <option value="rating-high">⭐ Highest Rated</option>
                 <option value="rating-low">⭐ Lowest Rated</option>
-                <option value="status">📊 Status</option>
+                <option value="status">Status</option>
               </select>
             </div>
 
@@ -268,7 +268,7 @@ export default function Applicants() {
                   whiteSpace: "nowrap"
                 }}
               >
-                📊 Compare ({selectedProposals.length})
+                Compare ({selectedProposals.length})
               </button>
             )}
           </div>
@@ -352,17 +352,17 @@ export default function Applicants() {
                     whiteSpace: "nowrap"
                   }}
                 >
-                  👁️ View Profile
+                  View Profile
                 </button>
               </div>
 
               {/* Bid & Description */}
               <p style={{ margin: "6px 0" }}>
-                <strong>💰 Bid Amount:</strong> ₹{p.bidAmount?.toLocaleString()}
+                <strong>Bid Amount:</strong> ₹{p.bidAmount?.toLocaleString()}
               </p>
 
               <p style={{ margin: "6px 0", color: "#7a6a55" }}>
-                <strong>📝 Description:</strong> {p.description}
+                <strong>Description:</strong> {p.description}
               </p>
 
               {/* Files */}
@@ -370,14 +370,14 @@ export default function Applicants() {
                 {p.proposalFile && (
                   <p style={{ margin: "4px 0" }}>
                     <a href={`http://localhost:5000/${p.proposalFile}`} download target="_blank" rel="noopener noreferrer" style={{ color: "#b08968" }}>
-                      📄 Proposal Document
+                      Proposal Document
                     </a>
                   </p>
                 )}
                 {p.cvFile && (
                   <p style={{ margin: "4px 0" }}>
                     <a href={`http://localhost:5000/${p.cvFile}`} download target="_blank" rel="noopener noreferrer" style={{ color: "#b08968" }}>
-                      📋 CV/Resume
+                      CV/Resume
                     </a>
                   </p>
                 )}
@@ -423,7 +423,7 @@ export default function Applicants() {
                     onClick={() => navigate(`/dashboard/chat/${state.projectId}`)}
                     style={{ padding: "8px 14px", background: "#b08968", color: "white", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "600" }}
                   >
-                    💬 Chat with Freelancer
+                    Chat with Freelancer
                   </button>
                 </div>
               )}
@@ -434,7 +434,7 @@ export default function Applicants() {
                   {p.escrow ? (
                     <>
                       <p style={{ margin: "4px 0", fontSize: "13px", fontWeight: "600" }}>
-                        💰 Escrow: <strong style={{ color: p.escrow.status === "Pending Deposit" ? "#7a5c1e" : "#1a5c38" }}>{p.escrow.status}</strong> | ₹{p.escrow.amount}
+                        Escrow: <strong style={{ color: p.escrow.status === "Pending Deposit" ? "#7a5c1e" : "#1a5c38" }}>{p.escrow.status}</strong> | ₹{p.escrow.amount}
                       </p>
                       {p.escrow.status === "Pending Deposit" && (
                         <p style={{ margin: "4px 0", fontSize: "12px", color: "#c0392b" }}>
@@ -479,9 +479,9 @@ export default function Applicants() {
             <h2 style={{ margin: "0 0 16px 0", color: "#4a3728" }}>{selectedFreelancer.fullName}</h2>
 
             <div style={{ marginBottom: "16px" }}>
-              <p><strong>📧 Email:</strong> {selectedFreelancer.email}</p>
+                <p><strong>Email:</strong> {selectedFreelancer.email}</p>
               {selectedFreelancer.hourlyRate && (
-                <p><strong>💵 Hourly Rate:</strong> ₹{selectedFreelancer.hourlyRate.toLocaleString()}/hr</p>
+                <p><strong>Hourly Rate:</strong> ₹{selectedFreelancer.hourlyRate.toLocaleString()}/hr</p>
               )}
             </div>
 
@@ -523,7 +523,7 @@ export default function Applicants() {
                       {item.description && <p style={{ margin: "0 0 6px 0", fontSize: "13px", color: "#7a6a55" }}>{item.description}</p>}
                       {item.link && (
                         <a href={item.link} target="_blank" rel="noopener noreferrer" style={{ color: "#b08968", fontSize: "13px" }}>
-                          🔗 View Project
+                          View Project
                         </a>
                       )}
                     </div>
@@ -575,7 +575,7 @@ export default function Applicants() {
             overflow: "auto",
             boxShadow: "0 8px 32px rgba(0,0,0,0.15)"
           }} onClick={e => e.stopPropagation()}>
-            <h2 style={{ margin: "0 0 20px 0", color: "#4a3728" }}>📊 Proposal Comparison</h2>
+            <h2 style={{ margin: "0 0 20px 0", color: "#4a3728" }}>Proposal Comparison</h2>
 
             <div style={{ overflowX: "auto" }}>
               <table style={{

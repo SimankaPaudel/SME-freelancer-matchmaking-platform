@@ -20,7 +20,7 @@ async function approveFreelancers() {
       }
     );
 
-    console.log(`✅ Approved ${result.modifiedCount} freelancers`);
+    console.log(` Approved ${result.modifiedCount} freelancers`);
     console.log(`   - isEmailVerified: true`);
     console.log(`   - kycStatus: Approved`);
     console.log(`   - isActive: true\n`);
@@ -30,7 +30,7 @@ async function approveFreelancers() {
       "fullName email skills isEmailVerified kycStatus hourlyRate"
     );
 
-    console.log("📋 Updated Freelancers:");
+    console.log("[INFO] Updated Freelancers:");
     freelancers.forEach((f, i) => {
       console.log(`${i + 1}. ${f.fullName} | Skills: ${f.skills?.join(", ") || "NONE"}`);
     });

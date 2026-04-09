@@ -210,7 +210,7 @@ export default function MyProposals() {
             whiteSpace: "nowrap"
           }}
         >
-          📊 View Analytics
+          View Analytics
         </button>
       </div>
 

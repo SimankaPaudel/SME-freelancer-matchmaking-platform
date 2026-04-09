@@ -76,7 +76,7 @@ export default function EscrowManagement() {
   const handleTestPayment = async (escrowId) => {
     if (
       !confirm(
-        "🧪 TEST MODE: Simulate successful eSewa payment?\n\nThis will mark the escrow as funded without going through eSewa sandbox."
+        "[TEST] TEST MODE: Simulate successful eSewa payment?\n\nThis will mark the escrow as funded without going through eSewa sandbox."
       )
     ) {
       return;
@@ -239,7 +239,7 @@ export default function EscrowManagement() {
                       className="btn-primary"
                       onClick={() => handleDeposit(escrow._id)}
                     >
-                      💰 Deposit via eSewa (₹{escrow.amount})
+                      Deposit via eSewa (₹{escrow.amount})
                     </button>
                     <button
                       className="btn-warning"
@@ -251,7 +251,7 @@ export default function EscrowManagement() {
                       }}
                       title="Skip eSewa sandbox and simulate successful payment"
                     >
-                      🧪 Test Mode (Skip eSewa)
+                      Test Mode (Skip eSewa)
                     </button>
                   </div>
                 )}
@@ -276,7 +276,7 @@ export default function EscrowManagement() {
                         fontSize: "13px",
                       }}
                     >
-                      🚨 Raise Dispute
+                      Raise Dispute
                     </button>
                   </div>
                 )}
@@ -299,7 +299,7 @@ export default function EscrowManagement() {
                         fontSize: "15px",
                       }}
                     >
-                      👁️ Review Submitted Work
+                      Review Submitted Work
                     </button>
                     <span
                       style={{
@@ -333,7 +333,7 @@ export default function EscrowManagement() {
                         fontSize: "13px",
                       }}
                     >
-                      🚨 Raise Dispute Instead
+                      Raise Dispute Instead
                     </button>
                   </div>
                 )}
@@ -373,7 +373,7 @@ export default function EscrowManagement() {
                       margin: 0,
                     }}
                   >
-                    💰 Refund of ₹{escrow.refundAmount?.toLocaleString()} processed
+                    Refund of ₹{escrow.refundAmount?.toLocaleString()} processed
                   </p>
                 )}
               </div>

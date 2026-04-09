@@ -107,7 +107,7 @@ export default function DisputeList() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    🛠 Resolve
+                    Resolve
                   </button>
                 </td>
               </tr>

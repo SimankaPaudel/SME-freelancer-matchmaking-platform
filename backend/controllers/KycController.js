@@ -47,7 +47,7 @@ exports.uploadKYCDocument = (req, res) => {
       // Notify user that KYC has been submitted
       await createNotification({
         userId: user._id,
-        title: "📋 KYC Submitted",
+        title: "KYC Submitted",
         message: "Your KYC verification has been submitted. Please wait for admin approval.",
         type: "general",
         link: "/profile",

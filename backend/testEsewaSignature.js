@@ -18,7 +18,7 @@ console.log("╚═════════════════════�
 // Test function
 function testSignature(total_amount, transaction_uuid, product_code, secret_key) {
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("📝 TEST INPUTS:");
+  console.log("[INFO] TEST INPUTS:");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
   console.log(`Total Amount: "${total_amount}" (type: ${typeof total_amount})`);
   console.log(`Transaction UUID: "${transaction_uuid}"`);
@@ -30,7 +30,7 @@ function testSignature(total_amount, transaction_uuid, product_code, secret_key)
   const message = `total_amount=${total_amount},transaction_uuid=${transaction_uuid},product_code=${product_code}`;
   
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-  console.log("🔐 SIGNATURE GENERATION:");
+  console.log("[DEBUG] SIGNATURE GENERATION:");
   console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
   console.log(`Message: "${message}"`);
   console.log(`Message Length: ${message.length} characters`);
@@ -83,7 +83,7 @@ const test1 = testSignature(
   TEST_SECRET_KEY
 );
 
-console.log("📦 Form Data (JSON):");
+console.log("[INFO] Form Data (JSON):");
 console.log(JSON.stringify(test1.formData, null, 2));
 console.log("\n");
 
@@ -101,7 +101,7 @@ const test2 = testSignature(
   TEST_SECRET_KEY
 );
 
-console.log("📦 Form Data (JSON):");
+console.log("[INFO] Form Data (JSON):");
 console.log(JSON.stringify(test2.formData, null, 2));
 console.log("\n");
 
@@ -143,7 +143,7 @@ console.log();
 // VERIFY YOUR .ENV FILE
 // ═══════════════════════════════════════════════════════════════
 console.log("\n╔═══════════════════════════════════════════════════════════╗");
-console.log("║ 🔍 VERIFY YOUR .ENV FILE                                  ║");
+console.log("║ [DEBUG] VERIFY YOUR .ENV FILE                                  ║");
 console.log("╚═══════════════════════════════════════════════════════════╝\n");
 
 console.log("Your .env file should have EXACTLY these values:\n");
@@ -164,7 +164,7 @@ console.log();
 // NEXT STEPS
 // ═══════════════════════════════════════════════════════════════
 console.log("\n╔═══════════════════════════════════════════════════════════╗");
-console.log("║ 📋 NEXT STEPS                                             ║");
+console.log("║ [INFO] NEXT STEPS                                             ║");
 console.log("╚═══════════════════════════════════════════════════════════╝\n");
 
 console.log("1. Copy one of the test form data objects above");

@@ -27,7 +27,7 @@ export default function SingleMessage({ message, onReply }) {
       {message.replyTo && (
         <div className="reply-context">
           ↩{" "}
-          <em>{message.replyTo.content || "📎 File"}</em>
+          <em>{message.replyTo.content || "[File]"}</em>
         </div>
       )}
 
@@ -40,7 +40,7 @@ export default function SingleMessage({ message, onReply }) {
           target="_blank"
           rel="noreferrer"
         >
-          📎 {message.file.fileName || "Download file"}
+          [File] {message.file.fileName || "Download file"}
         </a>
       )}
 

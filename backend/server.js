@@ -65,9 +65,13 @@ app.use("/api/kyc", KycRoutes);
 app.use("/api/matchmaking", matchmakingRoutes);
                           // ← NEW
 
-app.get("/", (req, res) =>
-  res.json({ activeStatus: true, error: false })
-);
+// app.get("/", (req, res) =>
+//   res.json({ activeStatus: true, error: false })
+// );
+
+app.get("/", (req, res) => {
+  return res.json({ message: "Welcome to TaskHive API!" });
+})
 
 app.use((err, req, res, next) => {
   console.error("Error:", err.stack);

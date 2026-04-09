@@ -25,7 +25,7 @@ export default function Sidebar({ role }) {
 
         {/* ── Global Search (All Users) ────────────────────── */}
         <Link to="/dashboard/search" className={isActive("/dashboard/search") ? "active" : ""}>
-          🔍 Search
+          Search
         </Link>
 
         {/* ── Freelancer ──────────────────────────────── */}
@@ -50,7 +50,7 @@ export default function Sidebar({ role }) {
               ⭐ My Reviews
             </Link>
             <Link to="/dashboard/notifications" className={isActive("/dashboard/notifications") ? "active" : ""}>
-              🔔 Notifications
+              Notifications
             </Link>
           </>
         )}
@@ -77,10 +77,10 @@ export default function Sidebar({ role }) {
               Payments
             </Link>
             <Link to="/dashboard/my-reviews" className={isActive("/dashboard/my-reviews") ? "active" : ""}>
-              ⭐ My Reviews
+              My Reviews
             </Link>
             <Link to="/dashboard/notifications" className={isActive("/dashboard/notifications") ? "active" : ""}>
-              🔔 Notifications
+              Notifications
             </Link>
           </>
         )}
@@ -89,7 +89,7 @@ export default function Sidebar({ role }) {
         {role === "Admin" && (
           <>
             <Link to="/dashboard/admin" className={isActive("/dashboard/admin") ? "active" : ""}>
-              🛡 Admin Panel
+              Admin Panel
             </Link>
           </>
         )}
@@ -101,7 +101,6 @@ export default function Sidebar({ role }) {
         {role !== "Admin" && (
           <div className="sidebar-bell">
             <NotificationBell />
-            <span className="sidebar-bell-label">Notifications</span>
           </div>
         )}
 

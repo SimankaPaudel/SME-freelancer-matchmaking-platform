@@ -80,7 +80,7 @@ async function sendReminderEmail({ to, freelancerName, projectTitle, deadline, a
   };
 
   await transporter.sendMail(mailOptions);
-  console.log(`📧 Reminder sent to ${to} for project "${projectTitle}"`);
+  console.log(`[INFO] Reminder sent to ${to} for project "${projectTitle}"`);;
 }
 
 // ── Main cron job ─────────────────────────────────────────────────────────

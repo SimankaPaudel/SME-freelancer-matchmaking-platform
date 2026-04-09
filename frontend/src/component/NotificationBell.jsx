@@ -4,16 +4,16 @@ import { useNavigate } from "react-router-dom";
 // Icon emoji map per notification type
 const typeIcon = {
   proposal_accepted: "✅",
-  proposal_received: "📨",
-  escrow_funded: "💰",
-  work_submitted: "📦",
-  work_approved: "🎉",
+  proposal_received: "[MSG]",
+  escrow_funded: "[MONEY]",
+  work_submitted: "[PKG]",
+  work_approved: "[DONE]",
   work_rejected: "❌",
-  dispute_raised: "⚠️",
-  dispute_resolved: "⚖️",
-  payment_released: "💸",
-  deadline_reminder: "⏰",
-  general: "🔔",
+  dispute_raised: "[WARN]",
+  dispute_resolved: "[SCALE]",
+  payment_released: "[PAY]",
+  deadline_reminder: "[TIME]",
+  general: "bell",
 };
 
 export default function NotificationBell() {
@@ -166,7 +166,6 @@ export default function NotificationBell() {
         title="Notifications"
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
       >
-        🔔
         {unreadCount > 0 && (
           <span
             style={{
@@ -270,7 +269,7 @@ export default function NotificationBell() {
                 fontSize: "14px",
               }}
             >
-              🔔
+              bell
               <br />
               No notifications yet
             </div>
@@ -294,7 +293,7 @@ export default function NotificationBell() {
               >
                 {/* Icon */}
                 <span style={{ fontSize: "20px", flexShrink: 0, marginTop: "2px" }}>
-                  {typeIcon[notif.type] || "🔔"}
+                  {typeIcon[notif.type] || "bell"}
                 </span>
 
                 {/* Content */}

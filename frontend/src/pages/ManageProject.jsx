@@ -304,7 +304,7 @@ export default function ManageProjects() {
                   className="primary"
                   onClick={() => navigate(`/dashboard/matched-freelancers/${p._id}`)}
                 >
-                  🎯 Matched Freelancers
+                  Matched Freelancers
                 </button>
 
                 <button

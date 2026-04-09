@@ -76,7 +76,7 @@ export default function GlobalSearch() {
 
   return (
     <div className="page-container global-search-container">
-      <h1>🔍 Global Search</h1>
+      <h1>Global Search</h1>
 
       {/* Search Form */}
       <div className="gs-search-form">
@@ -112,7 +112,7 @@ export default function GlobalSearch() {
               {/* Projects Results - Show to Everyone */}
               {results.projects.length > 0 && (
                 <div className="gs-section">
-                  <h2>📋 Projects ({results.projects.length})</h2>
+                  <h2>Projects ({results.projects.length})</h2>
                   <div className="gs-items">
                     {results.projects.map((project) => (
                       <div key={project._id} className="gs-item project-item">
@@ -122,8 +122,8 @@ export default function GlobalSearch() {
                         </div>
                         <p className="gs-item-desc">{project.description?.substring(0, 100)}...</p>
                         <div className="gs-item-meta">
-                          <span>💰 ₹{project.budgetMin} - ₹{project.budgetMax}</span>
-                          <span>👤 {project.experienceLevel}</span>
+                          <span>₹{project.budgetMin} - ₹{project.budgetMax}</span>
+                          <span>{project.experienceLevel}</span>
                         </div>
                         {isFreelancer && (
                           <button
@@ -142,7 +142,7 @@ export default function GlobalSearch() {
               {/* Freelancers Results - Show to Everyone */}
               {results.freelancers.length > 0 && (
                 <div className="gs-section">
-                  <h2>👨‍💻 Freelancers ({results.freelancers.length})</h2>
+                  <h2>Freelancers ({results.freelancers.length})</h2>
                   <div className="gs-items">
                     {results.freelancers.map((freelancer) => (
                       <div key={freelancer._id} className="gs-item freelancer-item">
@@ -155,7 +155,7 @@ export default function GlobalSearch() {
                         </p>
                         <div className="gs-item-meta">
                           <span>⭐ {freelancer.averageRating?.toFixed(1) || "N/A"}</span>
-                          <span>💵 ₹{freelancer.hourlyRate}/hr</span>
+                          <span>₹{freelancer.hourlyRate}/hr</span>
                         </div>
                         <button
                           className="gs-action-btn"
@@ -172,7 +172,7 @@ export default function GlobalSearch() {
               {/* SMEs Results - Show to Everyone */}
               {results.smes.length > 0 && (
                 <div className="gs-section">
-                  <h2>🏢 Businesses ({results.smes.length})</h2>
+                  <h2>Businesses ({results.smes.length})</h2>
                   <div className="gs-items">
                     {results.smes.map((sme) => (
                       <div key={sme._id} className="gs-item sme-item">
@@ -182,7 +182,7 @@ export default function GlobalSearch() {
                         </div>
                         <p className="gs-item-desc">{sme.companyDescription?.substring(0, 100)}</p>
                         <div className="gs-item-meta">
-                          <span>📧 {sme.email}</span>
+                          <span>{sme.email}</span>
                         </div>
                         <button
                           className="gs-action-btn"
@@ -203,9 +203,9 @@ export default function GlobalSearch() {
       {!searched && (
         <div className="gs-placeholder">
           {!token ? (
-            <p>🔐 Please log in to use the search feature</p>
+            <p>Please log in to use the search feature</p>
           ) : (
-            <p>💡 Search for projects, freelancers, or businesses to get started</p>
+            <p>Search for projects, freelancers, or businesses to get started</p>
           )}
         </div>
       )}

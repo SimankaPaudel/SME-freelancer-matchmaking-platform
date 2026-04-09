@@ -215,7 +215,7 @@ exports.submitWork = async (req, res) => {
     // ✅ Notify SME
     await createNotification({
       userId: escrow.smeId._id,
-      title: "📦 Work Submitted — Review Required",
+      title: "Work Submitted — Review Required",
       message: `A freelancer has submitted work for "${escrow.projectId?.title}". Please review and approve or reject.`,
       type: "work_submitted",
       link: `/dashboard/review-work/${escrow._id}`,
@@ -255,7 +255,7 @@ exports.approveWork = async (req, res) => {
     // ✅ Notify freelancer
     await createNotification({
       userId: escrow.freelancerId._id,
-      title: "🎉 Payment Released!",
+      title: "Payment Released!",
       message: `Your work on "${escrow.projectId?.title}" was approved! ₹${escrow.amount} has been released to you.`,
       type: "payment_released",
       link: "/dashboard/my-proposals",
@@ -442,7 +442,7 @@ exports.simulatePayment = async (req, res) => {
     escrow.paymentStatus = "Verified";
     escrow.esewaTransactionCode = "TEST_" + Date.now();
     escrow.paymentVerifiedAt = new Date();
-    escrow.timeline.push({ action: "🧪 TEST MODE: Payment simulated - Escrow funded" });
+    escrow.timeline.push({ action: "[TEST] TEST MODE: Payment simulated - Escrow funded" });
     await escrow.save();
 
     await Project.findByIdAndUpdate(escrow.projectId, { status: "In Progress" });

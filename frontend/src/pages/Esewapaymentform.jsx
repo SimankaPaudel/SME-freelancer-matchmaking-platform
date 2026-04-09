@@ -9,7 +9,7 @@ export default function EsewaPaymentForm() {
   const [debugInfo, setDebugInfo] = useState(null);
 
   useEffect(() => {
-    console.log("🔄 EsewaPaymentForm mounted");
+    console.log("[DEBUG] EsewaPaymentForm mounted");
     
     let formData = state?.formData;
     let esewaUrl = state?.esewaUrl;
@@ -50,7 +50,7 @@ export default function EsewaPaymentForm() {
     });
 
     console.log("\n" + "=".repeat(60));
-    console.log("🚀 SUBMITTING TO ESEWA");
+    console.log("[DEBUG] SUBMITTING TO ESEWA");
     console.log("=".repeat(60));
     console.log("URL:", esewaUrl);
     console.log("\nForm Data:");

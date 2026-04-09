@@ -114,7 +114,7 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
     // Ensure amount is a string
     const amount_str = String(Math.floor(Number(total_amount)));
 
-    console.log("\n🔍 Verifying eSewa Payment");
+    console.log("\n[DEBUG] Verifying eSewa Payment");
     console.log("=".repeat(60));
     console.log("Transaction UUID:", transaction_uuid);
     console.log("Total Amount:", amount_str);
@@ -136,7 +136,7 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
     console.log("Response Status:", response.status, response.statusText);
 
     const data = response.data;
-    console.log("📦 Parsed Response:", JSON.stringify(data, null, 2));
+    console.log("[INFO] Parsed Response:", JSON.stringify(data, null, 2));
 
     // ✅ Verify payment status and match transaction details
     if (
@@ -182,7 +182,7 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
  * ✅ NEW: Validate callback signature from eSewa
  */
 function validateEsewaCallback(callbackData) {
-  console.log("\n🔍 Validating Callback Data");
+  console.log("\n[DEBUG] Validating Callback Data");
   console.log("=".repeat(60));
 
   const required_fields = [
