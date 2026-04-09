@@ -115,4 +115,57 @@ async function loginController(req, res) {
   }
 }
 
-module.exports = { userController, loginController };
+// ─────────────────────────────────────────────────────────
+// SEARCH FREELANCERS
+// ─────────────────────────────────────────────────────────
+async function searchFreelancers(req, res) {
+  try {
+    const query = req.query.q || "";
+    
+    const freelancers = await User.find({
+      role: "Freelancer",
+      isActive: true,
+      $or: [
+        { fullName: { $regex: query, $options: "i" } },
+        { skills: { $regex: query, $options: "i" } },
+        { bio: { $regex: query, $options: "i" } },
+      ],
+    })
+      .select("_id fullName skills hourlyRate averageRating totalReviews")
+      .limit(10);
+
+    res.json(freelancers);
+  } catch (error) {
+    console.error("Search freelancers error:", error);
+    res.status(500).json({ message: "Failed to search freelancers" });
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+// SEARCH SMEs
+// ─────────────────────────────────────────────────────────
+async function searchSMEs(req, res) {
+  try {
+    const query = req.query.q || "";
+    
+    const smes = await User.find({
+      role: "SME",
+      isActive: true,
+      $or: [
+        { fullName: { $regex: query, $options: "i" } },
+        { companyName: { $regex: query, $options: "i" } },
+        { companyDescription: { $regex: query, $options: "i" } },
+        { email: { $regex: query, $options: "i" } },
+      ],
+    })
+      .select("_id fullName companyName companyDescription email")
+      .limit(10);
+
+    res.json(smes);
+  } catch (error) {
+    console.error("Search SMEs error:", error);
+    res.status(500).json({ message: "Failed to search SMEs" });
+  }
+}
+
+module.exports = { userController, loginController, searchFreelancers, searchSMEs };

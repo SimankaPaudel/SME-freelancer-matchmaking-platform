@@ -23,6 +23,11 @@ export default function Sidebar({ role }) {
 
       <nav className="sidebar-nav">
 
+        {/* ── Global Search (All Users) ────────────────────── */}
+        <Link to="/dashboard/search" className={isActive("/dashboard/search") ? "active" : ""}>
+          🔍 Search
+        </Link>
+
         {/* ── Freelancer ──────────────────────────────── */}
         {role === "Freelancer" && (
           <>

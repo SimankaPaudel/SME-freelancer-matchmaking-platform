@@ -351,6 +351,73 @@
 
 .pp-btn-apply:hover { background: #2d7a52; }
 
+/* ─── Input Editors (Title, Description, Skills) ────────── */
+.pp-title-editor {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #d4af8c;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #3a3a3a;
+  background: #fefbf5;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pp-title-editor:focus {
+  outline: none;
+  border-color: #b08968;
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.1);
+}
+
+.pp-description-editor {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #d4af8c;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #3a3a3a;
+  background: #fefbf5;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pp-description-editor:focus {
+  outline: none;
+  border-color: #b08968;
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.1);
+}
+
+.pp-skills-editor {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #d4af8c;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #3a3a3a;
+  background: #fefbf5;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pp-skills-editor:focus {
+  outline: none;
+  border-color: #b08968;
+  box-shadow: 0 0 0 3px rgba(176, 137, 104, 0.1);
+}
+
+.pp-title-editor::placeholder,
+.pp-description-editor::placeholder,
+.pp-skills-editor::placeholder {
+  color: #a89880;
+}
+
 /* ─── Responsive ─────────────────────────────────────────── */
 @media (max-width: 900px) {
   .pp-layout { grid-template-columns: 1fr; }

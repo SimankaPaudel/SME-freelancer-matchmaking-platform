@@ -24,7 +24,7 @@ export default function EsewaPaymentForm() {
           formData = JSON.parse(storedData);
           esewaUrl = storedUrl;
         } catch (e) {
-          console.error("❌ Parse error:", e);
+          console.error("Parse error:", e);
         }
       }
     }

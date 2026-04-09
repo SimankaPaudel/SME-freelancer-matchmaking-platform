@@ -3,7 +3,7 @@ import ChatWindow from "./ChatWindow";
 import "./chat.css";
 
 export default function ChatPage() {
-  const { projectId } = useParams(); // ✅ Fixed: get from URL params, not prop
+  const { projectId } = useParams(); // 
 
   return (
     <div className="chat-page">

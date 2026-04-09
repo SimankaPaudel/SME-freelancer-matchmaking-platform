@@ -357,3 +357,314 @@
     font-size: 12px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════ */
+/* ENHANCED PAYMENTS PAGE - VIBRANT COLORS & MODERN DESIGN    */
+/* ═══════════════════════════════════════════════════════════ */
+
+.payments-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #a68f6e 0%, #8b7355 100%) !important;
+  padding: 2.5rem 1.5rem 1.5rem !important;
+  border-radius: 16px;
+  margin: 0 !important;
+}
+
+.payments-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.payments-header h2 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.payments-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  font-weight: 500;
+}
+
+.loading-text,
+.error-text {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.error-text {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+.empty-state {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* ─── Escrow Cards Wrapper ───────────────────────────────── */
+.escrow-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ─── Enhanced Escrow Card ───────────────────────────────── */
+.escrow-card-enhanced {
+  background: linear-gradient(135deg, #faf6f0 0%, #f5eee5 100%);
+  border-radius: 16px;
+  padding: 1.8rem;
+  border: 2px solid #d4c8ba;
+  box-shadow: 0 8px 32px rgba(53, 42, 31, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.escrow-card-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #c9985a, #a0826d, #8b6f47);
+  background-size: 200% 100%;
+}
+
+.escrow-card-enhanced:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(53, 42, 31, 0.25);
+  border-color: #a0826d;
+}
+
+/* ─── Card Status Header ─────────────────────────────────── */
+.card-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #d4c8ba;
+}
+
+.card-status h3 {
+  margin: 0;
+  color: #3d2f22;
+  font-size: 1.2rem;
+  font-weight: 700;
+  flex: 1;
+}
+
+/* ─── Status Badge (Payment) ─────────────────────────────── */
+.status-badge-payment {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.status-badge-payment.pending-deposit {
+  background: linear-gradient(135deg, #c9985a 0%, #b08968 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(201, 152, 90, 0.3);
+}
+
+.status-badge-payment.funded {
+  background: linear-gradient(135deg, #b89968 0%, #a68f6e 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(184, 153, 104, 0.3);
+}
+
+.status-badge-payment.in-progress {
+  background: linear-gradient(135deg, #b89968 0%, #a0826d 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(184, 153, 104, 0.3);
+}
+
+.status-badge-payment.submitted {
+  background: linear-gradient(135deg, #c4a574 0%, #b08968 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(196, 165, 116, 0.3);
+}
+
+.status-badge-payment.released {
+  background: linear-gradient(135deg, #b89968 0%, #a68f6e 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(184, 153, 104, 0.3);
+}
+
+.status-badge-payment.disputed {
+  background: linear-gradient(135deg, #a68f6e 0%, #8b7355 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(166, 143, 110, 0.3);
+}
+
+/* ─── Card Amount ────────────────────────────────────────── */
+.card-amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, rgba(192, 152, 106, 0.15), rgba(160, 130, 109, 0.15));
+  border-radius: 12px;
+  border-left: 4px solid #c0986a;
+}
+
+.amount-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.amount-value {
+  font-size: 1.8rem;
+  color: #c0986a;
+  font-weight: 800;
+}
+
+/* ─── Card Details ───────────────────────────────────────── */
+.card-details {
+  margin-bottom: 1rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #d4c8ba;
+}
+
+.detail-label {
+  color: #999;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.detail-value {
+  color: #3d2f22;
+  font-size: 0.95rem;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+/* ─── Badges (Verified/Released) ─────────────────────────── */
+.verified-badge,
+.released-badge {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin: 0.6rem 0;
+  font-weight: 600;
+}
+
+.verified-badge {
+  background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+  color: #2e7d32;
+  border-left: 4px solid #66bb6a;
+}
+
+.released-badge {
+  background: linear-gradient(135deg, #bbdefb 0%, #90caf9 100%);
+  color: #01579b;
+  border-left: 4px solid #42a5f5;
+}
+
+/* ─── Timeline (Compact) ─────────────────────────────────── */
+.timeline-item-compact {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.timeline-action {
+  font-weight: 600;
+  color: #333;
+}
+
+.timeline-date {
+  color: #999;
+  font-style: italic;
+}
+
+/* ─── Pagination ─────────────────────────────────────────── */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0;
+  padding: 1.5rem;
+  background: rgba(166, 143, 110, 0.25);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.pagination-btn {
+  padding: 0.7rem 1.5rem;
+  background: #c0986a;
+  color: #ffffff;
+  border: 2px solid #a0826d;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #b89968;
+  border-color: #8b7355;
+  transform: translateY(-2px);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  min-width: 150px;
+  text-align: center;
+}
+
+.current-page {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.total-pages {
+  opacity: 0.9;
+}

@@ -248,7 +248,7 @@ function UsersPanel() {
           <option value="Freelancer">Freelancer</option>
           <option value="SME">SME</option>
         </select>
-        {role !== "Freelancer" && (
+        {role !== "" && (
           <select className="ad-select" value={kyc} onChange={(e) => { setKyc(e.target.value); setPage(1); }}>
             <option value="">All KYC</option>
             <option value="Pending">Pending</option>
@@ -274,9 +274,9 @@ function UsersPanel() {
                 <td><strong>{u.fullName}</strong></td>
                 <td>{u.email}</td>
                 <td><span className={`ad-badge ${u.role === "SME" ? "ad-badge-blue" : "ad-badge-brown"}`}>{u.role}</span></td>
-                <td>{u.role === "SME" ? kycBadge(u.kycStatus) : <span className="ad-muted">N/A</span>}</td>
+                <td>{(u.role === "SME" || u.role === "Freelancer") ? kycBadge(u.kycStatus) : <span className="ad-muted">N/A</span>}</td>
                 <td>
-                  {u.role === "SME" && u.kycDocument
+                  {(u.role === "SME" || u.role === "Freelancer") && u.kycDocument
                     ? <a href={`http://localhost:5000/${u.kycDocument}`} target="_blank" rel="noreferrer" className="ad-link">📄 View</a>
                     : <span className="ad-muted">None</span>}
                 </td>
@@ -294,8 +294,8 @@ function UsersPanel() {
                     {u.isActive === false ? "Activate" : "Deactivate"}
                   </button>
 
-                  {/* KYC actions — only for SME with doc uploaded and pending */}
-                  {u.role === "SME" && u.kycDocument && u.kycStatus === "Pending" && (
+                  {/* KYC actions — for SME & Freelancer with doc uploaded and pending */}
+                  {(u.role === "SME" || u.role === "Freelancer") && u.kycDocument && u.kycStatus === "Pending" && (
                     <>
                       <button
                         className="ad-btn-sm success"

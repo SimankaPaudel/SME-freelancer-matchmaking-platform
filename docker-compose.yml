@@ -34,6 +34,7 @@ services:
       dockerfile: DockerFile
     container_name: fyp-backend
     restart: unless-stopped
+    env_file: ./backend/.env
 
     ports:
       - "${BACKEND_PORT:-5000}:5000"
@@ -41,7 +42,7 @@ services:
       # Server Configuration
       NODE_ENV: ${NODE_ENV:-production}
       PORT: 5000
-      GROQ_API_KEY: gsk_z5Uyti2B3o0oEhspEnw5WGdyb3FYnwcbE3GJzKllZyGDlyW70mf
+      
       
       # Database Configuration
       MONGO_URI: mongodb://${MONGO_ROOT_USER:-admin}:${MONGO_ROOT_PASSWORD:-password}@mongodb:27017/${MONGO_DB:-freelance_db}?authSource=admin

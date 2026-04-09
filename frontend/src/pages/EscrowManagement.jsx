@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Escrow.css";
+import "./EscrowManagement.css";
 
 export default function EscrowManagement() {
   const [escrows, setEscrows] = useState([]);
@@ -134,7 +135,8 @@ export default function EscrowManagement() {
     );
 
   return (
-    <div className="page-container">
+    <div className="escrow-management-wrapper">
+      <div className="page-container">
       <h1>Escrow Management</h1>
       <p className="subtitle">Manage your project payments and escrow accounts</p>
 
@@ -379,6 +381,7 @@ export default function EscrowManagement() {
           );
         })}
       </div>
+    </div>
     </div>
   );
 }

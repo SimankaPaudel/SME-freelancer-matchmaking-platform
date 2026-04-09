@@ -4,8 +4,8 @@ const auth    = require("../middleware/authMiddleware");
 const multer  = require("multer");
 const path    = require("path");
 
-const { userController, verifyEmailController, loginController } = require("../controllers/userController");
-const { getProfile, saveProfile, addPortfolioItem, deletePortfolioItem, getPublicProfile, uploadCVFile, deleteCVFile } = require("../controllers/ProfileController");
+const { userController, verifyEmailController, loginController, searchFreelancers, searchSMEs } = require("../controllers/userController");
+const { getProfile, saveProfile, addPortfolioItem, deletePortfolioItem, getPublicProfile, uploadCVFile, deleteCVFile, uploadProfilePhoto, deleteProfilePhoto } = require("../controllers/ProfileController");
 const User = require("../models/User");
 const jwt  = require("jsonwebtoken");
 
@@ -15,6 +15,16 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
 });
 const uploadPortfolio = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+
+// ── Profile photo upload ──────────────────────────────────
+const photoStorage = multer.diskStorage({
+  destination: "uploads/profile-photos/",
+  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`),
+});
+const uploadPhoto = multer({ storage: photoStorage, limits: { fileSize: 3 * 1024 * 1024 }, fileFilter: (req, file, cb) => {
+  if (!file.mimetype.startsWith('image/')) return cb(new Error('Only images allowed'), false);
+  cb(null, true);
+}});
 
 // ── Auth routes ───────────────────────────────────────────
 router.post("/register",      userController);
@@ -41,6 +51,10 @@ router.post("/refresh", async (req, res) => {
   }
 });
 
+// ── Search routes ────────────────────────────────────────
+router.get("/search-freelancers", auth, searchFreelancers);
+router.get("/search-smes",        auth, searchSMEs);
+
 // ── Profile routes (protected) ────────────────────────────
 router.get ("/profile",                            auth, getProfile);
 router.put ("/profile/setup",                      auth, saveProfile);
@@ -49,6 +63,8 @@ router.post("/profile/portfolio",                  auth, uploadPortfolio.single(
 router.delete("/profile/portfolio/:itemId",        auth, deletePortfolioItem);
 router.post("/profile/cv",                         auth, uploadCVFile);
 router.delete("/profile/cv",                       auth, deleteCVFile);
+router.post("/profile/photo",                      auth, uploadPhoto.single("photo"), uploadProfilePhoto);
+router.delete("/profile/photo",                    auth, deleteProfilePhoto);
 router.get ("/profile/:userId",                         getPublicProfile);
 
 module.exports = router;

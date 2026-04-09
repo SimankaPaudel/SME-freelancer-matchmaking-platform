@@ -20,6 +20,7 @@ const reviewRoutes = require("./routes/reviewRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const estimationRoutes = require("./routes/estimationRoutes");
 const KycRoutes = require("./routes/KycRoutes");
+const matchmakingRoutes = require("./routes/matchmakingRoutes");
 
        // ← NEW
 
@@ -61,6 +62,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/estimate", estimationRoutes);
 app.use("/api/kyc", KycRoutes);
+app.use("/api/matchmaking", matchmakingRoutes);
                           // ← NEW
 
 app.get("/", (req, res) =>
@@ -72,8 +74,14 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Something went wrong!", error: err.message });
 });
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {                                 // ← changed app.listen → server.listen
-  console.log(`✅ Server running on port ${PORT}`);
-  startDeadlineReminders();
-});
+// Only start server when NOT in test mode
+if (process.env.NODE_ENV !== 'test') {
+  const PORT = process.env.PORT || 5000;
+  server.listen(PORT, () => {
+    console.log(`✅ Server running on port ${PORT}`);
+    startDeadlineReminders();
+  });
+}
+
+// Export app for testing with Supertest
+module.exports = app;

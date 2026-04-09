@@ -165,9 +165,9 @@ export default function SubmitReview() {
         <div className="review-done-card success">
           <div className="done-icon success-icon">★</div>
           <h2>Thank You!</h2>
-          <p>Your review has been published and will appear on the profile.</p>
-          <button className="btn-primary" onClick={() => navigate("/dashboard/profile")}>
-            View Profile
+          <p>Thank you for sending your review.</p>
+          <button className="btn-primary" onClick={() => navigate(-1)}>
+            Go Back
           </button>
         </div>
       </div>

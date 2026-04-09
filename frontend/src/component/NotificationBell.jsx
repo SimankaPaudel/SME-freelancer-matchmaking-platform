@@ -24,8 +24,11 @@ export default function NotificationBell() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  // Fetch on mount and every 30 seconds
+  // Fetch on mount and every 30 seconds (only if logged in)
   useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) return; // Don't fetch if not logged in
+
     fetchNotifications();
     const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
@@ -42,20 +45,53 @@ export default function NotificationBell() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Listen for token changes (when user logs in/out)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        fetchNotifications();
+      } else {
+        setNotifications([]);
+        setUnreadCount(0);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
   const fetchNotifications = async () => {
     const token = localStorage.getItem("accessToken");
-    if (!token) return;
+    if (!token) {
+      setNotifications([]);
+      setUnreadCount(0);
+      return;
+    }
 
     try {
       const res = await fetch("http://localhost:5000/api/notifications", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) return;
+      
+      if (!res.ok) {
+        if (res.status === 401) {
+          // Token is invalid/expired - clear it
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("user");
+          setNotifications([]);
+          setUnreadCount(0);
+        }
+        return;
+      }
+      
       const data = await res.json();
       setNotifications(data.notifications || []);
       setUnreadCount(data.unreadCount || 0);
     } catch (err) {
-      // silently fail — don't crash the navbar
+      console.error("Notification fetch error:", err);
+      // Silently fail — don't crash the navbar
     }
   };
 

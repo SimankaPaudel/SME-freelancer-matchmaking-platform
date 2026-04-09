@@ -19,11 +19,18 @@
   font-size: 1.1rem;
 }
 
-/* Escrows Grid */
+.page-container > h2,
+.page-container > h1 {
+  color: #ffffff;
+  font-weight: 800;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
 .escrows-grid {
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 /* Escrow Card */

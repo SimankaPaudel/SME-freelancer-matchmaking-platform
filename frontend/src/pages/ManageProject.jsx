@@ -301,6 +301,13 @@ export default function ManageProjects() {
                 </button>
 
                 <button
+                  className="primary"
+                  onClick={() => navigate(`/dashboard/matched-freelancers/${p._id}`)}
+                >
+                  🎯 Matched Freelancers
+                </button>
+
+                <button
                   className="edit"
                   onClick={() => toggleEdit(p)}
                 >

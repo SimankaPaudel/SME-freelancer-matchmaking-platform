@@ -76,7 +76,7 @@ const escrowSchema = new mongoose.Schema(
     // Dispute handling
     disputeReason: String,
     disputeResolvedAt: Date,
-    // ✅ FIXED: plain String (no enum) so we can store descriptive resolution text
+    // FIXED: plain String (no enum) so we can store descriptive resolution text
     disputeResolution: { type: String },
     refundAmount: Number,
     refundedAt: Date,

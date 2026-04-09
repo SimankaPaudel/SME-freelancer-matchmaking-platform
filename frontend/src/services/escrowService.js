@@ -3,7 +3,7 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:5000/api/escrows";
 
-// ✅ FIXED: Get escrow by proposal ID (used in SubmitWork)
+// FIXED: Get escrow by proposal ID (used in SubmitWork)
 export const getEscrowById = (proposalId) =>
   axios.get(`${BASE_URL}/proposal/${proposalId}`, {
     headers: {

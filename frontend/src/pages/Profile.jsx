@@ -29,6 +29,10 @@ export default function Profile() {
   const [cvFile, setCvFile] = useState(null);
   const [cvLoading, setCvLoading] = useState(false);
 
+  // Profile Photo
+  const [profilePhoto, setProfilePhoto] = useState(null);
+  const [profilePhotoLoading, setProfilePhotoLoading] = useState(false);
+
   // Edit form state
   const [form, setForm] = useState({});
 
@@ -225,6 +229,60 @@ export default function Profile() {
     }
   };
 
+  const handleProfilePhotoUpload = async () => {
+    if (!profilePhoto) return setError("Please select a photo");
+
+    setProfilePhotoLoading(true);
+    const fd = new FormData();
+    fd.append("photo", profilePhoto);
+
+    try {
+      const res = await fetch(`${API}/profile/photo`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: fd,
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      setUser((prev) => ({
+        ...prev,
+        profilePhoto: data.profilePhoto,
+      }));
+
+      setSuccess("Profile photo uploaded successfully!");
+      setProfilePhoto(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setProfilePhotoLoading(false);
+    }
+  };
+
+  const handleDeleteProfilePhoto = async () => {
+    if (!window.confirm("Delete your profile photo?")) return;
+
+    try {
+      const res = await fetch(`${API}/profile/photo`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message);
+
+      setUser((prev) => ({
+        ...prev,
+        profilePhoto: "",
+      }));
+
+      setSuccess("Profile photo deleted");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   if (!user) return <p>Loading...</p>;
 
   return (
@@ -245,6 +303,76 @@ export default function Profile() {
               <span className="profile-verified-badge">✓ Verified</span>
             )}
           </div>
+        </div>
+
+        {/* Profile Photo Section */}
+        <div style={{ borderTop: "1px solid #e0d4c0", paddingTop: "16px", marginTop: "16px" }}>
+          {user.profilePhoto ? (
+            <div style={{ textAlign: "center" }}>
+              <img 
+                src={`http://localhost:5000/${user.profilePhoto}`} 
+                alt="Profile" 
+                style={{ 
+                  width: "120px", 
+                  height: "120px", 
+                  borderRadius: "50%", 
+                  objectFit: "cover",
+                  border: "3px solid #b08968",
+                  marginBottom: "12px"
+                }} 
+              />
+              <button
+                onClick={handleDeleteProfilePhoto}
+                style={{
+                  padding: "8px 16px",
+                  background: "#c0392b",
+                  color: "#ffffff",
+                  border: "none",
+                  borderRadius: "6px",
+                  fontSize: "13px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                }}
+              >
+                🗑️ Remove Photo
+              </button>
+            </div>
+          ) : (
+            <p style={{ fontSize: "13px", color: "#a89880", marginBottom: "12px", textAlign: "center" }}>No profile photo yet</p>
+          )}
+
+          {editing && (
+            <div style={{ display: "flex", gap: "10px", alignItems: "center", marginTop: "12px" }}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setProfilePhoto(e.target.files?.[0] || null)}
+                style={{
+                  flex: 1,
+                  padding: "10px",
+                  border: "1px solid #e0d4c0",
+                  borderRadius: "8px",
+                  fontSize: "14px",
+                }}
+              />
+              <button
+                onClick={handleProfilePhotoUpload}
+                disabled={!profilePhoto || profilePhotoLoading}
+                style={{
+                  padding: "10px 16px",
+                  background: profilePhoto && !profilePhotoLoading ? "#b08968" : "#d0c0b0",
+                  color: "#ffffff",
+                  border: "none",
+                  borderRadius: "8px",
+                  fontWeight: "700",
+                  fontSize: "13px",
+                  cursor: profilePhoto && !profilePhotoLoading ? "pointer" : "not-allowed",
+                }}
+              >
+                {profilePhotoLoading ? "Uploading..." : "Upload"}
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Rating (if reviews exist) */}
@@ -574,8 +702,8 @@ export default function Profile() {
         )}
       </div>
 
-      {/* ── KYC Section (SME only) ── */}
-      {user.role === "SME" && (
+      {/* ── KYC Section (SME & Freelancer) ── */}
+      {(user.role === "SME" || user.role === "Freelancer") && (
         <div className="profile-section">
           <div className="profile-section-header">
             <h3>KYC Verification</h3>

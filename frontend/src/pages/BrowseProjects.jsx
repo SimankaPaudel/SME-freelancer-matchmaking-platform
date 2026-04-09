@@ -5,7 +5,10 @@ import "./Project.css";
 
 export default function BrowseProjects() {
   const [projects, setProjects] = useState([]);
+  const [matchedProjects, setMatchedProjects] = useState([]);
+  const [filteredMatchedProjects, setFilteredMatchedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [matchedLoading, setMatchedLoading] = useState(false);
   const [counts, setCounts] = useState({});
   const [skill, setSkill] = useState("");
   const [minBudget, setMinBudget] = useState("");
@@ -16,6 +19,8 @@ export default function BrowseProjects() {
   const [showSmeProfileModal, setShowSmeProfileModal] = useState(false);
   const [smeLoading, setSmeLoading] = useState(false);
   const [smeError, setSmeError] = useState("");
+  const [view, setView] = useState("all"); // "all" or "recommended"
+  const [recommendedSearchQuery, setRecommendedSearchQuery] = useState("");
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -39,6 +44,29 @@ export default function BrowseProjects() {
       setSmeError(err.message || "Network error");
     } finally {
       setSmeLoading(false);
+    }
+  };
+
+  const fetchMatchedProjects = async () => {
+    setMatchedLoading(true);
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/matchmaking/freelancer/matching-projects?limit=50&minScore=20`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!res.ok) throw new Error("Failed to fetch matched projects");
+
+      const data = await res.json();
+      console.log("Matched projects response:", data);
+      setMatchedProjects(data.matches || []);
+    } catch (err) {
+      console.error("Error fetching matched projects:", err);
+      setMatchedProjects([]);
+    } finally {
+      setMatchedLoading(false);
     }
   };
 
@@ -84,7 +112,21 @@ export default function BrowseProjects() {
 
   useEffect(() => {
     fetchProjects();
+    fetchMatchedProjects();
   }, [location.key]);
+
+  // Filter matched projects based on search query
+  useEffect(() => {
+    const filtered = matchedProjects.filter(p => {
+      const searchLower = recommendedSearchQuery.toLowerCase();
+      return (
+        p.title?.toLowerCase().includes(searchLower) ||
+        p.skills?.some(skill => skill.toLowerCase().includes(searchLower)) ||
+        p.postedBy?.toLowerCase().includes(searchLower)
+      );
+    });
+    setFilteredMatchedProjects(filtered);
+  }, [recommendedSearchQuery, matchedProjects]);
 
   const clearFilters = () => {
     setSkill("");
@@ -99,52 +141,135 @@ export default function BrowseProjects() {
     return Math.ceil((new Date(deadline) - new Date()) / (1000 * 60 * 60 * 24));
   };
 
+  const getMatchScoreColor = (score) => {
+    if (score >= 80) return "#2d7a52"; // Green
+    if (score >= 60) return "#b08968"; // Brown
+    if (score >= 40) return "#f39c12"; // Orange
+    return "#e74c3c"; // Red
+  };
+
   const hasFilters =
     skill || minBudget || maxBudget || expLevel || deadlineDays;
 
   return (
     <div className="page-container">
-      <h1>Browse Projects</h1>
-
-      {/* Filters */}
-      <div className="filters">
-        <input
-          type="text"
-          placeholder="Search by skill"
-          value={skill}
-          onChange={(e) => setSkill(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Min Budget (₹)"
-          value={minBudget}
-          onChange={(e) => setMinBudget(e.target.value)}
-        />
-        <input
-          type="number"
-          placeholder="Max Budget (₹)"
-          value={maxBudget}
-          onChange={(e) => setMaxBudget(e.target.value)}
-        />
-        <select value={expLevel} onChange={(e) => setExpLevel(e.target.value)}>
-          <option value="">All Experience Levels</option>
-          <option value="Beginner">Beginner</option>
-          <option value="Intermediate">Intermediate</option>
-          <option value="Advanced">Advanced</option>
-        </select>
-        <input
-          type="number"
-          placeholder="Days until deadline"
-          value={deadlineDays}
-          onChange={(e) => setDeadlineDays(e.target.value)}
-        />
-        <button onClick={fetchProjects}>Search</button>
-        {hasFilters && <button onClick={clearFilters}>Clear Filters</button>}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+        <h1>Browse Projects</h1>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <button
+            onClick={() => setView("all")}
+            style={{
+              padding: "8px 16px",
+              borderRadius: "6px",
+              border: "none",
+              fontWeight: "600",
+              cursor: "pointer",
+              background: view === "all" ? "#b08968" : "#e8dcc8",
+              color: view === "all" ? "white" : "#333",
+              transition: "all 0.2s ease"
+            }}
+          >
+            📋 All Projects
+          </button>
+          <button
+            onClick={() => { setView("recommended"); fetchMatchedProjects(); }}
+            style={{
+              padding: "8px 16px",
+              borderRadius: "6px",
+              border: "none",
+              fontWeight: "600",
+              cursor: "pointer",
+              background: view === "recommended" ? "#b08968" : "#e8dcc8",
+              color: view === "recommended" ? "white" : "#333",
+              transition: "all 0.2s ease"
+            }}
+          >
+            🎯 Recommended For You
+          </button>
+        </div>
       </div>
+
+      {/* Filters - Only show for "All Projects" view */}
+      {view === "all" && (
+        <div className="filters">
+          <input
+            type="text"
+            placeholder="Search by skill"
+            value={skill}
+            onChange={(e) => setSkill(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Min Budget (₹)"
+            value={minBudget}
+            onChange={(e) => setMinBudget(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Max Budget (₹)"
+            value={maxBudget}
+            onChange={(e) => setMaxBudget(e.target.value)}
+          />
+          <select value={expLevel} onChange={(e) => setExpLevel(e.target.value)}>
+            <option value="">All Experience Levels</option>
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+          </select>
+          <input
+            type="number"
+            placeholder="Days until deadline"
+            value={deadlineDays}
+            onChange={(e) => setDeadlineDays(e.target.value)}
+          />
+          <button onClick={fetchProjects}>Search</button>
+          {hasFilters && <button onClick={clearFilters}>Clear Filters</button>}
+        </div>
+      )}
+
+      {/* Search Bar - Only for "Recommended" view */}
+      {view === "recommended" && (
+        <div style={{
+          marginBottom: "20px",
+          display: "flex",
+          gap: "10px"
+        }}>
+          <input
+            type="text"
+            placeholder="🔍 Search by project name or skill..."
+            value={recommendedSearchQuery}
+            onChange={(e) => setRecommendedSearchQuery(e.target.value)}
+            style={{
+              flex: 1,
+              padding: "12px 16px",
+              borderRadius: "8px",
+              border: "1px solid #d4c4b0",
+              fontSize: "14px",
+              fontFamily: "inherit"
+            }}
+          />
+          {recommendedSearchQuery && (
+            <button
+              onClick={() => setRecommendedSearchQuery("")}
+              style={{
+                padding: "12px 16px",
+                background: "#e8dfd0",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontWeight: "600",
+                color: "#333"
+              }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Projects */}
       <div>
-        {loading && (
+        {view === "all" && loading && (
           <div style={{ padding: "60px 20px", textAlign: "center" }}>
             <div style={{ fontSize: "16px", color: "#7a6a55", fontWeight: "500" }}>
               Loading projects...
@@ -152,7 +277,15 @@ export default function BrowseProjects() {
           </div>
         )}
 
-        {!loading && projects.length === 0 && (
+        {view === "recommended" && matchedLoading && (
+          <div style={{ padding: "60px 20px", textAlign: "center" }}>
+            <div style={{ fontSize: "16px", color: "#7a6a55", fontWeight: "500" }}>
+              Finding your best matches...
+            </div>
+          </div>
+        )}
+
+        {view === "all" && !loading && projects.length === 0 && (
           <div style={{ padding: "60px 20px", textAlign: "center" }}>
             <div style={{ fontSize: "16px", color: "#7a6a55" }}>
               No projects found. Try adjusting your filters.
@@ -160,7 +293,23 @@ export default function BrowseProjects() {
           </div>
         )}
 
-        {!loading && projects.length > 0 && (
+        {view === "recommended" && !matchedLoading && matchedProjects.length === 0 && (
+          <div style={{ padding: "60px 20px", textAlign: "center" }}>
+            <div style={{ fontSize: "16px", color: "#7a6a55" }}>
+              No matching projects found yet. Keep updating your skills and profile!
+            </div>
+          </div>
+        )}
+
+        {view === "recommended" && !matchedLoading && matchedProjects.length > 0 && filteredMatchedProjects.length === 0 && (
+          <div style={{ padding: "60px 20px", textAlign: "center" }}>
+            <div style={{ fontSize: "16px", color: "#7a6a55" }}>
+              No projects match your search. Try different keywords.
+            </div>
+          </div>
+        )}
+
+        {view === "all" && !loading && projects.length > 0 && (
           <div className="projects">
             {projects.map((p) => {
               const days = daysLeft(p.deadline);
@@ -303,6 +452,143 @@ export default function BrowseProjects() {
                       }}
                     >
                       📋 Apply Now
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {view === "recommended" && !matchedLoading && matchedProjects.length > 0 && filteredMatchedProjects.length > 0 && (
+          <div className="projects">
+            {filteredMatchedProjects.map((project, idx) => {
+              const days = daysLeft(project.deadline);
+              const isExpired = days !== null && days < 0;
+
+              return (
+                <div className="project-card" key={project.id || idx} style={{ borderLeft: "4px solid #b08968" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "12px" }}>
+                    <h3 style={{ margin: 0 }}>{project.title}</h3>
+                    <div style={{
+                      background: getMatchScoreColor(project.overallMatch),
+                      color: "white",
+                      padding: "6px 12px",
+                      borderRadius: "6px",
+                      fontWeight: "700",
+                      fontSize: "14px"
+                    }}>
+                      {project.overallMatch}% Match
+                    </div>
+                  </div>
+                  
+                  <p style={{ color: "#a89880", fontSize: "13px", margin: "4px 0 12px 0", fontStyle: "italic" }}>
+                    💡 Recommended based on your profile
+                  </p>
+
+                  <p style={{ color: "#a89880", fontSize: "13px", margin: "4px 0 12px 0" }}>
+                    {project.description}
+                  </p>
+
+                  <div style={{
+                    background: "#f7f1e8",
+                    padding: "12px 14px",
+                    borderRadius: "8px",
+                    margin: "8px 0"
+                  }}>
+                    <p style={{ margin: "4px 0" }}>
+                      <strong>💰 Budget:</strong> <span style={{ color: "#b08968", fontWeight: "700" }}>{project.budgetRange}</span>
+                    </p>
+                    {days !== null && (
+                      <p style={{ margin: "4px 0", fontSize: "13px" }}>
+                        <strong>⏰ Deadline:</strong> <span style={{ color: isExpired ? "#c0392b" : "#1a5c38" }}>{isExpired ? "Expired" : days + " days left"}</span>
+                      </p>
+                    )}
+                  </div>
+
+                  <div style={{ margin: "12px 0", paddingBottom: "12px", borderBottom: "1px solid #ede5d9" }}>
+                    <p style={{ margin: "4px 0 8px 0", fontSize: "13px" }}>
+                      <strong style={{ color: "#4a3728" }}>📌 Required Skills:</strong>
+                    </p>
+                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+                      {project.skills?.map((skill, i) => (
+                        <span
+                          key={i}
+                          style={{
+                            background: "#e8dfd0",
+                            color: "#4a3728",
+                            padding: "4px 12px",
+                            borderRadius: "16px",
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            border: "1px solid #d4c4b0"
+                          }}
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ margin: "12px 0", paddingBottom: "12px" }}>
+                    <p style={{ margin: "4px 0", fontSize: "13px" }}>
+                      <strong style={{ color: "#4a3728" }}>📊 Experience Level:</strong>
+                      <span style={{
+                        marginLeft: "8px",
+                        background: "#fff3e0",
+                        color: "#6b4f3f",
+                        padding: "3px 10px",
+                        borderRadius: "12px",
+                        fontSize: "12px",
+                        fontWeight: "600",
+                        border: "1px solid #f0e0b0"
+                      }}>
+                        {project.experienceLevel || "Not specified"}
+                      </span>
+                    </p>
+                  </div>
+
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingTop: "12px",
+                    borderTop: "1px solid #ede5d9",
+                    marginBottom: "12px"
+                  }}>
+                    <div style={{ fontSize: "13px", color: "#7a6a55" }}>
+                      <span style={{ display: "block", marginBottom: "4px" }}><strong style={{ color: "#4a3728" }}>Posted by:</strong></span>
+                      <span style={{ fontWeight: "600", color: "#4a3728" }}>{project.postedBy || "SME"}</span>
+                    </div>
+                  </div>
+
+                  {!isExpired && (
+                    <button
+                      onClick={() => navigate(`/dashboard/apply/${project.id}`)}
+                      style={{
+                        width: "100%",
+                        padding: "12px 16px",
+                        background: "linear-gradient(135deg, #b08968 0%, #9d7559 100%)",
+                        color: "#ffffff",
+                        border: "none",
+                        borderRadius: "8px",
+                        fontWeight: "700",
+                        fontSize: "13px",
+                        cursor: "pointer",
+                        transition: "all 0.2s ease",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.4px"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.transform = "translateY(-2px)";
+                        e.target.style.boxShadow = "0 6px 16px rgba(176, 137, 104, 0.35)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.transform = "translateY(0)";
+                        e.target.style.boxShadow = "0 4px 12px rgba(176, 137, 104, 0.25)";
+                      }}
+                    >
+                      ✨ Apply Now
                     </button>
                   )}
                 </div>

@@ -127,26 +127,304 @@ function generateRiskWarnings(budgetMin, budgetMax, complexityScore, timeline, e
 
   // Risk: Low budget for complexity
   if (complexityScore >= 8 && budgetMax < 15000) {
-    warnings.push("⚠️ Budget may be too low for this complexity level. Increase budget or reduce scope.");
+    warnings.push("Budget may be too low for this complexity level. Increase budget or reduce scope.");
   }
 
   // Risk: Tight timeline for complexity
   if (complexityScore >= 7 && timeline[1] < 21) {
-    warnings.push("⚠️ Timeline may be too tight for this complexity. Consider extending deadline.");
+    warnings.push("Timeline may be too tight for this complexity. Consider extending deadline.");
   }
 
   // Risk: Beginner for complex project
   if (complexityScore >= 7 && experienceLevel === "Beginner") {
-    warnings.push("⚠️ Consider requiring Intermediate/Expert level for this complex project.");
+    warnings.push(" Consider requiring Intermediate/Expert level for this complex project.");
   }
 
   // Risk: Budget mismatch for timeline
   const avgDaily = budgetMax / ((timeline[0] + timeline[1]) / 2);
   if (avgDaily < 500) {
-    warnings.push("💰 Budget translates to very low daily rate. Increase budget to attract quality freelancers.");
+    warnings.push("Budget translates to very low daily rate. Increase budget to attract quality freelancers.");
   }
 
   return warnings.slice(0, 3); // Max 3 warnings
+}
+
+// ── Improve project description - Professional Polishing ──────────────────
+function improveDescription(title, description, skillsArray, complexityScore, timeline) {
+  let originalDesc = description.trim();
+
+  // Detect project category for contextual enhancement
+  const text = `${title} ${originalDesc}`.toLowerCase();
+  let projectCategory = "Technical Project";
+  let contextualPhrases = [];
+
+  // Categorize project and add relevant context phrases
+  if (text.includes("website") || text.includes("web app") || text.includes("web")) {
+    projectCategory = "Web Development";
+    contextualPhrases = [
+      "modern, responsive design",
+      "optimal user experience",
+      "cross-browser compatibility",
+      "performance optimization"
+    ];
+  } else if (text.includes("mobile") || text.includes("app") || text.includes("react native") || text.includes("flutter")) {
+    projectCategory = "Mobile Application";
+    contextualPhrases = [
+      "intuitive mobile interface",
+      "seamless user experience",
+      "platform compatibility",
+      "performance optimization"
+    ];
+  } else if (text.includes("api") || text.includes("backend") || text.includes("server")) {
+    projectCategory = "Backend Development";
+    contextualPhrases = [
+      "scalable architecture",
+      "robust API design",
+      "data integrity",
+      "security best practices"
+    ];
+  } else if (text.includes("ai") || text.includes("machine learning") || text.includes("data")) {
+    projectCategory = "AI/ML Solution";
+    contextualPhrases = [
+      "advanced algorithms",
+      "data-driven insights",
+      "intelligent automation",
+      "predictive analytics"
+    ];
+  } else if (text.includes("blockchain") || text.includes("web3") || text.includes("cryptocurrency")) {
+    projectCategory = "Blockchain/Web3";
+    contextualPhrases = [
+      "decentralized architecture",
+      "smart contract development",
+      "security and auditability",
+      "blockchain best practices"
+    ];
+  }
+
+  // Check if description is too brief (under 50 words)
+  const wordCount = originalDesc.split(/\s+/).length;
+  let expandedDesc = originalDesc;
+
+  if (wordCount < 50) {
+    // Expand brief description with professional context
+    let expansion = originalDesc + "\n\n";
+    
+    expansion += "Project Overview:\n";
+    expansion += `This ${projectCategory.toLowerCase()} project requires a ${
+      complexityScore <= 3 ? "straightforward" : 
+      complexityScore <= 6 ? "moderately complex" : 
+      "sophisticated and feature-rich"
+    } solution. We are seeking an experienced professional to develop a high-quality deliverable that meets modern industry standards.\n\n`;
+
+    expansion += "Key Focus Areas:\n";
+    const focusAreas = contextualPhrases.slice(0, 3);
+    focusAreas.forEach((area, idx) => {
+      expansion += `• ${area.charAt(0).toUpperCase() + area.slice(1)}\n`;
+    });
+
+    expansion += "\n";
+    expandedDesc = expansion;
+  } else {
+    // Polish existing description
+    expandedDesc = originalDesc + "\n\n";
+  }
+
+  // Add detailed sections
+
+  // 1. REQUIREMENTS SECTION
+  const hasRequirements = text.includes("require") || text.includes("need") || text.includes("must");
+  if (!hasRequirements) {
+    expandedDesc += "Requirements:\n";
+    expandedDesc += `• Proficiency in ${skillsArray.slice(0, 2).join(" and ")}\n`;
+    if (skillsArray.length > 2) {
+      expandedDesc += `• Experience with ${skillsArray.slice(2, 4).join(", ")}\n`;
+    }
+    expandedDesc += "• Strong problem-solving and communication skills\n";
+    expandedDesc += "• Ability to deliver high-quality, well-documented code\n\n";
+  }
+
+  // 2. DELIVERABLES SECTION
+  const hasDeliverables = text.includes("deliverable") || text.includes("output") || text.includes("deliver");
+  if (!hasDeliverables) {
+    expandedDesc += "Expected Deliverables:\n";
+    
+    if (projectCategory.includes("Web")) {
+      expandedDesc += "• Fully functional web application with responsive design\n";
+      expandedDesc += "• Clean, maintainable, well-documented source code\n";
+      expandedDesc += "• Comprehensive testing and bug fixes\n";
+    } else if (projectCategory.includes("Mobile")) {
+      expandedDesc += "• Production-ready mobile application\n";
+      expandedDesc += "• Complete source code with proper documentation\n";
+      expandedDesc += "• Testing across multiple devices\n";
+    } else if (projectCategory.includes("Backend")) {
+      expandedDesc += "• Scalable backend architecture and database design\n";
+      expandedDesc += "• Well-documented API with clear specifications\n";
+      expandedDesc += "• Implementation and deployment support\n";
+    } else {
+      expandedDesc += "• Complete project deliverables as specified\n";
+      expandedDesc += "• Full source code and documentation\n";
+      expandedDesc += "• Quality assurance and testing\n";
+    }
+    
+    expandedDesc += "• Ongoing support and maintenance as needed\n\n";
+  }
+
+  // 3. TIMELINE SECTION
+  const hasTimeline = text.includes("timeline") || text.includes("deadline") || text.includes("when");
+  if (!hasTimeline && timeline) {
+    const estimatedTime = timeline[1] <= 7 ? "1-2 weeks" : 
+                         timeline[1] <= 14 ? "2-4 weeks" : 
+                         timeline[1] <= 30 ? "1-2 months" : "2+ months";
+    expandedDesc += `Timeline:\n• Project Duration: ${estimatedTime}\n`;
+    expandedDesc += `• Estimated Completion: ${timeline[1]} days from start\n\n`;
+  }
+
+  // 4. PROFESSIONAL CLOSING
+  expandedDesc += "What We Value:\n";
+  expandedDesc += "• Attention to detail and quality craftsmanship\n";
+  expandedDesc += "• Professional communication and regular updates\n";
+  expandedDesc += "• Ability to meet deadlines and handle revisions\n";
+  expandedDesc += "• Willingness to collaborate and iterate\n\n";
+
+  expandedDesc += `We look forward to working with talented professionals who can bring expertise and dedication to this ${projectCategory.toLowerCase()} project. Please share your portfolio and relevant experience when submitting your proposal.`;
+
+  // Ensure proper formatting
+  if (!expandedDesc.endsWith(".")) {
+    expandedDesc += ".";
+  }
+
+  // Limit to reasonable length (1500-2000 chars - enough for polished content)
+  if (expandedDesc.length > 2000) {
+    // Trim from middle sections to maintain structure
+    expandedDesc = expandedDesc.substring(0, 1950).trim();
+    // Find last complete line
+    const lastNewline = expandedDesc.lastIndexOf("\n");
+    if (lastNewline > 1800) {
+      expandedDesc = expandedDesc.substring(0, lastNewline);
+    }
+    expandedDesc += "\n\n...";
+  }
+
+  return expandedDesc;
+}
+
+// ── Improve project title ──────────────────────────────────────────────────
+function improveTitle(title, description, skillsArray, complexityScore) {
+  let improvedTitle = title.trim();
+
+  // Capitalize properly
+  improvedTitle = improvedTitle
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+
+  // Add complexity indicator if missing and project is complex
+  if (complexityScore >= 7 && !improvedTitle.toLowerCase().includes("develop") && 
+      !improvedTitle.toLowerCase().includes("build") && !improvedTitle.toLowerCase().includes("create")) {
+    // Check what type of project it is
+    if (description.toLowerCase().includes("api") || description.toLowerCase().includes("backend")) {
+      if (!improvedTitle.toLowerCase().includes("api")) {
+        improvedTitle += " - API & Backend";
+      }
+    } else if (description.toLowerCase().includes("mobile") || description.toLowerCase().includes("app")) {
+      if (!improvedTitle.toLowerCase().includes("app") && !improvedTitle.toLowerCase().includes("mobile")) {
+        improvedTitle = "Build Mobile App: " + improvedTitle;
+      }
+    } else if (description.toLowerCase().includes("website") || description.toLowerCase().includes("web")) {
+      if (!improvedTitle.toLowerCase().includes("website") && !improvedTitle.toLowerCase().includes("web")) {
+        improvedTitle = "Build Website: " + improvedTitle;
+      }
+    }
+  }
+
+  // Ensure title is not too long (max 80 chars for clarity)
+  if (improvedTitle.length > 80) {
+    improvedTitle = improvedTitle.substring(0, 77) + "...";
+  }
+
+  // Ensure title is not too short
+  if (improvedTitle.length < 10) {
+    improvedTitle += " - " + skillsArray.slice(0, 2).join(" & ") || improvedTitle;
+  }
+
+  return improvedTitle;
+}
+
+// ── Suggest improved skills ────────────────────────────────────────────────
+function suggestImprovedSkills(title, description, skillsArray, complexityScore) {
+  const text = `${title} ${description}`.toLowerCase();
+  const improvementMap = {
+    // Frontend
+    "react": ["React", "JavaScript", "UI/UX Design", "CSS"],
+    "vue": ["Vue.js", "JavaScript", "UI/UX Design"],
+    "angular": ["Angular", "TypeScript", "UI/UX Design"],
+    "html": ["HTML", "CSS", "JavaScript", "Web Design"],
+    "css": ["CSS", "HTML", "UI/UX Design"],
+
+    // Backend
+    "nodejs": ["Node.js", "Express.js", "REST APIs", "Database Design"],
+    "node.js": ["Node.js", "Express.js", "REST APIs", "Database Design"],
+    "python": ["Python", "Django", "Flask", "Database Design"],
+    "java": ["Java", "Spring Boot", "REST APIs", "Database Design"],
+    "php": ["PHP", "Laravel", "MySQL", "REST APIs"],
+    "dotnet": [".NET", "C#", "SQL Server", "Azure"],
+    "c#": ["C#", ".NET", "SQL Server"],
+
+    // Database
+    "mongodb": ["MongoDB", "NoSQL", "Database Design"],
+    "mysql": ["MySQL", "SQL", "Database Design"],
+    "postgresql": ["PostgreSQL", "SQL", "Database Design"],
+    "firebase": ["Firebase", "Real-time Database", "Cloud Functions"],
+
+    // DevOps/Tools
+    "docker": ["Docker", "DevOps", "Kubernetes", "CI/CD"],
+    "kubernetes": ["Kubernetes", "Docker", "DevOps", "Cloud Infrastructure"],
+    "aws": ["AWS", "Cloud Services", "DevOps", "Scalability"],
+    "git": ["Git", "GitHub", "Version Control"],
+
+    // Mobile
+    "react native": ["React Native", "Mobile Development", "JavaScript"],
+    "flutter": ["Flutter", "Dart", "Mobile Development"],
+    "swift": ["Swift", "iOS Development", "Xcode"],
+    "kotlin": ["Kotlin", "Android Development", "Java"],
+
+    // Specialized
+    "machine learning": ["Machine Learning", "Python", "TensorFlow", "Data Analysis"],
+    "ai": ["AI", "Machine Learning", "Python", "Data Science"],
+    "blockchain": ["Blockchain", "Solidity", "Web3", "Smart Contracts"],
+    "web3": ["Web3", "Blockchain", "Solidity", "Cryptocurrency"],
+  };
+
+  let suggestedSkills = [...skillsArray];
+
+  // Check for each key and add related skills
+  Object.entries(improvementMap).forEach(([key, relatedSkills]) => {
+    if (text.includes(key)) {
+      relatedSkills.forEach(skill => {
+        if (!suggestedSkills.some(s => s.toLowerCase() === skill.toLowerCase())) {
+          suggestedSkills.push(skill);
+        }
+      });
+    }
+  });
+
+  // Add generic skills based on complexity
+  if (complexityScore >= 7) {
+    const advancedSkills = ["Problem Solving", "System Design", "Code Review"];
+    advancedSkills.forEach(skill => {
+      if (!suggestedSkills.some(s => s.toLowerCase() === skill.toLowerCase())) {
+        suggestedSkills.push(skill);
+      }
+    });
+  }
+
+  // Remove duplicates (case-insensitive)
+  suggestedSkills = [...new Set(suggestedSkills.map(s => s.toLowerCase()))].map(
+    s => s.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
+  );
+
+  // Limit to 6 skills
+  return suggestedSkills.slice(0, 6);
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -203,6 +481,11 @@ exports.estimateProject = async (req, res) => {
     const { budgetMin, budgetMax } = estimateBudget(complexityScore, experienceLevel, marketData, skillsArray);
     const riskWarnings = generateRiskWarnings(budgetMin, budgetMax, complexityScore, timeline, experienceLevel);
 
+    // ── Improve all fields ─────────────────────────────────────
+    const suggestedTitle = improveTitle(title, description, skillsArray, complexityScore);
+    const suggestedDescription = improveDescription(title, description, skillsArray, complexityScore, timeline);
+    const suggestedSkills = suggestImprovedSkills(title, description, skillsArray, complexityScore);
+
     // ── Determine confidence level ──────────────────────────────
     let confidenceLevel = "Medium";
     if (similarProjects.length >= 3 || marketData.length >= 5) {
@@ -231,7 +514,9 @@ exports.estimateProject = async (req, res) => {
       confidenceLevel,
       riskWarnings,
       reasoning: reasoning.slice(0, 200), // Limit length
-      suggestedSkills: skillsArray.slice(0, 5),
+      suggestedTitle,
+      suggestedDescription,
+      suggestedSkills,
     };
 
     res.json({
@@ -249,4 +534,3 @@ exports.estimateProject = async (req, res) => {
   }
 };
 
-// Note: Estimation doesn't require notifications as it's a tool, not an action

@@ -45,6 +45,12 @@ import MyReviews from "./pages/MyReviews";
 // Analytics
 import ProposalAnalytics from "./pages/ProposalAnalytics";
 
+// Matchmaking
+import MatchedFreelancers from "./pages/MatchedFreelancers";
+
+// Global Search
+import GlobalSearch from "./pages/GlobalSearch";
+
 // ── NEW ──────────────────────────────────────────────────
 
 import ProfileSetup from "./pages/ProfileSetup";
@@ -95,10 +101,14 @@ function Layout() {
           <Route path="proposal-analytics"      element={<ProposalAnalytics />} />
           <Route path="submit-work/:proposalId" element={<SubmitWork />} />
 
+          {/* Global Search */}
+          <Route path="search"                   element={<GlobalSearch />} />
+
           {/* SME */}
           <Route path="post-project"    element={<PostProject />} />
           <Route path="manage-projects" element={<ManageProject />} />
           <Route path="applicants"      element={<Applicants />} />
+          <Route path="matched-freelancers/:projectId" element={<MatchedFreelancers />} />
 
           {/* Chat */}
           <Route path="messages"          element={<MessageBubble />} />

@@ -19,18 +19,21 @@ export default function PostProject() {
     deadline: "",
   });
 
-  const [loading,     setLoading]     = useState(false);
-  const [error,       setError]       = useState("");
-  const [success,     setSuccess]     = useState("");
-  const [estimating,  setEstimating]  = useState(false);
-  const [estimation,  setEstimation]  = useState(null);
-  const [estError,    setEstError]    = useState("");
+  const [loading,          setLoading]          = useState(false);
+  const [error,            setError]            = useState("");
+  const [success,          setSuccess]          = useState("");
+  const [estimating,       setEstimating]       = useState(false);
+  const [estimation,       setEstimation]       = useState(null);
+  const [editingTitle,     setEditingTitle]     = useState(null); // For editing suggested title
+  const [editingDesc,      setEditingDesc]      = useState(null); // For editing suggested description
+  const [editingSkills,    setEditingSkills]    = useState(null); // For editing suggested skills
+  const [estError,         setEstError]         = useState("");
 
   // Fetch user data to check KYC
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/profile", {
+        const res = await fetch("http://localhost:5000/api/auth/profile", {
           headers: { "Authorization": `Bearer ${localStorage.getItem("accessToken")}` }
         });
         if (res.ok) {
@@ -51,6 +54,9 @@ export default function PostProject() {
     // Clear estimation if key fields change
     if (["title", "description", "skills", "experienceLevel"].includes(e.target.name)) {
       setEstimation(null);
+      setEditingTitle(null);
+      setEditingDesc(null);
+      setEditingSkills(null);
     }
   };
 
@@ -84,6 +90,10 @@ export default function PostProject() {
       if (!res.ok) throw new Error(data.message || "Estimation failed");
 
       setEstimation(data);
+      // Initialize the editing fields with the suggested values
+      setEditingTitle(data.estimation.suggestedTitle);
+      setEditingDesc(data.estimation.suggestedDescription);
+      setEditingSkills(data.estimation.suggestedSkills.join(", "));
     } catch (err) {
       setEstError(err.message);
     } finally {
@@ -102,11 +112,34 @@ export default function PostProject() {
 
     setForm((prev) => ({
       ...prev,
+      title:           editingTitle || prev.title, // Apply the edited title
+      description:     editingDesc || prev.description, // Apply the edited description
+      skills:          editingSkills || prev.skills, // Apply the edited skills
       budgetMin:       budgetMin.toString(),
       budgetMax:       budgetMax.toString(),
       deadline:        deadline.toISOString().split("T")[0],
       experienceLevel: recommendedExperienceLevel || prev.experienceLevel,
     }));
+
+    // Show success feedback
+    setSuccess("✅ Form updated with AI improvements! Review and submit.");
+
+    // Close the estimation panel after applying
+    setEstimation(null);
+    setEditingTitle(null);
+    setEditingDesc(null);
+    setEditingSkills(null);
+
+    // Scroll to form for better visibility
+    setTimeout(() => {
+      const formElement = document.querySelector(".project-form");
+      if (formElement) {
+        formElement.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+
+    // Clear success message after 4 seconds
+    setTimeout(() => setSuccess(""), 4000);
   };
 
   // ── Submit project ───────────────────────────────────────
@@ -143,6 +176,9 @@ export default function PostProject() {
       setSuccess("✅ Project posted successfully!");
       setForm({ title: "", description: "", skills: "", experienceLevel: "", budgetMin: "", budgetMax: "", deadline: "" });
       setEstimation(null);
+      setEditingTitle(null);
+      setEditingDesc(null);
+      setEditingSkills(null);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -402,6 +438,51 @@ export default function PostProject() {
                   </p>
                 )}
               </div>
+
+              {/* Suggested Title Editor */}
+              {estimation.estimation.suggestedTitle && (
+                <div className="pp-result-card">
+                  <p className="pp-result-label">✨ Improved Title</p>
+                  <p className="pp-result-sub">AI has polished your title. Edit if needed:</p>
+                  <input
+                    className="pp-title-editor"
+                    type="text"
+                    value={editingTitle || ""}
+                    onChange={(e) => setEditingTitle(e.target.value)}
+                    placeholder="Project title"
+                  />
+                </div>
+              )}
+
+              {/* Suggested Description Editor */}
+              {estimation.estimation.suggestedDescription && (
+                <div className="pp-result-card">
+                  <p className="pp-result-label">📝 Improved Description</p>
+                  <p className="pp-result-sub">AI has refined your description. Edit if needed:</p>
+                  <textarea
+                    className="pp-description-editor"
+                    value={editingDesc || ""}
+                    onChange={(e) => setEditingDesc(e.target.value)}
+                    rows="4"
+                    placeholder="Project description"
+                  />
+                </div>
+              )}
+
+              {/* Suggested Skills Editor */}
+              {estimation.estimation.suggestedSkills && estimation.estimation.suggestedSkills.length > 0 && (
+                <div className="pp-result-card">
+                  <p className="pp-result-label">🛠️ Recommended Skills</p>
+                  <p className="pp-result-sub">AI has suggested these skills. Edit if needed (comma-separated):</p>
+                  <textarea
+                    className="pp-skills-editor"
+                    value={editingSkills || ""}
+                    onChange={(e) => setEditingSkills(e.target.value)}
+                    rows="2"
+                    placeholder="E.g., React, Node.js, MongoDB"
+                  />
+                </div>
+              )}
 
               {/* Timeline */}
               <div className="pp-result-card">

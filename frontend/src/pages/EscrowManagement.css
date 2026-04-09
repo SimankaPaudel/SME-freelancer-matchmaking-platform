@@ -1,0 +1,165 @@
+/* EscrowManagement.css - Brown theme enhancements for EscrowManagement page only */
+
+.escrow-management-wrapper {
+  /* Main container styling */
+}
+
+.escrow-management-wrapper .page-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #a68f6e 0%, #8b7355 100%) !important;
+  padding: 2.5rem 1.5rem !important;
+  margin: 0 !important;
+}
+
+.escrow-management-wrapper .page-container > h2,
+.escrow-management-wrapper .page-container > h1 {
+  color: #ffffff;
+  font-weight: 800;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.escrow-management-wrapper .subtitle {
+  color: rgba(255, 255, 255, 0.85) !important;
+  margin-top: -0.5rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.escrow-management-wrapper .escrows-grid {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.escrow-management-wrapper .escrow-card {
+  background: linear-gradient(135deg, #faf6f0 0%, #f5eee5 100%) !important;
+  border: 2px solid #d4c8ba !important;
+  box-shadow: 0 8px 24px rgba(53, 42, 31, 0.15) !important;
+  position: relative;
+}
+
+.escrow-management-wrapper .escrow-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #c9985a, #a0826d, #8b6f47);
+  border-radius: 12px 12px 0 0;
+}
+
+.escrow-management-wrapper .escrow-card:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 16px 40px rgba(53, 42, 31, 0.25) !important;
+  border-color: #a0826d !important;
+}
+
+.escrow-management-wrapper .escrow-header {
+  border-bottom: 2px solid #d4c8ba !important;
+}
+
+.escrow-management-wrapper .escrow-header h3 {
+  color: #3d2f22 !important;
+  font-weight: 700;
+}
+
+.escrow-management-wrapper .status-badge.pending-deposit {
+  background: linear-gradient(135deg, #c9985a 0%, #b08968 100%) !important;
+  color: #fff !important;
+}
+
+.escrow-management-wrapper .status-badge.funded {
+  background: linear-gradient(135deg, #b89968 0%, #a68f6e 100%) !important;
+  color: #fff !important;
+}
+
+.escrow-management-wrapper .status-badge.in-progress {
+  background: linear-gradient(135deg, #c4a574 0%, #b89968 100%) !important;
+  color: #fff !important;
+}
+
+.escrow-management-wrapper .status-badge.submitted {
+  background: linear-gradient(135deg, #a68f6e 0%, #9b7e5e 100%) !important;
+  color: #fff !important;
+}
+
+.escrow-management-wrapper .status-badge.released {
+  background: linear-gradient(135deg, #b89968 0%, #a68f6e 100%) !important;
+  color: #fff !important;
+}
+
+.escrow-management-wrapper .status-badge.disputed {
+  background: linear-gradient(135deg, #8b7355 0%, #6b5437 100%) !important;
+  color: #fff !important;
+}
+
+.escrow-management-wrapper .detail-row {
+  border-bottom: 1px solid #d4c8ba !important;
+}
+
+.escrow-management-wrapper .detail-row .label {
+  color: #8b7355 !important;
+  font-weight: 600;
+}
+
+.escrow-management-wrapper .detail-row .value {
+  color: #3d2f22 !important;
+  font-weight: 700;
+}
+
+.escrow-management-wrapper .timeline::before {
+  background: #d4c8ba !important;
+}
+
+.escrow-management-wrapper .timeline-section h4 {
+  color: #3d2f22 !important;
+  font-weight: 700;
+}
+
+.escrow-management-wrapper .timeline-dot {
+  background: #c0986a !important;
+  box-shadow: 0 0 0 2px #c0986a !important;
+}
+
+.escrow-management-wrapper .timeline-action {
+  font-weight: 600;
+  color: #3d2f22 !important;
+}
+
+.escrow-management-wrapper .timeline-date {
+  color: #8b7355 !important;
+}
+
+.escrow-management-wrapper .escrow-actions {
+  border-top: 1px solid #d4c8ba !important;
+}
+
+.escrow-management-wrapper .btn-primary {
+  background: #c0986a !important;
+  color: white;
+}
+
+.escrow-management-wrapper .btn-primary:hover {
+  background: #a0826d !important;
+  box-shadow: 0 4px 8px rgba(192, 152, 106, 0.3) !important;
+}
+
+.escrow-management-wrapper .btn-success {
+  background: #b89968 !important;
+  color: white;
+}
+
+.escrow-management-wrapper .btn-success:hover {
+  background: #a68f6e !important;
+  box-shadow: 0 4px 8px rgba(184, 153, 104, 0.3) !important;
+}
+
+.escrow-management-wrapper .btn-danger {
+  background: #8b7355 !important;
+  color: white;
+}
+
+.escrow-management-wrapper .btn-danger:hover {
+  background: #6b5437 !important;
+  box-shadow: 0 4px 8px rgba(139, 115, 85, 0.3) !important;
+}

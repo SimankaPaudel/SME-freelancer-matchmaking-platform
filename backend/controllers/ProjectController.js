@@ -38,6 +38,14 @@ exports.getOpenProjects = async (req, res) => {
   try {
     const query = { status: "Open" };
 
+    // Global search - search in title and description
+    if (req.query.search) {
+      query.$or = [
+        { title: { $regex: req.query.search, $options: "i" } },
+        { description: { $regex: req.query.search, $options: "i" } },
+      ];
+    }
+
     // Skill filter
     if (req.query.skill)
       query.skills = { $regex: req.query.skill, $options: "i" };
@@ -61,7 +69,7 @@ exports.getOpenProjects = async (req, res) => {
     }
 
     const projects = await Project.find(query)
-      .populate("postedBy", "fullName email _id")
+      .populate("postedBy", "fullName email _id companyName")
       .sort({ createdAt: -1 });
 
     res.json(projects);

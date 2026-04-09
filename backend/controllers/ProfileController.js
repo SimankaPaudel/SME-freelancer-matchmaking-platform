@@ -197,4 +197,41 @@ async function getPublicProfile(req, res) {
   }
 }
 
-module.exports = { getProfile, saveProfile, addPortfolioItem, deletePortfolioItem, getPublicProfile, uploadCVFile, deleteCVFile };
+// ─────────────────────────────────────────────────────────
+// POST /api/auth/profile/photo  — upload profile photo
+// ─────────────────────────────────────────────────────────
+async function uploadProfilePhoto(req, res) {
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    if (!req.file) return res.status(400).json({ message: "No file provided" });
+
+    const photoPath = req.file.path.replace(/\\/g, "/");
+    user.profilePhoto = photoPath;
+    await user.save();
+
+    res.json({ message: "Profile photo uploaded successfully", profilePhoto: user.profilePhoto });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+// DELETE /api/auth/profile/photo  — delete profile photo
+// ─────────────────────────────────────────────────────────
+async function deleteProfilePhoto(req, res) {
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.profilePhoto = "";
+    await user.save();
+
+    res.json({ message: "Profile photo deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
+module.exports = { getProfile, saveProfile, addPortfolioItem, deletePortfolioItem, getPublicProfile, uploadCVFile, deleteCVFile, uploadProfilePhoto, deleteProfilePhoto };

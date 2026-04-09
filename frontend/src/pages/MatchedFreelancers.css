@@ -1,0 +1,417 @@
+/* ─── Main Container ──────────────────────────────────────── */
+.mf-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─── Project Summary ──────────────────────────────────────── */
+.mf-project-summary {
+  background: linear-gradient(135deg, #f8f5f0, #fefbf5);
+  border: 2px solid #d4af8c;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.mf-project-summary h2 {
+  color: #3a3a3a;
+  margin: 0 0 12px 0;
+  font-size: 20px;
+}
+
+.mf-project-details {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: #653a2f;
+}
+
+.mf-project-details span {
+  font-weight: 500;
+}
+
+.mf-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mf-skill-tag {
+  background: #b08968;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ─── Statistics ────────────────────────────────────────────── */
+.mf-statistics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.mf-stat {
+  background: white;
+  border: 2px solid #e0d4c0;
+  padding: 16px;
+  border-radius: 10px;
+  text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.mf-stat:hover {
+  border-color: #b08968;
+  box-shadow: 0 4px 12px rgba(176, 137, 104, 0.15);
+}
+
+.mf-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #b08968;
+}
+
+.mf-stat-label {
+  font-size: 12px;
+  color: #a89880;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ─── Freelancer Cards ──────────────────────────────────────── */
+.mf-matches {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.mf-freelancer-card {
+  background: white;
+  border: 2px solid #e0d4c0;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.mf-freelancer-card:hover {
+  border-color: #b08968;
+  box-shadow: 0 6px 20px rgba(176, 137, 104, 0.12);
+}
+
+/* ─── Card Header ──────────────────────────────────────────── */
+.mf-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: #fefbf5;
+  border-bottom: 1px solid #e0d4c0;
+}
+
+.mf-rank-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #b08968;
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.mf-freelancer-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.mf-freelancer-info h3 {
+  margin: 0;
+  font-size: 16px;
+  color: #3a3a3a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mf-title {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: #a89880;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mf-overall-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.mf-score-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+}
+
+.mf-score-label {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ─── Card Body ────────────────────────────────────────────── */
+.mf-card-body {
+  padding: 16px;
+}
+
+.mf-ratings {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: #653a2f;
+}
+
+.mf-rating {
+  background: #fef3e8;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.mf-portfolio {
+  background: #e8f4e8;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #2d7a52;
+}
+
+.mf-bio {
+  margin: 12px 0;
+  font-size: 13px;
+  color: #653a2f;
+  line-height: 1.5;
+  max-height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mf-skills-list {
+  margin: 12px 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mf-skills-list strong {
+  color: #3a3a3a;
+  margin-right: 8px;
+}
+
+.mf-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.mf-skill-tag {
+  background: #e8e0d0;
+  color: #3a3a3a;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.mf-skill-tag.mf-more {
+  background: #b08968;
+  color: white;
+}
+
+.mf-rates {
+  display: flex;
+  gap: 16px;
+  margin: 12px 0;
+  font-size: 12px;
+  color: #653a2f;
+  flex-wrap: wrap;
+}
+
+.mf-rates span {
+  background: #fef3e8;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+/* ─── Metrics Toggle ────────────────────────────────────────– */
+.mf-metrics-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px 0;
+  margin: 12px 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #b08968;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.mf-metrics-toggle:hover {
+  color: #8b6a52;
+}
+
+.mf-toggle-icon {
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+
+/* ─── Match Metrics ────────────────────────────────────────── */
+.mf-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #e0d4c0;
+  margin-top: 12px;
+}
+
+.mf-metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mf-metric-name {
+  font-size: 11px;
+  color: #a89880;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* ─── Card Footer ──────────────────────────────────────────── */
+.mf-card-footer {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #fefbf5;
+  border-top: 1px solid #e0d4c0;
+}
+
+.mf-btn-invite,
+.mf-btn-view {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mf-btn-invite {
+  background: #b08968;
+  color: white;
+}
+
+.mf-btn-invite:hover {
+  background: #8b6a52;
+  transform: translateY(-1px);
+}
+
+.mf-btn-view {
+  background: #e8e0d0;
+  color: #3a3a3a;
+}
+
+.mf-btn-view:hover {
+  background: #d4c4b0;
+  transform: translateY(-1px);
+}
+
+/* ─── No Results ────────────────────────────────────────────– */
+.mf-no-results {
+  background: #fef3e8;
+  border: 2px solid #d4af8c;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  color: #653a2f;
+  font-size: 16px;
+}
+
+/* ─── Loading & Error ──────────────────────────────────────– */
+.loading-spinner {
+  text-align: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #a89880;
+}
+
+.error-message {
+  background: #ffe8e8;
+  color: #c23030;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #c23030;
+}
+
+/* ─── Responsive ────────────────────────────────────────────– */
+@media (max-width: 768px) {
+  .mf-statistics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .mf-card-header {
+    flex-wrap: wrap;
+  }
+
+  .mf-freelancer-info {
+    min-width: 100%;
+    order: 2;
+  }
+
+  .mf-overall-score {
+    order: 3;
+  }
+
+  .mf-rank-badge {
+    order: 1;
+  }
+
+  .mf-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .mf-statistics {
+    grid-template-columns: 1fr;
+  }
+
+  .mf-card-footer {
+    flex-direction: column;
+  }
+
+  .mf-metrics {
+    grid-template-columns: 1fr;
+  }
+}
