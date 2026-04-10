@@ -287,7 +287,7 @@ export default function ProjectDetails() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .project-details-container {
           max-width: 900px;
           margin: 20px auto;

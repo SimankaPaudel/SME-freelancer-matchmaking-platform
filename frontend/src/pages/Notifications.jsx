@@ -105,7 +105,9 @@ export default function Notifications() {
 
   const handleClick = (notif) => {
     if (!notif.isRead) markAsRead(notif._id);
-    if (notif.link) navigate(notif.link);
+    // If notification has a link, use it; if it's a project_invite without a link, go to project page
+    const link = notif.link || (notif.type === "project_invite" && notif.projectId ? `/dashboard/project/${notif.projectId}` : null);
+    if (link) navigate(link);
   };
 
   const timeAgo = (dateStr) => {

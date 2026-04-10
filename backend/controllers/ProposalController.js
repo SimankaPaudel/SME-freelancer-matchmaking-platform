@@ -134,25 +134,6 @@ exports.updateProposalStatus = async (req, res) => {
     // Populate freelancer info for notification
     const populatedProposal = await Proposal.findById(proposal._id).populate("freelancerId", "fullName");
     
-    // Send notification based on status change
-    if (status === "Accepted") {
-      await createNotification({
-        userId: proposal.freelancerId,
-        title: "✅ Proposal Accepted",
-        message: `Your proposal for "${project.title}" has been accepted! Escrow will be created shortly.`,
-        type: "proposal_accepted",
-        link: "/dashboard/escrow-management",
-      });
-    } else if (status === "Rejected") {
-      await createNotification({
-        userId: proposal.freelancerId,
-        title: "❌ Proposal Rejected",
-        message: `Your proposal for "${project.title}" was not selected. Keep trying!`,
-        type: "general",
-        link: "/dashboard/my-proposals",
-      });
-    }
-
     let escrow = null;
 
     if (status === "Accepted") {
@@ -196,6 +177,25 @@ exports.updateProposalStatus = async (req, res) => {
       await project.save();
       
       console.log("   ✅ Project closed");
+    }
+
+    // Send notification based on status change (AFTER escrow is created)
+    if (status === "Accepted") {
+      await createNotification({
+        userId: proposal.freelancerId,
+        title: "✅ Proposal Accepted",
+        message: `Your proposal for "${project.title}" has been accepted! Escrow will be created shortly.`,
+        type: "proposal_accepted",
+        link: "/dashboard/my-proposals",
+      });
+    } else if (status === "Rejected") {
+      await createNotification({
+        userId: proposal.freelancerId,
+        title: "❌ Proposal Rejected",
+        message: `Your proposal for "${project.title}" was not selected. Keep trying!`,
+        type: "general",
+        link: "/dashboard/my-proposals",
+      });
     }
 
     console.log("   ✅ Proposal status updated\n");

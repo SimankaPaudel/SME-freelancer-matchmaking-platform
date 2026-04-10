@@ -428,7 +428,6 @@ export default function MyProposals() {
                       </p>
 
                       {[
-                        "Pending Deposit",
                         "Funded",
                         "In Progress",
                       ].includes(p.escrow.status) && (
@@ -441,14 +440,14 @@ export default function MyProposals() {
                           >
                             📤 Submit Work
                           </button>
-
-                          {p.escrow.status === "Pending Deposit" && (
-                            <p className="info-text">
-                              ⏳ Waiting for SME to deposit escrow
-                              funds...
-                            </p>
-                          )}
                         </div>
+                      )}
+
+                      {p.escrow.status === "Pending Deposit" && (
+                        <p className="info-text">
+                          ⏳ Waiting for SME to deposit escrow
+                          funds...
+                        </p>
                       )}
 
                       {[

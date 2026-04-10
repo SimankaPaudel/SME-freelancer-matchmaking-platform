@@ -352,6 +352,7 @@ exports.sendInvite = async (req, res) => {
       message: notificationMessage,
       projectId: projectId,
       relatedUserId: smeId,
+      link: `/dashboard/project/${projectId}`,
       data: {
         projectTitle: project.title,
         projectBudget: `${project.budgetMin} - ${project.budgetMax}`,
