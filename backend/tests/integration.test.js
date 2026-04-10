@@ -31,8 +31,8 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
       const smeRegRes = await request(app)
         .post("/api/auth/register")
         .send({
-          firstName: "Sarah",
-          lastName: "Johnson",
+          firstName: "Sushma",
+          lastName: "Ghimire",
           email: "sme@test.com",
           password: "SecurePass123!",
           confirmPassword: "SecurePass123!",
@@ -78,8 +78,8 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
       const regRes = await request(app)
         .post("/api/auth/register")
         .send({
-          firstName: "Mike",
-          lastName: "Developer",
+          firstName: "Madan",
+          lastName: "Dahal",
           email: "freelancer@test.com",
           password: "SecurePass123!",
           confirmPassword: "SecurePass123!",

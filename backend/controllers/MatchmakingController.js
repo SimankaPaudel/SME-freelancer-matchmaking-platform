@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Project = require("../models/Project");
 const Proposal = require("../models/Proposal");
+const Notification = require("../models/Notification");
 
 // ──────────────────────────────────────────────────────────────────────────
 // FREELANCER MATCHMAKING ENGINE

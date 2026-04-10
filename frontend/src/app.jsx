@@ -16,6 +16,7 @@ import Navbar from "./component/Navbar";
 
 import PostProject from "./pages/PostProject";
 import ManageProject from "./pages/ManageProject";
+import ProjectDetails from "./pages/ProjectDetails";
 import Applicants from "./pages/Applicants";
 import MyProposals from "./pages/MyProposals";
 import BrowseProjects from "./pages/BrowseProjects";
@@ -109,6 +110,7 @@ function Layout() {
           <Route path="manage-projects" element={<ManageProject />} />
           <Route path="applicants"      element={<Applicants />} />
           <Route path="matched-freelancers/:projectId" element={<MatchedFreelancers />} />
+          <Route path="project/:projectId" element={<ProjectDetails />} />
 
           {/* Chat */}
           <Route path="messages"          element={<MessageBubble />} />

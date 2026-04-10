@@ -37,7 +37,7 @@ async function approveFreelancers() {
 
     process.exit(0);
   } catch (err) {
-    console.error("❌ Error:", err.message);
+    console.error(" Error:", err.message);
     process.exit(1);
   }
 }

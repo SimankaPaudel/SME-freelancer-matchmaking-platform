@@ -1,5 +1,6 @@
 const Proposal = require("../models/Proposal");
 const Project = require("../models/Project");
+const User = require("../models/User");
 const Escrow = require("../models/EscrowPayment");
 const { createNotification } = require("../utils/notificationHelper");
 
@@ -10,6 +11,14 @@ exports.submitProposal = async (req, res) => {
   try {
     if (req.user.role?.toLowerCase() !== "freelancer") {
       return res.status(403).json({ message: "Only freelancers can apply" });
+    }
+
+    // Check if freelancer has KYC approval
+    const user = await User.findById(req.user.userId).select("kycStatus");
+    if (!user || user.kycStatus !== "Approved") {
+      return res.status(403).json({ 
+        message: "KYC approval is required to apply for projects. Please complete your KYC verification." 
+      });
     }
 
     const proposalFile = req.files?.proposalFile?.[0];

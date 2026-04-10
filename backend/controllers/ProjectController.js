@@ -89,6 +89,23 @@ exports.getMyProjects = async (req, res) => {
   }
 };
 
+exports.getProjectById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const project = await Project.findById(id)
+      .populate("postedBy", "fullName email _id companyName description industryType website");
+    
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+    
+    res.json(project);
+  } catch (err) {
+    console.error("Get project by ID error:", err);
+    res.status(500).json({ message: "Failed to fetch project" });
+  }
+};
+
 exports.extendDeadline = async (req, res) => {
   try {
     const { newDeadline } = req.body;

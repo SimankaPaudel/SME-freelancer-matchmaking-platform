@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./MatchedProjects.css";
 
 export default function MatchedProjects() {
+  const navigate = useNavigate();
   const [matches, setMatches] = useState([]);
   const [freelancer, setFreelancer] = useState(null);
   const [statistics, setStatistics] = useState(null);
@@ -225,10 +227,18 @@ export default function MatchedProjects() {
               </div>
 
               <div className="mp-card-footer">
-                <button className="mp-btn-apply">
+                <button 
+                  className="mp-btn-apply"
+                  onClick={() => navigate(`/dashboard/apply/${match._id || match.id}`)}
+                  title="View project details and submit a proposal"
+                >
                   ✨ View & Apply
                 </button>
-                <button className="mp-btn-details">
+                <button 
+                  className="mp-btn-details"
+                  onClick={() => navigate(`/dashboard/project/${match._id || match.id}`)}
+                  title="View complete project details"
+                >
                   📖 View Details
                 </button>
               </div>

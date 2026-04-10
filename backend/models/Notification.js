@@ -34,6 +34,7 @@ const notificationSchema = new mongoose.Schema(
         "dispute_resolved",
         "payment_released",
         "deadline_reminder",
+        "project_invite",
         "general",
       ],
       default: "general",

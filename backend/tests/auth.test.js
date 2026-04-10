@@ -18,8 +18,7 @@ describe("UNIT TESTS - Authentication Module", () => {
     await new Promise(resolve => setTimeout(resolve, 500));
   });
 
-  // Don't clean up between tests - each test uses unique email
-
+  
   // ─────────────────────────────────────────────────────────
   // UT001 – Login (Valid Credentials)
   // ─────────────────────────────────────────────────────────
@@ -29,9 +28,9 @@ describe("UNIT TESTS - Authentication Module", () => {
       await request(app)
         .post("/api/auth/register")
         .send({
-          firstName: "John",
-          lastName: "Doe",
-          email: "john@test.com",
+          firstName: "Rajesh",
+          lastName: "Sharma",
+          email: "rajesh@test.com",
           password: "SecurePass123!",
           confirmPassword: "SecurePass123!",
           role: "Freelancer"
@@ -41,7 +40,7 @@ describe("UNIT TESTS - Authentication Module", () => {
       const loginRes = await request(app)
         .post("/api/auth/login")
         .send({
-          email: "john@test.com",
+          email: "rajesh@test.com",
           password: "SecurePass123!"
         });
 
@@ -59,9 +58,9 @@ describe("UNIT TESTS - Authentication Module", () => {
       await request(app)
         .post("/api/auth/register")
         .send({
-          firstName: "Jane",
-          lastName: "Smith",
-          email: "jane@test.com",
+          firstName: "Seema",
+          lastName: "Poudel",
+          email: "seema@test.com",
           password: "SecurePass123!",
           confirmPassword: "SecurePass123!",
           role: "SME"
@@ -70,7 +69,7 @@ describe("UNIT TESTS - Authentication Module", () => {
       const loginRes = await request(app)
         .post("/api/auth/login")
         .send({
-          email: "jane@test.com",
+          email: "seema@test.com",
           password: "WrongPassword123!"
         });
 
@@ -94,9 +93,9 @@ describe("UNIT TESTS - Authentication Module", () => {
       const response = await request(app)
         .post("/api/auth/register")
         .send({
-          firstName: "Bob",
-          lastName: "Johnson",
-          email: "bob@test.com",
+          firstName: "Gita",
+          lastName: "Acharya",
+          email: "gita@test.com",
           password: "short",
           confirmPassword: "short"
         });
@@ -113,9 +112,9 @@ describe("UNIT TESTS - Authentication Module", () => {
       await request(app)
         .post("/api/auth/register")
         .send({
-          firstName: "Alice",
-          lastName: "Smith",
-          email: "alice@test.com",
+          firstName: "Anita",
+          lastName: "Poudel",
+          email: "anita@test.com",
           password: "SecurePass123!",
           confirmPassword: "SecurePass123!",
           role: "Freelancer"
@@ -126,7 +125,7 @@ describe("UNIT TESTS - Authentication Module", () => {
         .send({
           firstName: "Alice",
           lastName: "Smith",
-          email: "alice@test.com",
+          email: "anita@test.com",
           password: "SecurePass123!",
           confirmPassword: "SecurePass123!",
           role: "SME"
@@ -188,9 +187,9 @@ describe("INTEGRATION TESTS", () => {
       await request(app)
         .post("/api/auth/register")
         .send({
-          firstName: "Sarah",
-          lastName: "Johnson",
-          email: "sme@test.com",
+          firstName: "Sushma",
+          lastName: "Kiran",
+          email: "sushmakiran@test.com",
           password: "SecurePass123!",
           confirmPassword: "SecurePass123!",
           role: "SME"
@@ -199,7 +198,7 @@ describe("INTEGRATION TESTS", () => {
       const loginRes = await request(app)
         .post("/api/auth/login")
         .send({
-          email: "sme@test.com",
+          email: "sushmakiran@test.com",
           password: "SecurePass123!"
         });
 

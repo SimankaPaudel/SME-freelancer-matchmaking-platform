@@ -267,7 +267,7 @@ export default function BrowseProjects() {
                     margin: "8px 0"
                   }}>
                     <p style={{ margin: "4px 0" }}>
-                    <p><strong>Budget:</strong> <span style={{ color: "#b08968", fontWeight: "700" }}>₹{p.budgetMin?.toLocaleString()} - ₹{p.budgetMax?.toLocaleString()}</span></p>
+                      <strong>Budget:</strong> <span style={{ color: "#b08968", fontWeight: "700" }}>₹{p.budgetMin?.toLocaleString()} - ₹{p.budgetMax?.toLocaleString()}</span>
                     </p>
                     {days !== null && (
                       <p style={{ margin: "4px 0", fontSize: "13px" }}>

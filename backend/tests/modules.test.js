@@ -30,8 +30,8 @@ describe("UNIT TESTS - Feature Modules", () => {
       const loginRes = await request(app)
         .post("/api/auth/register")
         .send({
-          firstName: "Test",
-          lastName: "User",
+          firstName: "Tara",
+          lastName: "Hari",
           email: "test@test.com",
           password: "SecurePass123!",
           confirmPassword: "SecurePass123!",
