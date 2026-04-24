@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+﻿const crypto = require("crypto");
 const axios = require("axios");
 
 /**
@@ -20,9 +20,6 @@ function generateEsewaSignature(total_amount, transaction_uuid, product_code) {
   // Format: "total_amount=VALUE,transaction_uuid=VALUE,product_code=VALUE"
   const message = `total_amount=${amount_str},transaction_uuid=${uuid_str},product_code=${code_str}`;
 
-  console.log("\n Generating Signature:");
-  console.log("  Message:", message);
-  console.log("  Secret Key Length:", secret_key.length);
 
   // Generate HMAC-SHA256 signature
   const signature = crypto
@@ -30,8 +27,6 @@ function generateEsewaSignature(total_amount, transaction_uuid, product_code) {
     .update(message)
     .digest("base64");
 
-  console.log("  Signature:", signature);
-  console.log("  Signature Length:", signature.length);
 
   return signature;
 }
@@ -40,8 +35,6 @@ function generateEsewaSignature(total_amount, transaction_uuid, product_code) {
  * FIXED: Create eSewa payment form data with validation
  */
 function createEsewaPaymentForm(amount, escrowId) {
-  console.log("\n Creating eSewa Payment Form");
-  console.log("=".repeat(60));
 
   // Validate inputs
   if (!amount || isNaN(amount)) {
@@ -55,10 +48,6 @@ function createEsewaPaymentForm(amount, escrowId) {
   // Amount must be a whole number STRING
   const total_amount = String(Math.floor(Number(amount)));
   
-  console.log("Escrow ID:", escrowId);
-  console.log("Amount:", total_amount);
-  console.log("Transaction UUID:", transaction_uuid);
-  console.log("Product Code:", product_code);
 
   // All additional amounts as strings (set to 0)
   const tax_amount = "0";
@@ -72,16 +61,13 @@ function createEsewaPaymentForm(amount, escrowId) {
     product_code
   );
 
-  // ✅ Build URLs
+  // âœ… Build URLs
   const frontend_url = process.env.FRONTEND_URL || "http://localhost:5173";
   const success_url = `${frontend_url}/payment/success`;
   const failure_url = `${frontend_url}/payment/failure`;
 
-  console.log("\nCallback URLs:");
-  console.log("  Success:", success_url);
-  console.log("  Failure:", failure_url);
 
-  // ✅ Create payment data object matching eSewa v2 API requirements
+  // âœ… Create payment data object matching eSewa v2 API requirements
   const paymentData = {
     amount: total_amount,
     tax_amount: tax_amount,
@@ -96,15 +82,12 @@ function createEsewaPaymentForm(amount, escrowId) {
     signature: signature,
   };
 
-  console.log("\n✅ Payment Data Created:");
-  console.log(JSON.stringify(paymentData, null, 2));
-  console.log("=".repeat(60) + "\n");
 
   return paymentData;
 }
 
 /**
- * ✅ FIXED: Verify eSewa payment with proper error handling
+ * âœ… FIXED: Verify eSewa payment with proper error handling
  */
 async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_code) {
   try {
@@ -114,17 +97,10 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
     // Ensure amount is a string
     const amount_str = String(Math.floor(Number(total_amount)));
 
-    console.log("\n[DEBUG] Verifying eSewa Payment");
-    console.log("=".repeat(60));
-    console.log("Transaction UUID:", transaction_uuid);
-    console.log("Total Amount:", amount_str);
-    console.log("Transaction Code:", transaction_code);
-    console.log("Product Code:", product_code);
 
-    // ✅ Build verification URL with query parameters
+    // âœ… Build verification URL with query parameters
     const url = `${verifyUrl}?product_code=${encodeURIComponent(product_code)}&total_amount=${encodeURIComponent(amount_str)}&transaction_uuid=${encodeURIComponent(transaction_uuid)}`;
     
-    console.log("Verification URL:", url);
 
     const response = await axios.get(url, {
       headers: {
@@ -133,19 +109,15 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
       },
     });
 
-    console.log("Response Status:", response.status, response.statusText);
 
     const data = response.data;
-    console.log("[INFO] Parsed Response:", JSON.stringify(data, null, 2));
 
-    // ✅ Verify payment status and match transaction details
+    // âœ… Verify payment status and match transaction details
     if (
       data.status === "COMPLETE" &&
       data.transaction_uuid === transaction_uuid &&
       String(data.total_amount) === amount_str
     ) {
-      console.log("✅ Payment Verified Successfully!");
-      console.log("=".repeat(60) + "\n");
       
       return {
         success: true,
@@ -153,11 +125,6 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
         message: "Payment verified successfully",
       };
     } else {
-      console.log("❌ Verification Failed - Data Mismatch");
-      console.log("Expected Status: COMPLETE, Got:", data.status);
-      console.log("Expected UUID:", transaction_uuid, "Got:", data.transaction_uuid);
-      console.log("Expected Amount:", amount_str, "Got:", data.total_amount);
-      console.log("=".repeat(60) + "\n");
       
       return {
         success: false,
@@ -166,9 +133,7 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
       };
     }
   } catch (error) {
-    console.error("❌ Verification Error:", error.message);
-    console.error("Stack:", error.stack);
-    console.log("=".repeat(60) + "\n");
+    
     
     return {
       success: false,
@@ -179,11 +144,9 @@ async function verifyEsewaPayment(transaction_uuid, total_amount, transaction_co
 }
 
 /**
- * ✅ NEW: Validate callback signature from eSewa
+ * âœ… NEW: Validate callback signature from eSewa
  */
 function validateEsewaCallback(callbackData) {
-  console.log("\n[DEBUG] Validating Callback Data");
-  console.log("=".repeat(60));
 
   const required_fields = [
     "transaction_code",
@@ -198,7 +161,7 @@ function validateEsewaCallback(callbackData) {
   // Check all required fields
   for (const field of required_fields) {
     if (!callbackData[field]) {
-      console.error(`❌ Missing field: ${field}`);
+      
       return false;
     }
   }
@@ -212,14 +175,12 @@ function validateEsewaCallback(callbackData) {
   );
 
   if (received_signature !== calculated_signature) {
-    console.error("❌ Signature Mismatch");
-    console.error("  Received:", received_signature);
-    console.error("  Calculated:", calculated_signature);
+    
+    
+    
     return false;
   }
 
-  console.log("✅ Callback Validation Successful");
-  console.log("=".repeat(60) + "\n");
   return true;
 }
 

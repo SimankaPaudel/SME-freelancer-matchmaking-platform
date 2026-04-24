@@ -31,7 +31,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: DockerFile
+      dockerfile: Dockerfile
     container_name: fyp-backend
     restart: unless-stopped
     env_file: ./backend/.env
@@ -65,10 +65,10 @@ services:
       EMAIL_FROM: ${EMAIL_FROM}
       
       # Frontend URL
-      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+      FRONTEND_URL: ${FRONTEND_URL:-https://simankapaudel.com.np}
       
       # CORS Configuration
-      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+      CORS_ORIGIN: ${CORS_ORIGIN:-https://simankapaudel.com.np}
       
       # Logging
       LOG_LEVEL: ${LOG_LEVEL:-info}
@@ -101,6 +101,10 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:5000/api}
+        VITE_SOCKET_URL: ${VITE_SOCKET_URL:-http://localhost:5000}
+        VITE_ENV: ${VITE_ENV:-production}
     container_name: fyp-frontend
     restart: unless-stopped
     ports:

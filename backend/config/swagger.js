@@ -10,7 +10,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:5000", // update this if deployed
+        url: "http://api.simankapaudel.com.np", // update this if deployed
       },
     ],
   },

@@ -1,4 +1,4 @@
-const request = require("supertest");
+﻿const request = require("supertest");
 const app = require("../server");
 const mongoose = require("mongoose");
 
@@ -8,16 +8,16 @@ describe("UNIT TESTS - Feature Modules", () => {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
       } catch (err) {
-        console.error("MongoDB error:", err.message);
+        
       }
     }
     await new Promise(resolve => setTimeout(resolve, 500));
   });
 
   // Tests use unique emails so no cleanup needed between tests
-  // UT006 – Proposal Submission
-  // ─────────────────────────────────────────────────────────
-  describe("UT006 – Proposal Submission", () => {
+  // UT006 â€“ Proposal Submission
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT006 â€“ Proposal Submission", () => {
     test("Should require authentication for proposal submission", async () => {
       const response = await request(app)
         .post("/api/proposals")
@@ -57,10 +57,10 @@ describe("UNIT TESTS - Feature Modules", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT007 – File Upload Validation
-  // ─────────────────────────────────────────────────────────
-  describe("UT007 – File Upload Validation", () => {
+  
+  // UT007 â€“ File Upload Validation
+  
+  describe("UT007 â€“ File Upload Validation", () => {
     test("Should reject unsupported file types", async () => {
       const loginRes = await request(app)
         .post("/api/auth/login")
@@ -79,10 +79,10 @@ describe("UNIT TESTS - Feature Modules", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT008 – Escrow Payment Processing
-  // ─────────────────────────────────────────────────────────
-  describe("UT008 – Escrow Payment Processing", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT008 â€“ Escrow Payment Processing
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT008 â€“ Escrow Payment Processing", () => {
     test("Should require authentication for escrow operations", async () => {
       const response = await request(app)
         .post("/api/escrows")
@@ -112,10 +112,10 @@ describe("UNIT TESTS - Feature Modules", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT010 – Notification Trigger
-  // ─────────────────────────────────────────────────────────
-  describe("UT010 – Notification Trigger", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT010 â€“ Notification Trigger
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT010 â€“ Notification Trigger", () => {
     test("Should require authentication for notifications", async () => {
       const response = await request(app)
         .get("/api/notifications");

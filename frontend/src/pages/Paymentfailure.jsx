@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+﻿import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Payment.css";
 
@@ -16,7 +16,8 @@ export default function PaymentFailure() {
       const transaction_uuid = searchParams.get("transaction_uuid");
       
       if (transaction_uuid) {
-        await fetch("http://localhost:5000/api/escrows/payment-failure", {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+        await fetch(`${API_BASE_URL}/escrows/payment-failure`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -25,14 +26,14 @@ export default function PaymentFailure() {
         });
       }
     } catch (err) {
-      console.error("Failed to log payment failure:", err);
+      
     }
   };
 
   return (
     <div className="payment-result-container">
       <div className="payment-result-card error">
-        <div className="error-icon">❌</div>
+        <div className="error-icon">âŒ</div>
         <h2>Payment Cancelled</h2>
         <p>Your payment was not completed. The escrow has not been funded.</p>
         

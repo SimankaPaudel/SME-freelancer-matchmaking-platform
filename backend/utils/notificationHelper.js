@@ -1,4 +1,4 @@
-const Notification = require("../models/Notification");
+﻿const Notification = require("../models/Notification");
 
 /**
  * Creates a notification for a user.
@@ -16,7 +16,7 @@ async function createNotification({ userId, title, message, type = "general", li
     await Notification.create({ userId, title, message, type, link });
   } catch (err) {
     // Never let a notification failure crash the main flow
-    console.error("⚠️ Failed to create notification:", err.message);
+    
   }
 }
 
@@ -28,7 +28,7 @@ async function createNotificationForMany(userIds, { title, message, type, link }
     const docs = userIds.map((userId) => ({ userId, title, message, type, link }));
     await Notification.insertMany(docs);
   } catch (err) {
-    console.error("⚠️ Failed to create notifications:", err.message);
+    
   }
 }
 

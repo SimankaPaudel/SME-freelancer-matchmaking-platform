@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Proposal.css";
 
@@ -11,14 +11,15 @@ export default function ProposalAnalytics() {
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/proposals/mine", {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+        const res = await fetch(`${API_BASE_URL}/proposals/mine`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (!res.ok) throw new Error("Failed to fetch proposals");
         const data = await res.json();
         setProposals(data);
       } catch (err) {
-        console.error(err);
+        
       } finally {
         setLoading(false);
       }
@@ -34,7 +35,7 @@ export default function ProposalAnalytics() {
     );
   }
 
-  // ── Metrics ──
+  // â”€â”€ Metrics â”€â”€
   const totalProposals = proposals.length;
   const acceptedCount = proposals.filter(p => p.status === "Accepted").length;
   const rejectedCount = proposals.filter(p => p.status === "Rejected").length;
@@ -55,13 +56,13 @@ export default function ProposalAnalytics() {
   return (
     <div className="page-container">
       <div style={{ marginBottom: "24px" }}>
-        <h1 style={{ margin: "0 0 8px 0" }}>📊 Proposal Analytics</h1>
+        <h1 style={{ margin: "0 0 8px 0" }}>ðŸ“Š Proposal Analytics</h1>
         <p style={{ margin: "0", color: "#7a6a55", fontSize: "14px" }}>
           Track your proposal performance and bidding statistics
         </p>
       </div>
 
-      {/* ── Key Metrics Grid ── */}
+      {/* â”€â”€ Key Metrics Grid â”€â”€ */}
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
@@ -109,7 +110,7 @@ export default function ProposalAnalytics() {
           textAlign: "center"
         }}>
           <div style={{ fontSize: "28px", fontWeight: "800", color: "#7a5c1e", marginBottom: "4px" }}>
-            ₹{averageBid}
+            â‚¹{averageBid}
           </div>
           <div style={{ fontSize: "13px", fontWeight: "600", color: "#9a7a3e", textTransform: "uppercase" }}>
             Average Bid
@@ -133,7 +134,7 @@ export default function ProposalAnalytics() {
         </div>
       </div>
 
-      {/* ── Bid Range ── */}
+      {/* â”€â”€ Bid Range â”€â”€ */}
       <div style={{
         background: "#ffffff",
         border: "1px solid #e0d4c0",
@@ -141,7 +142,7 @@ export default function ProposalAnalytics() {
         padding: "24px",
         marginBottom: "28px"
       }}>
-        <h3 style={{ margin: "0 0 16px 0", color: "#4a3728" }}>💰 Bidding Statistics</h3>
+        <h3 style={{ margin: "0 0 16px 0", color: "#4a3728" }}>ðŸ’° Bidding Statistics</h3>
 
         <div style={{
           display: "grid",
@@ -153,7 +154,7 @@ export default function ProposalAnalytics() {
               Minimum Bid
             </p>
             <p style={{ margin: "0", fontSize: "20px", fontWeight: "800", color: "#c0392b" }}>
-              ₹{minBid.toLocaleString()}
+              â‚¹{minBid.toLocaleString()}
             </p>
           </div>
 
@@ -162,7 +163,7 @@ export default function ProposalAnalytics() {
               Maximum Bid
             </p>
             <p style={{ margin: "0", fontSize: "20px", fontWeight: "800", color: "#2f855a" }}>
-              ₹{maxBid.toLocaleString()}
+              â‚¹{maxBid.toLocaleString()}
             </p>
           </div>
 
@@ -171,13 +172,13 @@ export default function ProposalAnalytics() {
               Bid Range
             </p>
             <p style={{ margin: "0", fontSize: "20px", fontWeight: "800", color: "#4a3728" }}>
-              ₹{(maxBid - minBid).toLocaleString()}
+              â‚¹{(maxBid - minBid).toLocaleString()}
             </p>
           </div>
         </div>
       </div>
 
-      {/* ── Status Breakdown ── */}
+      {/* â”€â”€ Status Breakdown â”€â”€ */}
       <div style={{
         background: "#ffffff",
         border: "1px solid #e0d4c0",
@@ -185,7 +186,7 @@ export default function ProposalAnalytics() {
         padding: "24px",
         marginBottom: "28px"
       }}>
-        <h3 style={{ margin: "0 0 20px 0", color: "#4a3728" }}>📈 Proposal Status Breakdown</h3>
+        <h3 style={{ margin: "0 0 20px 0", color: "#4a3728" }}>ðŸ“ˆ Proposal Status Breakdown</h3>
 
         <div style={{
           display: "grid",
@@ -201,7 +202,7 @@ export default function ProposalAnalytics() {
             textAlign: "center"
           }}>
             <div style={{ fontSize: "24px", fontWeight: "800", color: "#1a5c38", marginBottom: "6px" }}>
-              ✅ {acceptedCount}
+              âœ… {acceptedCount}
             </div>
             <div style={{ fontSize: "12px", fontWeight: "700", color: "#2d7659", textTransform: "uppercase" }}>
               Accepted
@@ -220,7 +221,7 @@ export default function ProposalAnalytics() {
             textAlign: "center"
           }}>
             <div style={{ fontSize: "24px", fontWeight: "800", color: "#6b4f3f", marginBottom: "6px" }}>
-              ⭐ {shortlistedCount}
+              â­ {shortlistedCount}
             </div>
             <div style={{ fontSize: "12px", fontWeight: "700", color: "#8a7a64", textTransform: "uppercase" }}>
               Shortlisted
@@ -239,7 +240,7 @@ export default function ProposalAnalytics() {
             textAlign: "center"
           }}>
             <div style={{ fontSize: "24px", fontWeight: "800", color: "#3b2f7a", marginBottom: "6px" }}>
-              👁️ {viewedCount}
+              ðŸ‘ï¸ {viewedCount}
             </div>
             <div style={{ fontSize: "12px", fontWeight: "700", color: "#5a4f8a", textTransform: "uppercase" }}>
               Viewed
@@ -258,7 +259,7 @@ export default function ProposalAnalytics() {
             textAlign: "center"
           }}>
             <div style={{ fontSize: "24px", fontWeight: "800", color: "#4a4a8a", marginBottom: "6px" }}>
-              📝 {submittedCount}
+              ðŸ“ {submittedCount}
             </div>
             <div style={{ fontSize: "12px", fontWeight: "700", color: "#5a5a9a", textTransform: "uppercase" }}>
               Submitted
@@ -277,7 +278,7 @@ export default function ProposalAnalytics() {
             textAlign: "center"
           }}>
             <div style={{ fontSize: "24px", fontWeight: "800", color: "#721c24", marginBottom: "6px" }}>
-              ❌ {rejectedCount}
+              âŒ {rejectedCount}
             </div>
             <div style={{ fontSize: "12px", fontWeight: "700", color: "#8a4a52", textTransform: "uppercase" }}>
               Rejected
@@ -289,14 +290,14 @@ export default function ProposalAnalytics() {
         </div>
       </div>
 
-      {/* ── Top Opportunities ── */}
+      {/* â”€â”€ Top Opportunities â”€â”€ */}
       <div style={{
         background: "#ffffff",
         border: "1px solid #e0d4c0",
         borderRadius: "12px",
         padding: "24px"
       }}>
-        <h3 style={{ margin: "0 0 16px 0", color: "#4a3728" }}>💡 Insights</h3>
+        <h3 style={{ margin: "0 0 16px 0", color: "#4a3728" }}>ðŸ’¡ Insights</h3>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {acceptanceRate >= 30 && (
@@ -308,7 +309,7 @@ export default function ProposalAnalytics() {
               color: "#1a5c38",
               fontSize: "14px"
             }}>
-              ✅ <strong>Great Success Rate!</strong> Your acceptance rate of {acceptanceRate}% is above average. Keep bidding on projects that match your skills!
+              âœ… <strong>Great Success Rate!</strong> Your acceptance rate of {acceptanceRate}% is above average. Keep bidding on projects that match your skills!
             </div>
           )}
 
@@ -321,7 +322,7 @@ export default function ProposalAnalytics() {
               color: "#7a5c1e",
               fontSize: "14px"
             }}>
-              ⚠️ <strong>Low Acceptance Rate:</strong> Only {acceptanceRate}% of your proposals are accepted. Try being more selective and personalizing your bids.
+              âš ï¸ <strong>Low Acceptance Rate:</strong> Only {acceptanceRate}% of your proposals are accepted. Try being more selective and personalizing your bids.
             </div>
           )}
 
@@ -334,7 +335,7 @@ export default function ProposalAnalytics() {
               color: "#6b4f3f",
               fontSize: "14px"
             }}>
-              ⭐ <strong>Popular with SMEs:</strong> You have {shortlistedCount} shortlisted proposals. This means SMEs are interested - focus on converting these to acceptances!
+              â­ <strong>Popular with SMEs:</strong> You have {shortlistedCount} shortlisted proposals. This means SMEs are interested - focus on converting these to acceptances!
             </div>
           )}
 
@@ -347,7 +348,7 @@ export default function ProposalAnalytics() {
               color: "#3b2f7a",
               fontSize: "14px"
             }}>
-              📝 <strong>Get Started:</strong> No proposals yet. <button
+              ðŸ“ <strong>Get Started:</strong> No proposals yet. <button
                 onClick={() => navigate("/dashboard/browse-projects")}
                 style={{
                   background: "none",
@@ -365,7 +366,7 @@ export default function ProposalAnalytics() {
         </div>
       </div>
 
-      {/* ── Action Buttons ── */}
+      {/* â”€â”€ Action Buttons â”€â”€ */}
       <div style={{ marginTop: "28px", display: "flex", gap: "12px", flexWrap: "wrap" }}>
         <button
           onClick={() => navigate("/dashboard/browse-projects")}
@@ -380,7 +381,7 @@ export default function ProposalAnalytics() {
             fontSize: "14px"
           }}
         >
-          🔍 Browse More Projects
+          ðŸ” Browse More Projects
         </button>
         <button
           onClick={() => navigate("/dashboard/my-proposals")}
@@ -395,7 +396,7 @@ export default function ProposalAnalytics() {
             fontSize: "14px"
           }}
         >
-          📋 View All Proposals
+          ðŸ“‹ View All Proposals
         </button>
       </div>
     </div>

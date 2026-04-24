@@ -1,4 +1,4 @@
-const request = require("supertest");
+﻿const request = require("supertest");
 const app = require("../server");
 const mongoose = require("mongoose");
 const User = require("../models/User");
@@ -18,7 +18,7 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
       } catch (err) {
-        console.error("MongoDB connection error:", err.message);
+        
       }
     }
 
@@ -80,10 +80,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     }
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT001 – Login and Dashboard Connection
-  // ─────────────────────────────────────────────────────────
-  describe("IT001 – Login and Dashboard Connection", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT001 â€“ Login and Dashboard Connection
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT001 â€“ Login and Dashboard Connection", () => {
     test("Should complete login flow and provide data to load dashboard", async () => {
       // Step 1: Login
       const loginRes = await request(app)
@@ -121,10 +121,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT002 – Project and Proposal Link
-  // ─────────────────────────────────────────────────────────
-  describe("IT002 – Project and Proposal Link", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT002 â€“ Project and Proposal Link
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT002 â€“ Project and Proposal Link", () => {
     test("Should link proposal to project and appear in applicants list", async () => {
       // Step 1: Create a project
       const projectRes = await request(app)
@@ -176,10 +176,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT003 – Payment and Work Submission Flow
-  // ─────────────────────────────────────────────────────────
-  describe("IT003 – Payment and Work Submission Flow", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT003 â€“ Payment and Work Submission Flow
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT003 â€“ Payment and Work Submission Flow", () => {
     test("Should only allow work submission after payment is confirmed", async () => {
       // Step 1: Try to submit work WITHOUT payment (should fail)
       const workRes1 = await request(app)
@@ -225,10 +225,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT004 – Chat and File Sharing
-  // ─────────────────────────────────────────────────────────
-  describe("IT004 – Chat and File Sharing", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT004 â€“ Chat and File Sharing
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT004 â€“ Chat and File Sharing", () => {
     test("Should upload file and share through chat", async () => {
       // Step 1: Upload file
       const uploadRes = await request(app)
@@ -266,10 +266,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT005 – Dispute Handling with Admin
-  // ─────────────────────────────────────────────────────────
-  describe("IT005 – Dispute Handling with Admin", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT005 â€“ Dispute Handling with Admin
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT005 â€“ Dispute Handling with Admin", () => {
     test("Should allow user to submit dispute", async () => {
       const response = await request(app)
         .post("/api/disputes")
@@ -305,10 +305,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   // Additional Integration Tests
-  // ─────────────────────────────────────────────────────────
-  describe("IT006 – Complete Project Lifecycle", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT006 â€“ Complete Project Lifecycle", () => {
     test("Should complete full project workflow from start to finish", async () => {
       // 1. SME creates project
       const projectRes = await request(app)

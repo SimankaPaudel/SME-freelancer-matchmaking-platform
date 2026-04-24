@@ -1,4 +1,4 @@
-/* EscrowManagement.css - Brown theme enhancements for EscrowManagement page only */
+/* EscrowManagement.css - Match Payment Page Style with Brown Header */
 
 .escrow-management-wrapper {
   /* Main container styling */
@@ -9,31 +9,42 @@
   background: linear-gradient(135deg, #a68f6e 0%, #8b7355 100%) !important;
   padding: 2.5rem 1.5rem !important;
   margin: 0 !important;
+  border-radius: 16px;
 }
 
 .escrow-management-wrapper .page-container > h2,
 .escrow-management-wrapper .page-container > h1 {
-  color: #ffffff;
+  color: #ffffff !important;
   font-weight: 800;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  margin: 0 0 0.5rem 0;
+  font-size: 2.2rem;
+  text-align: center;
+  letter-spacing: 0.5px;
 }
 
 .escrow-management-wrapper .subtitle {
   color: rgba(255, 255, 255, 0.85) !important;
-  margin-top: -0.5rem;
-  margin-bottom: 2rem;
+  margin-top: 0 !important;
+  margin-bottom: 2rem !important;
   font-weight: 500;
+  font-size: 1rem;
+  text-align: center;
 }
 
 .escrow-management-wrapper .escrows-grid {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
+  background: #f7f1e8;
+  padding: 2rem;
+  border-radius: 0 0 16px 16px;
 }
 
 .escrow-management-wrapper .escrow-card {
-  background: linear-gradient(135deg, #faf6f0 0%, #f5eee5 100%) !important;
-  border: 2px solid #d4c8ba !important;
-  box-shadow: 0 8px 24px rgba(53, 42, 31, 0.15) !important;
+  background: #ffffff !important;
+  border: 1px solid #e0d4c0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(74, 55, 40, 0.08) !important;
   position: relative;
 }
 
@@ -43,123 +54,158 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #c9985a, #a0826d, #8b6f47);
+  height: 3px;
+  background: linear-gradient(90deg, #b08968 0%, #9d7559 100%);
   border-radius: 12px 12px 0 0;
 }
 
 .escrow-management-wrapper .escrow-card:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 16px 40px rgba(53, 42, 31, 0.25) !important;
-  border-color: #a0826d !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 16px rgba(74, 55, 40, 0.12) !important;
+  border-color: #d4af8c !important;
 }
 
 .escrow-management-wrapper .escrow-header {
-  border-bottom: 2px solid #d4c8ba !important;
+  border-bottom: 1px solid #e0d4c0 !important;
+  padding-bottom: 12px !important;
 }
 
 .escrow-management-wrapper .escrow-header h3 {
-  color: #3d2f22 !important;
+  color: #4a3728 !important;
   font-weight: 700;
+  font-size: 16px;
+  margin: 0;
+}
+
+.escrow-management-wrapper .status-badge {
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: capitalize !important;
 }
 
 .escrow-management-wrapper .status-badge.pending-deposit {
-  background: linear-gradient(135deg, #c9985a 0%, #b08968 100%) !important;
-  color: #fff !important;
+  background: #ffefc0 !important;
+  color: #744210 !important;
 }
 
 .escrow-management-wrapper .status-badge.funded {
-  background: linear-gradient(135deg, #b89968 0%, #a68f6e 100%) !important;
-  color: #fff !important;
+  background: #d1ecf1 !important;
+  color: #0c5460 !important;
 }
 
 .escrow-management-wrapper .status-badge.in-progress {
-  background: linear-gradient(135deg, #c4a574 0%, #b89968 100%) !important;
-  color: #fff !important;
+  background: #cce5ff !important;
+  color: #004085 !important;
 }
 
 .escrow-management-wrapper .status-badge.submitted {
-  background: linear-gradient(135deg, #a68f6e 0%, #9b7e5e 100%) !important;
-  color: #fff !important;
+  background: #e2e3e5 !important;
+  color: #383d41 !important;
 }
 
 .escrow-management-wrapper .status-badge.released {
-  background: linear-gradient(135deg, #b89968 0%, #a68f6e 100%) !important;
-  color: #fff !important;
+  background: #d1ecf1 !important;
+  color: #0c5460 !important;
 }
 
 .escrow-management-wrapper .status-badge.disputed {
-  background: linear-gradient(135deg, #8b7355 0%, #6b5437 100%) !important;
-  color: #fff !important;
+  background: #f8d7da !important;
+  color: #721c24 !important;
 }
 
 .escrow-management-wrapper .detail-row {
-  border-bottom: 1px solid #d4c8ba !important;
+  border-bottom: 1px solid #e0d4c0 !important;
+  padding: 10px 0;
 }
 
 .escrow-management-wrapper .detail-row .label {
-  color: #8b7355 !important;
+  color: #7a6a55 !important;
   font-weight: 600;
+  font-size: 13px;
 }
 
 .escrow-management-wrapper .detail-row .value {
-  color: #3d2f22 !important;
+  color: #4a3728 !important;
   font-weight: 700;
 }
 
 .escrow-management-wrapper .timeline::before {
-  background: #d4c8ba !important;
+  background: #e0d4c0 !important;
 }
 
 .escrow-management-wrapper .timeline-section h4 {
-  color: #3d2f22 !important;
+  color: #4a3728 !important;
   font-weight: 700;
 }
 
 .escrow-management-wrapper .timeline-dot {
-  background: #c0986a !important;
-  box-shadow: 0 0 0 2px #c0986a !important;
+  background: #b08968 !important;
+  box-shadow: 0 0 0 2px #b08968 !important;
 }
 
 .escrow-management-wrapper .timeline-action {
   font-weight: 600;
-  color: #3d2f22 !important;
+  color: #4a3728 !important;
 }
 
 .escrow-management-wrapper .timeline-date {
-  color: #8b7355 !important;
+  color: #7a6a55 !important;
+  font-size: 12px;
 }
 
 .escrow-management-wrapper .escrow-actions {
-  border-top: 1px solid #d4c8ba !important;
+  border-top: 1px solid #e0d4c0 !important;
 }
 
 .escrow-management-wrapper .btn-primary {
-  background: #c0986a !important;
+  background: #b08968 !important;
   color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
 }
 
 .escrow-management-wrapper .btn-primary:hover {
-  background: #a0826d !important;
-  box-shadow: 0 4px 8px rgba(192, 152, 106, 0.3) !important;
+  background: #6b4f3f !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(176, 137, 104, 0.2) !important;
 }
 
 .escrow-management-wrapper .btn-success {
-  background: #b89968 !important;
+  background: #b08968 !important;
   color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
 }
 
 .escrow-management-wrapper .btn-success:hover {
-  background: #a68f6e !important;
-  box-shadow: 0 4px 8px rgba(184, 153, 104, 0.3) !important;
+  background: #9d7559 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(176, 137, 104, 0.2) !important;
 }
 
 .escrow-management-wrapper .btn-danger {
-  background: #8b7355 !important;
+  background: #c0392b !important;
   color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
 }
 
 .escrow-management-wrapper .btn-danger:hover {
-  background: #6b5437 !important;
-  box-shadow: 0 4px 8px rgba(139, 115, 85, 0.3) !important;
+  background: #a02a20 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.2) !important;
 }

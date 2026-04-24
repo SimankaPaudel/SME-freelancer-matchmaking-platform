@@ -40,10 +40,18 @@
   text-decoration: none;
   letter-spacing: -0.5px;
   transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
 }
 
 .logo:hover {
   transform: scale(1.05);
+}
+
+.logo-img {
+  height: 110px;
+  width: auto;
+  object-fit: contain;
 }
 
 /* ─── Links ──────────────────────────────────────────────── */

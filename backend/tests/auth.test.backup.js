@@ -1,4 +1,4 @@
-const request = require("supertest");
+﻿const request = require("supertest");
 const app = require("../server");
 const mongoose = require("mongoose");
 const User = require("../models/User");
@@ -13,7 +13,7 @@ describe("UNIT TESTS - Authentication Module", () => {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
       } catch (err) {
-        console.error("MongoDB connection error in beforeAll:", err.message);
+        
       }
     }
   });
@@ -31,10 +31,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     }
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT001 – Login (Valid Credentials)
-  // ─────────────────────────────────────────────────────────
-  describe("UT001 – Login (Valid Credentials)", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT001 â€“ Login (Valid Credentials)
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT001 â€“ Login (Valid Credentials)", () => {
     test("Should allow login with correct credentials and redirect to dashboard", async () => {
       // Arrange: Create a user first
       await request(app)
@@ -68,10 +68,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT002 – Login (Invalid Credentials)
-  // ─────────────────────────────────────────────────────────
-  describe("UT002 – Login (Invalid Credentials)", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT002 â€“ Login (Invalid Credentials)
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT002 â€“ Login (Invalid Credentials)", () => {
     test("Should deny access with wrong password", async () => {
       // Create user
       await request(app)
@@ -99,10 +99,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT003 – Registration Validation
-  // ─────────────────────────────────────────────────────────
-  describe("UT003 – Registration Validation", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT003 â€“ Registration Validation
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT003 â€“ Registration Validation", () => {
     test("Should reject registration with missing required fields", async () => {
       const response = await request(app)
         .post("/api/auth/register")
@@ -131,10 +131,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT004 – Duplicate Registration
-  // ─────────────────────────────────────────────────────────
-  describe("UT004 – Duplicate Registration", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT004 â€“ Duplicate Registration
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT004 â€“ Duplicate Registration", () => {
     test("Should reject registration with already-registered email", async () => {
       // First registration
       await request(app)
@@ -165,10 +165,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT005 – Profile Update
-  // ─────────────────────────────────────────────────────────
-  describe("UT005 – Profile Update", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT005 â€“ Profile Update
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT005 â€“ Profile Update", () => {
     test("Should allow users to update profile information", async () => {
       // Register user
       const registerRes = await request(app)
@@ -208,10 +208,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT006 – Proposal Submission
-  // ─────────────────────────────────────────────────────────
-  describe("UT006 – Proposal Submission", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT006 â€“ Proposal Submission
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT006 â€“ Proposal Submission", () => {
     test("Should allow freelancer to submit proposal without issues", async () => {
       // Register freelancer
       const registerRes = await request(app)
@@ -252,10 +252,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT007 – File Upload Validation
-  // ─────────────────────────────────────────────────────────
-  describe("UT007 – File Upload Validation", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT007 â€“ File Upload Validation
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT007 â€“ File Upload Validation", () => {
     test("Should reject unsupported file formats", async () => {
       const registerRes = await request(app)
         .post("/api/auth/register")
@@ -289,10 +289,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT008 – Escrow Payment Processing
-  // ─────────────────────────────────────────────────────────
-  describe("UT008 – Escrow Payment Processing", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT008 â€“ Escrow Payment Processing
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT008 â€“ Escrow Payment Processing", () => {
     test("Should process payment and confirm successfully", async () => {
       const registerRes = await request(app)
         .post("/api/auth/register")
@@ -329,10 +329,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT009 – AI Cost Estimation (corrected objective)
-  // ─────────────────────────────────────────────────────────
-  describe("UT009 – AI Cost Estimation", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT009 â€“ AI Cost Estimation (corrected objective)
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT009 â€“ AI Cost Estimation", () => {
     test("Should provide accurate cost estimation based on project details", async () => {
       const loginRes = await request(app)
         .post("/api/auth/login")
@@ -356,10 +356,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT010 – Notification Trigger
-  // ─────────────────────────────────────────────────────────
-  describe("UT010 – Notification Trigger", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT010 â€“ Notification Trigger
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT010 â€“ Notification Trigger", () => {
     test("Should send notification when system event occurs", async () => {
       // This would typically be triggered by other actions
       // Checking if notification endpoint responds correctly
@@ -383,10 +383,10 @@ describe("INTEGRATION TESTS", () => {
     await User.deleteMany({});
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT001 – Login and Dashboard Connection
-  // ─────────────────────────────────────────────────────────
-  describe("IT001 – Login and Dashboard Connection", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT001 â€“ Login and Dashboard Connection
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT001 â€“ Login and Dashboard Connection", () => {
     test("Should redirect user to dashboard after successful login", async () => {
       // Register and login
       await request(app)
@@ -416,10 +416,10 @@ describe("INTEGRATION TESTS", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT002 – Project and Proposal Link
-  // ─────────────────────────────────────────────────────────
-  describe("IT002 – Project and Proposal Link", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT002 â€“ Project and Proposal Link
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT002 â€“ Project and Proposal Link", () => {
     test("Should link proposal correctly to project in applicants list", async () => {
       // This would test the relationship between projects and proposals
       // Typically requires creating a project first, then submitting proposal
@@ -432,10 +432,10 @@ describe("INTEGRATION TESTS", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT003 – Payment and Work Submission Flow
-  // ─────────────────────────────────────────────────────────
-  describe("IT003 – Payment and Work Submission Flow", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT003 â€“ Payment and Work Submission Flow
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT003 â€“ Payment and Work Submission Flow", () => {
     test("Should only allow work submission after payment is confirmed", async () => {
       // Check work submission endpoint restrictions
       const response = await request(app)
@@ -452,10 +452,10 @@ describe("INTEGRATION TESTS", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT004 – Chat and File Sharing
-  // ─────────────────────────────────────────────────────────
-  describe("IT004 – Chat and File Sharing", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT004 â€“ Chat and File Sharing
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT004 â€“ Chat and File Sharing", () => {
     test("Should upload and share files through chat system", async () => {
       const response = await request(app)
         .post("/api/chat/upload")
@@ -465,10 +465,10 @@ describe("INTEGRATION TESTS", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT005 – Dispute Handling with Admin
-  // ─────────────────────────────────────────────────────────
-  describe("IT005 – Dispute Handling with Admin", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT005 â€“ Dispute Handling with Admin
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT005 â€“ Dispute Handling with Admin", () => {
     test("Should allow admin to review and resolve disputes", async () => {
       const response = await request(app)
         .get("/api/admin/disputes")

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import RatingDisplay from "../components/RatingDisplay";
 import "./Project.css";
@@ -28,7 +28,8 @@ export default function BrowseProjects() {
     setSmeLoading(true);
     setSmeError("");
     try {
-      const res = await fetch(`http://localhost:5000/api/auth/profile/${smeId}`);
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_BASE_URL}/auth/profile/${smeId}`);
       const data = await res.json();
 
       if (!res.ok) {
@@ -48,8 +49,9 @@ export default function BrowseProjects() {
   const fetchMatchedProjects = async () => {
     setMatchedLoading(true);
     try {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
       const res = await fetch(
-        `http://localhost:5000/api/matchmaking/freelancer/matching-projects?limit=50&minScore=20`,
+        `${API_BASE_URL}/matchmaking/freelancer/matching-projects?limit=50&minScore=20`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -60,7 +62,7 @@ export default function BrowseProjects() {
       const data = await res.json();
       setMatchedProjects(data.matches || []);
     } catch (err) {
-      console.error("Error fetching matched projects:", err);
+      
       setMatchedProjects([]);
     } finally {
       setMatchedLoading(false);
@@ -77,7 +79,8 @@ export default function BrowseProjects() {
       if (expLevel) params.append("experienceLevel", expLevel);
       if (deadlineDays) params.append("deadlineDays", deadlineDays);
 
-      const res = await fetch(`http://localhost:5000/api/projects?${params}`, {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_BASE_URL}/projects?${params}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -89,7 +92,7 @@ export default function BrowseProjects() {
         data.map(async (p) => {
           try {
             const r = await fetch(
-              `http://localhost:5000/api/proposals/project/${p._id}/count`,
+                `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/proposals/project/${p._id}/count`,
               { headers: { Authorization: `Bearer ${token}` } }
             );
             const d = await r.json();
@@ -186,13 +189,13 @@ export default function BrowseProjects() {
           />
           <input
             type="number"
-            placeholder="Min Budget (₹)"
+            placeholder="Min Budget (â‚¹)"
             value={minBudget}
             onChange={(e) => setMinBudget(e.target.value)}
           />
           <input
             type="number"
-            placeholder="Max Budget (₹)"
+            placeholder="Max Budget (â‚¹)"
             value={maxBudget}
             onChange={(e) => setMaxBudget(e.target.value)}
           />
@@ -267,11 +270,11 @@ export default function BrowseProjects() {
                     margin: "8px 0"
                   }}>
                     <p style={{ margin: "4px 0" }}>
-                      <strong>Budget:</strong> <span style={{ color: "#b08968", fontWeight: "700" }}>₹{p.budgetMin?.toLocaleString()} - ₹{p.budgetMax?.toLocaleString()}</span>
+                      <strong>Budget:</strong> <span style={{ color: "#b08968", fontWeight: "700" }}>â‚¹{p.budgetMin?.toLocaleString()} - â‚¹{p.budgetMax?.toLocaleString()}</span>
                     </p>
                     {days !== null && (
                       <p style={{ margin: "4px 0", fontSize: "13px" }}>
-                        <strong>⏰ Deadline:</strong> <span style={{ color: isExpired ? "#c0392b" : "#1a5c38" }}>{isExpired ? "Expired" : days + " days left"}</span>
+                        <strong>â° Deadline:</strong> <span style={{ color: isExpired ? "#c0392b" : "#1a5c38" }}>{isExpired ? "Expired" : days + " days left"}</span>
                       </p>
                     )}
                   </div>
@@ -442,12 +445,12 @@ export default function BrowseProjects() {
                         fontSize: "12px",
                         fontWeight: "600"
                       }}>
-                        ✓ Already Applied
+                        âœ“ Already Applied
                       </span>
                       {project.proposalStatus && (
                         <div style={{ marginTop: "6px", fontSize: "12px", color: "#2d7a52" }}>
                           Status: <strong>{project.proposalStatus}</strong>
-                          {project.proposalBid && <span> • Bid: ₹{project.proposalBid}</span>}
+                          {project.proposalBid && <span> â€¢ Bid: â‚¹{project.proposalBid}</span>}
                         </div>
                       )}
                     </div>
@@ -518,7 +521,7 @@ export default function BrowseProjects() {
                     }}
                     title={project.hasExistingProposal ? "You have already applied to this project" : "View project details"}
                   >
-                    {project.hasExistingProposal ? "✓ Already Applied" : "View Project"}
+                    {project.hasExistingProposal ? "âœ“ Already Applied" : "View Project"}
                   </button>
                 </div>
               );

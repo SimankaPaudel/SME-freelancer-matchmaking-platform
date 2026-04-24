@@ -3,6 +3,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import RatingDisplay from "../components/RatingDisplay";
 import "./PublicProfile.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || "http://localhost:5000";
+
 export default function PublicProfile() {
   const { userId } = useParams();
   const navigate = useNavigate();
@@ -17,7 +20,8 @@ export default function PublicProfile() {
   const fetchPublicProfile = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/auth/profile/${userId}`);
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_BASE_URL}/auth/profile/${userId}`);
       const data = await res.json();
       
       if (!res.ok) {
@@ -113,7 +117,7 @@ export default function PublicProfile() {
                         </a>
                       )}
                       {item.fileUrl && (
-                        <a href={`http://localhost:5000/${item.fileUrl}`} target="_blank" rel="noopener noreferrer" className="portfolio-link">
+                        <a href={`${API_BASE}/${item.fileUrl}`} target="_blank" rel="noopener noreferrer" className="portfolio-link">
                           📄 Download
                         </a>
                       )}
@@ -127,7 +131,7 @@ export default function PublicProfile() {
           {user.cv && (
             <section className="profile-section">
               <h2>Curriculum Vitae</h2>
-              <a href={`http://localhost:5000/${user.cv}`} target="_blank" rel="noopener noreferrer" className="cv-download-btn">
+              <a href={`${API_BASE}/${user.cv}`} target="_blank" rel="noopener noreferrer" className="cv-download-btn">
                 📥 Download CV
               </a>
             </section>

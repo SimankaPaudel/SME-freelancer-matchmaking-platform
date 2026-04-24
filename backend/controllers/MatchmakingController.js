@@ -1,15 +1,15 @@
-const User = require("../models/User");
+﻿const User = require("../models/User");
 const Project = require("../models/Project");
 const Proposal = require("../models/Proposal");
 const Notification = require("../models/Notification");
 
-// ──────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // FREELANCER MATCHMAKING ENGINE
 // Finds best matching freelancers for a project based on skills, experience, 
 // ratings, and other criteria
-// ──────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// ── Calculate skill match score ───────────────────────────────────────
+// â”€â”€ Calculate skill match score â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function calculateSkillMatchScore(freelancerSkills, projectSkills) {
   if (!projectSkills || projectSkills.length === 0) return 0;
   if (!freelancerSkills || freelancerSkills.length === 0) return 0;
@@ -51,7 +51,7 @@ function calculateSkillMatchScore(freelancerSkills, projectSkills) {
   return Math.min(matchScore, 100); // Cap at 100
 }
 
-// ── Calculate experience level match ──────────────────────────────────
+// â”€â”€ Calculate experience level match â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function calculateExperienceLevelScore(freelancerProfile, projectExperienceLevel) {
   // Check if freelancer has enough projects or history to indicate experience
   const completedProposals = freelancerProfile.completedProposals || 0;
@@ -81,7 +81,7 @@ function calculateExperienceLevelScore(freelancerProfile, projectExperienceLevel
   }
 }
 
-// ── Calculate rating score ────────────────────────────────────────────
+// â”€â”€ Calculate rating score â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function calculateRatingScore(averageRating, totalReviews) {
   // Weight rating higher if more reviews
   if (totalReviews === 0) return 50; // New freelancer
@@ -92,7 +92,7 @@ function calculateRatingScore(averageRating, totalReviews) {
   return (averageRating / 5) * 100;
 }
 
-// ── Calculate budget compatibility score ───────────────────────────────
+// â”€â”€ Calculate budget compatibility score â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function calculateBudgetScore(freelancerRate, projectBudgetMin, projectBudgetMax, projectDays) {
   // Estimate project rate from hourly rate (assuming 8 hours per day)
   if (!freelancerRate || freelancerRate === 0) return 60; // No rate specified
@@ -115,7 +115,7 @@ function calculateBudgetScore(freelancerRate, projectBudgetMin, projectBudgetMax
   }
 }
 
-// ── Calculate overall match score ─────────────────────────────────────
+// â”€â”€ Calculate overall match score â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function calculateOverallMatchScore(metrics) {
   // Weighted scoring
   const weights = {
@@ -140,7 +140,7 @@ exports.test = async(req, res) => {
   return res.json({ message: "Matchmaking engine is working!" });
 }
 
-// ── Get matching freelancers for a project ──────────────────────────────
+// â”€â”€ Get matching freelancers for a project â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.getMatchingFreelancers = async (req, res) => {
   try {
     const { projectId } = req.params;
@@ -278,25 +278,19 @@ exports.getMatchingFreelancers = async (req, res) => {
       message: `Found ${matches.length} qualified freelancer${matches.length !== 1 ? "s" : ""} for this project`,
     });
   } catch (err) {
-    console.error("getMatchingFreelancers error:", err);
+    
     res.status(500).json({ message: err.message || "Failed to find matching freelancers" });
   }
 };
 
-// ── Send invite to freelancer for a project ──────────────────────────────
+// â”€â”€ Send invite to freelancer for a project â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.sendInvite = async (req, res) => {
   try {
     const { projectId, freelancerId, message } = req.body;
     
-    console.log("[DEBUG] sendInvite DEBUG:");
-    console.log("  req.user:", req.user);
-    console.log("  req.user keys:", req.user ? Object.keys(req.user) : "undefined");
 
     const smeId = req.user?.userId;
     
-    console.log("  smeId:", smeId);
-    console.log("  projectId:", projectId);
-    console.log("  freelancerId:", freelancerId);
 
     if (!smeId) {
       return res.status(401).json({ message: "User ID not found in token" });
@@ -313,13 +307,9 @@ exports.sendInvite = async (req, res) => {
       return res.status(404).json({ message: "Project not found" });
     }
 
-    console.log("  project.postedBy:", project.postedBy, typeof project.postedBy);
 
     // Verify SME owns this project
     if (project.postedBy.toString() !== smeId.toString()) {
-      console.log("❌ Ownership check failed!");
-      console.log("  project.postedBy.toString():", project.postedBy.toString());
-      console.log("  smeId.toString():", smeId.toString());
       return res.status(403).json({ message: "Unauthorized: You don't own this project" });
     }
 
@@ -368,12 +358,12 @@ exports.sendInvite = async (req, res) => {
       notification: notification,
     });
   } catch (err) {
-    console.error("sendInvite error:", err);
+    
     res.status(500).json({ message: err.message || "Failed to send invite" });
   }
 };
 
-// ── Get matching projects for a freelancer ──────────────────────────────
+// â”€â”€ Get matching projects for a freelancer â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.getMatchingProjects = async (req, res) => {
   try {
     const freelancerId = req.user.userId;
@@ -385,28 +375,16 @@ exports.getMatchingProjects = async (req, res) => {
       .select("skills hourlyRate averageRating totalReviews weeklyAvailability role")
       .lean();
 
-    console.log("\n========== MATCHING PROJECTS CALCULATION ==========");
-    console.log("[INFO] Fetching freelancer with ID:", freelancerId);
-    console.log("Freelancer found:", !!freelancer);
     if (freelancer) {
-      console.log("Freelancer details:", { 
-        id: freelancerId, 
-        role: freelancer.role,
-        skills: freelancer.skills, 
-        hourlyRate: freelancer.hourlyRate,
-        availability: freelancer.weeklyAvailability,
-        rating: freelancer.averageRating,
-        reviews: freelancer.totalReviews
-      });
+      
     }
-    console.log("Query params: limit=" + limit + ", minScore=" + minMatchScore);
 
     if (!freelancer) {
-      console.error("[ERROR] Freelancer NOT FOUND in database!");
+      
       return res.status(404).json({ message: "Freelancer profile not found" });
     }
     if (freelancer.role !== "Freelancer") {
-      console.error("[ERROR] User is not a Freelancer, role is:", freelancer.role);
+      
       return res.status(404).json({ message: "Freelancer profile not found" });
     }
 
@@ -415,10 +393,7 @@ exports.getMatchingProjects = async (req, res) => {
       .populate("postedBy", "companyName -_id")
       .lean();
 
-    console.log(`\n[INFO] Found ${projects.length} OPEN projects in database`);
     if (projects.length === 0) {
-      console.log("[WARNING] NO OPEN PROJECTS FOUND!");
-      console.log("[INFO] RETURNING EMPTY MATCHES - NO PROJECTS TO MATCH");
       return res.json({
         freelancer: {
           id: freelancer._id,
@@ -436,7 +411,6 @@ exports.getMatchingProjects = async (req, res) => {
         message: "No projects available at the moment",
       });
     }
-    console.log("✅ Projects found - proceeding with scoring...\n");
 
     // Calculate match scores for each project
     const matches = projects
@@ -475,14 +449,6 @@ exports.getMatchingProjects = async (req, res) => {
         });
 
         if (project.title.includes("Dashboard")) {
-          console.log("  [STATS] Dashboard Project Match Score Breakdown:");
-          console.log("    Skill Match: " + skillMatch + "%");
-          console.log("    Experience Level: " + experienceLevel + "%");
-          console.log("    Rating: " + rating + "%");
-          console.log("    Budget: " + budget + "%");
-          console.log("    Availability: " + availability + "%");
-          console.log("    [SCORE] OVERALL SCORE: " + Math.round(overallScore) + "% (minThreshold: " + minMatchScore + "%)");
-          console.log("    Pass Filter? " + (overallScore >= minMatchScore ? "[PASS] YES" : "[FAIL] NO - FILTERED OUT"));
         }
 
         return {
@@ -491,7 +457,7 @@ exports.getMatchingProjects = async (req, res) => {
           description: project.description || "Project details",
           skills: projectSkills,
           experienceLevel: project.experienceLevel,
-          budgetRange: `₹${project.budgetMin} - ₹${project.budgetMax}`,
+          budgetRange: `â‚¹${project.budgetMin} - â‚¹${project.budgetMax}`,
           deadline: project.deadline,
           postedBy: project.postedBy?.companyName || "Unknown",
           matchMetrics: {
@@ -508,9 +474,6 @@ exports.getMatchingProjects = async (req, res) => {
       .sort((a, b) => b.overallMatch - a.overallMatch)
       .slice(0, limit);
 
-    console.log("  matches after filtering:", matches.length);
-    console.log("  minMatchScore:", minMatchScore);
-    console.log("  Filtered matches:", matches.map(m => ({ title: m.title, score: Math.round(m.overallMatch) })));
 
     // Exclude projects where freelancer already has a proposal
     const matchesWithoutExisting = await Promise.all(
@@ -528,9 +491,7 @@ exports.getMatchingProjects = async (req, res) => {
         };
         
         if (existingProposal) {
-          console.log(`  ✓ ${match.title}: Already has proposal (status: ${existingProposal.status})`);
         } else {
-          console.log(`  ○ ${match.title}: No existing proposal`);
         }
         
         return result;
@@ -539,15 +500,6 @@ exports.getMatchingProjects = async (req, res) => {
 
     // Filter out projects with existing proposals
     const finalMatches = matchesWithoutExisting;
-
-    console.log("\n[RESULTS] FINAL RESULTS:");
-    console.log("  ✓ Total matches after scoring (before proposal check): " + matches.length);
-    console.log("  ✓ Final matches to return (with proposal status): " + finalMatches.length);
-    console.log("  Projects in final response:", finalMatches.map(m => ({ 
-      title: m.title, 
-      score: Math.round(m.overallMatch),
-      hasProposal: m.hasExistingProposal
-    })));
 
     // Get statistics
     const statistics = {
@@ -559,10 +511,6 @@ exports.getMatchingProjects = async (req, res) => {
       topMatch: finalMatches[0]?.overallMatch || 0,
     };
 
-    console.log("[INFO] RESPONSE BEING SENT:");
-    console.log("  finalMatches count:", finalMatches.length);
-    console.log("  finalMatches details:", finalMatches.map(m => ({ title: m.title, score: m.overallMatch })));
-    console.log("[INFO] getMatchingProjects FINISHED ===============\n");
 
     res.json({
       freelancer: {
@@ -576,7 +524,7 @@ exports.getMatchingProjects = async (req, res) => {
       message: `Found ${finalMatches.length} suitable project${finalMatches.length !== 1 ? "s" : ""} for your profile`,
     });
   } catch (err) {
-    console.error("getMatchingProjects error:", err);
+    
     res.status(500).json({ message: err.message || "Failed to find matching projects" });
   }
 };

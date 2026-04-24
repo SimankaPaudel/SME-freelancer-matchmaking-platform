@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getEscrowById, submitWork } from "../services/escrowService";
 import "./Proposal.css";
@@ -22,8 +22,8 @@ export default function SubmitWork() {
           setMessage("Work has already been submitted for this project.");
         }
       } catch (err) {
-        console.error(err);
-        setMessage("❌ Escrow not created yet. Wait for SME deposit.");
+        
+        setMessage("âŒ Escrow not created yet. Wait for SME deposit.");
         setEscrow(null);
       } finally {
         setLoading(false);
@@ -34,12 +34,12 @@ export default function SubmitWork() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!escrow) return setMessage("❌ Cannot submit: escrow not created yet");
-    if (!file) return setMessage("❌ Please select a file to submit");
+    if (!escrow) return setMessage("âŒ Cannot submit: escrow not created yet");
+    if (!file) return setMessage("âŒ Please select a file to submit");
 
     const allowedStatuses = ["Pending Deposit", "Funded", "In Progress"];
     if (!allowedStatuses.includes(escrow.status)) {
-      return setMessage(`❌ Cannot submit. Current escrow status: ${escrow.status}`);
+      return setMessage(`âŒ Cannot submit. Current escrow status: ${escrow.status}`);
     }
 
     setSubmitting(true);
@@ -51,14 +51,14 @@ export default function SubmitWork() {
 
     try {
       const res = await submitWork(escrow._id, formData);
-      setMessage("✅ Work submitted successfully! Waiting for SME review.");
+      setMessage("âœ… Work submitted successfully! Waiting for SME review.");
       setEscrow(res.data.escrow || { ...escrow, status: "Submitted" });
       setFile(null);
       setComment("");
       setTimeout(() => navigate("/dashboard/my-proposals"), 2000);
     } catch (err) {
-      console.error(err);
-      setMessage(`❌ ${err.message}`);
+      
+      setMessage(`âŒ ${err.message}`);
     } finally {
       setSubmitting(false);
     }
@@ -75,7 +75,7 @@ export default function SubmitWork() {
       <h1 className="sw-title">Submit Work</h1>
       <p className="sw-error">{message}</p>
       <button className="sw-btn-back" onClick={() => navigate("/dashboard/my-proposals")}>
-        ← Back to My Proposals
+        â† Back to My Proposals
       </button>
     </div>
   );
@@ -97,11 +97,11 @@ export default function SubmitWork() {
         Submit Work for: <span>{escrow.projectId?.title || "Project"}</span>
       </h1>
 
-      {/* ── Escrow summary ── */}
+      {/* â”€â”€ Escrow summary â”€â”€ */}
       <div className="sw-summary">
         <div className="sw-summary-row">
           <span className="sw-label">Escrow Amount</span>
-          <span className="sw-value">₹{escrow.amount?.toLocaleString()}</span>
+          <span className="sw-value">â‚¹{escrow.amount?.toLocaleString()}</span>
         </div>
         <div className="sw-summary-row">
           <span className="sw-label">Status</span>
@@ -114,12 +114,12 @@ export default function SubmitWork() {
         </div>
       </div>
 
-      {/* ── Already submitted ── */}
+      {/* â”€â”€ Already submitted â”€â”€ */}
       {workAlreadySubmitted ? (
         <div className="sw-already">
-          <p className="sw-success">✅ Work already submitted. Awaiting SME review.</p>
+          <p className="sw-success">âœ… Work already submitted. Awaiting SME review.</p>
           <button className="sw-btn-back" onClick={() => navigate("/dashboard/my-proposals")}>
-            ← Back to My Proposals
+            â† Back to My Proposals
           </button>
         </div>
       ) : (
@@ -136,10 +136,10 @@ export default function SubmitWork() {
                 required
               />
               <label htmlFor="workFile" className="sw-file-btn">
-                📁 Choose File
+                ðŸ“ Choose File
               </label>
               <span className="sw-file-name">
-                {file ? `✓ ${file.name}` : "No file chosen"}
+                {file ? `âœ“ ${file.name}` : "No file chosen"}
               </span>
             </div>
             <p className="sw-field-hint">Upload your completed work (PDF, ZIP, DOC, images, etc.)</p>
@@ -161,7 +161,7 @@ export default function SubmitWork() {
           {/* Buttons */}
           <div className="sw-actions">
             <button type="submit" className="sw-btn-submit" disabled={submitting}>
-              {submitting ? "Submitting..." : "📤 Submit Work"}
+              {submitting ? "Submitting..." : "ðŸ“¤ Submit Work"}
             </button>
             <button
               type="button"
@@ -174,9 +174,9 @@ export default function SubmitWork() {
         </form>
       )}
 
-      {/* ── Feedback message ── */}
+      {/* â”€â”€ Feedback message â”€â”€ */}
       {message && (
-        <div className={`sw-message ${message.startsWith("✅") ? "success" : "error"}`}>
+        <div className={`sw-message ${message.startsWith("âœ…") ? "success" : "error"}`}>
           {message}
         </div>
       )}

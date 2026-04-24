@@ -1,4 +1,4 @@
-const request = require("supertest");
+﻿const request = require("supertest");
 const app = require("../server");
 const mongoose = require("mongoose");
 const User = require("../models/User");
@@ -14,7 +14,7 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
       } catch (err) {
-        console.error("MongoDB error:", err.message);
+        
       }
     }
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -22,10 +22,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
 
   // Tests use unique emails so no cleanup needed between tests
 
-  // ─────────────────────────────────────────────────────────
-  // IT001 – Login and Dashboard Connection
-  // ─────────────────────────────────────────────────────────
-  describe("IT001 – Login and Dashboard Connection", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT001 â€“ Login and Dashboard Connection
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT001 â€“ Login and Dashboard Connection", () => {
     test("Should complete login flow and provide data to load dashboard", async () => {
       // Register SME
       const smeRegRes = await request(app)
@@ -69,10 +69,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT002 – Project and Proposal Link
-  // ─────────────────────────────────────────────────────────
-  describe("IT002 – Project and Proposal Link", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT002 â€“ Project and Proposal Link
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT002 â€“ Project and Proposal Link", () => {
     test("Should verify project and proposal workflow", async () => {
       // Register freelancer
       const regRes = await request(app)
@@ -106,10 +106,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT003 – Payment and Work Submission Flow
-  // ─────────────────────────────────────────────────────────
-  describe("IT003 – Payment and Work Submission Flow", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT003 â€“ Payment and Work Submission Flow
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT003 â€“ Payment and Work Submission Flow", () => {
     test("Should verify payment workflow requires authentication", async () => {
       // Unauthenticated payment request should fail
       const response = await request(app)
@@ -123,10 +123,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT004 – Chat and File Sharing
-  // ─────────────────────────────────────────────────────────
-  describe("IT004 – Chat and File Sharing", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT004 â€“ Chat and File Sharing
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT004 â€“ Chat and File Sharing", () => {
     test("Should require authentication for chat", async () => {
       const response = await request(app)
         .get("/api/chat");
@@ -135,10 +135,10 @@ describe("INTEGRATION TESTS - Complete Workflows", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT005 – Dispute Handling with Admin
-  // ─────────────────────────────────────────────────────────
-  describe("IT005 – Dispute Handling with Admin", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT005 â€“ Dispute Handling with Admin
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT005 â€“ Dispute Handling with Admin", () => {
     test("Should require authentication for disputes", async () => {
       const response = await request(app)
         .get("/api/admin/disputes");

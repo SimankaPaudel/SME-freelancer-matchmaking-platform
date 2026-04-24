@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+﻿import { useRef, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function EsewaPaymentForm() {
@@ -9,7 +9,6 @@ export default function EsewaPaymentForm() {
   const [debugInfo, setDebugInfo] = useState(null);
 
   useEffect(() => {
-    console.log("[DEBUG] EsewaPaymentForm mounted");
     
     let formData = state?.formData;
     let esewaUrl = state?.esewaUrl;
@@ -24,14 +23,14 @@ export default function EsewaPaymentForm() {
           formData = JSON.parse(storedData);
           esewaUrl = storedUrl;
         } catch (e) {
-          console.error("Parse error:", e);
+          
         }
       }
     }
 
     // Validate data
     if (!formData || !esewaUrl) {
-      console.error("❌ Missing payment data");
+      
       setStatus("error");
       setTimeout(() => {
         alert("Payment data missing. Please try again.");
@@ -40,7 +39,7 @@ export default function EsewaPaymentForm() {
       return;
     }
 
-    // ✅ Store debug info
+    // âœ… Store debug info
     setDebugInfo({
       url: esewaUrl,
       fields: Object.keys(formData).length,
@@ -49,26 +48,14 @@ export default function EsewaPaymentForm() {
       signatureLength: formData.signature?.length
     });
 
-    console.log("\n" + "=".repeat(60));
-    console.log("[DEBUG] SUBMITTING TO ESEWA");
-    console.log("=".repeat(60));
-    console.log("URL:", esewaUrl);
-    console.log("\nForm Data:");
     Object.entries(formData).forEach(([key, value]) => {
-      console.log(`  ${key}: "${value}"`);
     });
-    console.log("\nSignature Analysis:");
-    console.log("  Length:", formData.signature?.length);
-    console.log("  First 20 chars:", formData.signature?.substring(0, 20));
-    console.log("  Last 20 chars:", formData.signature?.substring(formData.signature?.length - 20));
-    console.log("=".repeat(60) + "\n");
     
     setStatus("submitting");
 
     // Submit form after render
     setTimeout(() => {
       if (formRef.current) {
-        console.log("✅ Submitting form...");
         formRef.current.submit();
         
         // Clear storage after submit
@@ -106,7 +93,7 @@ export default function EsewaPaymentForm() {
         flexDirection: 'column',
         gap: '1rem'
       }}>
-        <p>❌ Payment data missing. Redirecting...</p>
+        <p>âŒ Payment data missing. Redirecting...</p>
       </div>
     );
   }
@@ -127,7 +114,7 @@ export default function EsewaPaymentForm() {
       <div className="loading-spinner"></div>
       <p>Redirecting to eSewa payment gateway...</p>
       <p style={{ fontSize: '0.9rem', color: '#666' }}>
-        Amount: ₹{formData.total_amount}
+        Amount: â‚¹{formData.total_amount}
       </p>
       
       {/* Debug info in development */}

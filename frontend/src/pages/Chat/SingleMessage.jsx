@@ -36,11 +36,11 @@ export default function SingleMessage({ message, onReply }) {
       {message.file?.path && (
         <a
           className="msg-file"
-          href={`http://localhost:5000/${message.file.path}`}
+          href={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/${message.file.path}`}
           target="_blank"
           rel="noreferrer"
         >
-          [File] {message.file.fileName || "Download file"}
+          📄 {message.file.fileName || "Download file"}
         </a>
       )}
 

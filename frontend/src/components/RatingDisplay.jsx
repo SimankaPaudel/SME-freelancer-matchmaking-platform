@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getReviewsForUser } from "../services/reviewService";
 
@@ -19,7 +19,7 @@ function Stars({ value, size = "md" }) {
                   : "#ddd",
           }}
         >
-          ★
+          â˜…
         </span>
       ))}
     </span>
@@ -42,7 +42,7 @@ export default function RatingDisplay({ userId, onViewReviews }) {
         const response = await getReviewsForUser(userId);
         setStats(response.data.stats);
       } catch (err) {
-        console.error("Failed to fetch reviews:", err);
+        
       } finally {
         setLoading(false);
       }

@@ -37,20 +37,21 @@ export default function GlobalSearch() {
 
     try {
       // Both SMEs and Freelancers can search all three categories
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
       const projectRes = await fetch(
-        `http://localhost:5000/api/projects?search=${query}`,
+        `${API_BASE_URL}/projects?search=${query}`,
         { headers: authHeader }
       );
       const projectData = await projectRes.json();
 
       const freelancerRes = await fetch(
-        `http://localhost:5000/api/auth/search-freelancers?q=${query}`,
+        `${API_BASE_URL}/auth/search-freelancers?q=${query}`,
         { headers: authHeader }
       );
       const freelancerData = await freelancerRes.json();
 
       const smeRes = await fetch(
-        `http://localhost:5000/api/auth/search-smes?q=${query}`,
+        `${API_BASE_URL}/auth/search-smes?q=${query}`,
         { headers: authHeader }
       );
       const smeData = await smeRes.json();

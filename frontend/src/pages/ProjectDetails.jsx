@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import RatingDisplay from "../components/RatingDisplay";
 import "./Project.css";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export default function ProjectDetails() {
   const { projectId } = useParams();
@@ -13,11 +15,8 @@ export default function ProjectDetails() {
   const [proposalCount, setProposalCount] = useState(0);
   const token = localStorage.getItem("accessToken");
 
-  console.log("🔍 ProjectDetails component mounted");
-  console.log("Project ID from URL:", projectId);
 
   useEffect(() => {
-    console.log("useEffect triggered");
     fetchProjectDetails();
   }, [projectId]);
 
@@ -26,55 +25,44 @@ export default function ProjectDetails() {
       setLoading(true);
       setError("");
 
-      console.log("==== ProjectDetails Debug ====");
-      console.log("Fetching project ID:", projectId);
-      console.log("Token available:", !!token);
 
       // Fetch project details
       const projectRes = await fetch(
-        `http://localhost:5000/api/projects/${projectId}`
+        `${API_BASE_URL}/projects/${projectId}`
       );
 
-      console.log("API Response Status:", projectRes.status);
-      console.log("API Response OK:", projectRes.ok);
 
       if (!projectRes.ok) {
         const errorData = await projectRes.json().catch(() => ({}));
-        console.error("API Error:", errorData);
+        
         throw new Error(errorData.message || `Server returned ${projectRes.status}`);
       }
 
       const projectData = await projectRes.json();
-      console.log("Project data received:", projectData);
-      console.log("Project ID in data:", projectData._id);
-      console.log("Posted by:", projectData.postedBy);
       
       setProject(projectData);
 
       // SME data is already populated in projectData.postedBy
       if (projectData.postedBy) {
-        console.log("Setting SME data:", projectData.postedBy);
         setSme(projectData.postedBy);
       }
 
       // Fetch proposal count
       try {
         const countRes = await fetch(
-          `http://localhost:5000/api/proposals/project/${projectId}/count`,
+          `${API_BASE_URL}/proposals/project/${projectId}/count`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         const countData = await countRes.json();
-        console.log("Proposal count:", countData.count);
         setProposalCount(countData.count || 0);
       } catch (countErr) {
         console.warn("Failed to fetch proposal count:", countErr);
         setProposalCount(0);
       }
       
-      console.log("==== Fetch Complete ====");
     } catch (err) {
-      console.error("==== Fetch Error ====");
-      console.error(err);
+      
+      
       setError(err.message || "Failed to load project");
     } finally {
       setLoading(false);
@@ -97,7 +85,7 @@ export default function ProjectDetails() {
     return (
       <div className="page-container">
         <button className="back-btn" onClick={() => navigate(-1)}>
-          ← Back
+          â† Back
         </button>
         <div style={{
           textAlign: "center",
@@ -107,7 +95,7 @@ export default function ProjectDetails() {
           <div style={{
             fontSize: "20px",
             marginBottom: "20px"
-          }}>⏳ Loading project details...</div>
+          }}>â³ Loading project details...</div>
           <p style={{ fontSize: "12px", color: "#b08968" }}>
             Project ID: {projectId}
           </p>
@@ -120,7 +108,7 @@ export default function ProjectDetails() {
     return (
       <div className="page-container">
         <button className="back-btn" onClick={() => navigate(-1)}>
-          ← Back
+          â† Back
         </button>
         <div style={{
           marginTop: "20px",
@@ -130,7 +118,7 @@ export default function ProjectDetails() {
           border: "1px solid #f8d0d0"
         }}>
           <p style={{ color: "#c0392b", fontSize: "16px", fontWeight: "600", margin: 0 }}>
-            ❌ Error Loading Project
+            âŒ Error Loading Project
           </p>
           <p style={{ color: "#c0392b", margin: "10px 0 0 0" }}>
             {error}
@@ -151,7 +139,7 @@ export default function ProjectDetails() {
               cursor: "pointer"
             }}
           >
-            🔄 Try Again
+            ðŸ”„ Try Again
           </button>
         </div>
       </div>
@@ -162,7 +150,7 @@ export default function ProjectDetails() {
     return (
       <div className="page-container">
         <button className="back-btn" onClick={() => navigate(-1)}>
-          ← Back
+          â† Back
         </button>
         <div style={{
           marginTop: "20px",
@@ -170,7 +158,7 @@ export default function ProjectDetails() {
           padding: "40px",
           color: "#999"
         }}>
-          <p style={{ fontSize: "16px" }}>📭 Project not found</p>
+          <p style={{ fontSize: "16px" }}>ðŸ“­ Project not found</p>
           <p style={{ fontSize: "12px" }}>Project ID: {projectId}</p>
         </div>
       </div>
@@ -184,7 +172,7 @@ export default function ProjectDetails() {
   return (
     <div className="page-container">
       <button className="back-btn" onClick={() => navigate(-1)}>
-        ← Back
+        â† Back
       </button>
 
       <div className="project-details-container">
@@ -198,7 +186,7 @@ export default function ProjectDetails() {
             <div className="budget-box">
               <div className="budget-label">Budget</div>
               <div className="budget-value">
-                ₹{project.budgetMin?.toLocaleString()} - ₹{project.budgetMax?.toLocaleString()}
+                â‚¹{project.budgetMin?.toLocaleString()} - â‚¹{project.budgetMax?.toLocaleString()}
               </div>
             </div>
           </div>
@@ -207,7 +195,7 @@ export default function ProjectDetails() {
         {/* Project Meta */}
         <div className="project-meta">
           <div className="meta-item">
-            <span className="meta-label">📅 Deadline:</span>
+            <span className="meta-label">ðŸ“… Deadline:</span>
             <span
               className={`meta-value ${
                 isDeadlinePassed ? "deadline-passed" : isDeadlineSoon ? "deadline-soon" : ""
@@ -217,15 +205,15 @@ export default function ProjectDetails() {
             </span>
           </div>
           <div className="meta-item">
-            <span className="meta-label">📊 Level:</span>
+            <span className="meta-label">ðŸ“Š Level:</span>
             <span className="meta-value">{project.experienceLevel || "Intermediate"}</span>
           </div>
           <div className="meta-item">
-            <span className="meta-label">👥 Proposals:</span>
+            <span className="meta-label">ðŸ‘¥ Proposals:</span>
             <span className="meta-value">{proposalCount}</span>
           </div>
           <div className="meta-item">
-            <span className="meta-label">📍 Status:</span>
+            <span className="meta-label">ðŸ“ Status:</span>
             <span className="meta-value">{project.status || "Open"}</span>
           </div>
         </div>
@@ -261,7 +249,7 @@ export default function ProjectDetails() {
             <div className="sme-profile-card">
               <div className="sme-info">
                 <h3>{sme.companyName || sme.fullName}</h3>
-                <p className="sme-email">📧 {sme.email}</p>
+                <p className="sme-email">ðŸ“§ {sme.email}</p>
                 {sme.description && (
                   <p className="sme-description">{sme.description}</p>
                 )}
@@ -274,14 +262,14 @@ export default function ProjectDetails() {
         {/* Action Buttons */}
         <div className="project-actions">
           <button className="btn-primary" onClick={handleApply}>
-            ✨ Apply for This Project
+            âœ¨ Apply for This Project
           </button>
           {sme && (
             <button
               className="btn-secondary"
               onClick={() => navigate(`/profile/${sme._id}`)}
             >
-              👤 View SME Profile
+              ðŸ‘¤ View SME Profile
             </button>
           )}
         </div>

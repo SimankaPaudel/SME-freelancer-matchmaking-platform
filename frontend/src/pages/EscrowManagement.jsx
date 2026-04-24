@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Escrow.css";
 import "./EscrowManagement.css";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export default function EscrowManagement() {
   const [escrows, setEscrows] = useState([]);
@@ -15,7 +17,7 @@ export default function EscrowManagement() {
 
   const fetchEscrows = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/escrows/my-escrows", {
+      const res = await fetch(`${API_BASE_URL}/escrows/my-escrows`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -26,7 +28,7 @@ export default function EscrowManagement() {
       const data = await res.json();
       setEscrows(Array.isArray(data) ? data : []);
     } catch (err) {
-      console.error(err);
+      
       setError("Failed to load escrows");
     } finally {
       setLoading(false);
@@ -38,7 +40,7 @@ export default function EscrowManagement() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/escrows/${escrowId}/initiate-payment`,
+        `${API_BASE_URL}/escrows/${escrowId}/initiate-payment`,
         {
           method: "POST",
           headers: {
@@ -68,8 +70,8 @@ export default function EscrowManagement() {
         },
       });
     } catch (err) {
-      console.error("❌ Deposit error:", err);
-      alert("❌ Deposit failed: " + err.message);
+      
+      alert("âŒ Deposit failed: " + err.message);
     }
   };
 
@@ -83,7 +85,7 @@ export default function EscrowManagement() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/escrows/simulate-payment`, {
+      const res = await fetch(`${API_BASE_URL}/escrows/simulate-payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,18 +97,18 @@ export default function EscrowManagement() {
       const data = await res.json();
 
       if (data.success) {
-        alert("✅ " + data.message);
+        alert("âœ… " + data.message);
         fetchEscrows();
       } else {
-        alert("❌ Test payment failed: " + data.message);
+        alert("âŒ Test payment failed: " + data.message);
       }
     } catch (err) {
-      console.error("Test payment error:", err);
-      alert("❌ Test payment failed: " + err.message);
+      
+      alert("âŒ Test payment failed: " + err.message);
     }
   };
 
-  // ── Status badge color helper ───────────────────────────────────────────
+  // â”€â”€ Status badge color helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const getStatusStyle = (status) => {
     const map = {
       "Pending Deposit": { background: "#fefcbf", color: "#744210" },
@@ -152,7 +154,7 @@ export default function EscrowManagement() {
 
           return (
             <div className="escrow-card" key={escrow._id}>
-              {/* ── Header ── */}
+              {/* â”€â”€ Header â”€â”€ */}
               <div className="escrow-header">
                 <h3>{escrow.projectId?.title || "Project"}</h3>
                 <span
@@ -169,11 +171,11 @@ export default function EscrowManagement() {
                 </span>
               </div>
 
-              {/* ── Details ── */}
+              {/* â”€â”€ Details â”€â”€ */}
               <div className="escrow-details">
                 <div className="detail-row">
                   <span className="label">Amount:</span>
-                  <span className="value">₹{escrow.amount?.toLocaleString()}</span>
+                  <span className="value">â‚¹{escrow.amount?.toLocaleString()}</span>
                 </div>
                 <div className="detail-row">
                   <span className="label">Freelancer:</span>
@@ -211,7 +213,7 @@ export default function EscrowManagement() {
                 )}
               </div>
 
-              {/* ── Timeline ── */}
+              {/* â”€â”€ Timeline â”€â”€ */}
               <div className="timeline-section">
                 <h4>Timeline</h4>
                 <div className="timeline">
@@ -229,17 +231,17 @@ export default function EscrowManagement() {
                 </div>
               </div>
 
-              {/* ── Action Buttons ── */}
+              {/* â”€â”€ Action Buttons â”€â”€ */}
               <div className="escrow-actions">
 
-                {/* 1. SME: Pending Deposit → deposit funds */}
+                {/* 1. SME: Pending Deposit â†’ deposit funds */}
                 {escrow.status === "Pending Deposit" && (
                   <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                     <button
                       className="btn-primary"
                       onClick={() => handleDeposit(escrow._id)}
                     >
-                      Deposit via eSewa (₹{escrow.amount})
+                      Deposit via eSewa (â‚¹{escrow.amount})
                     </button>
                     <button
                       className="btn-warning"
@@ -256,11 +258,11 @@ export default function EscrowManagement() {
                   </div>
                 )}
 
-                {/* 2. SME: Funded / In Progress → can raise dispute */}
+                {/* 2. SME: Funded / In Progress â†’ can raise dispute */}
                 {["Funded", "In Progress"].includes(escrow.status) && (
                   <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
                     <span style={{ color: "#2b6cb0" }}>
-                      ⏳ Waiting for freelancer to submit work...
+                      â³ Waiting for freelancer to submit work...
                     </span>
                     <button
                       onClick={() =>
@@ -281,7 +283,7 @@ export default function EscrowManagement() {
                   </div>
                 )}
 
-                {/* 3. ✅ SME: Submitted → REVIEW WORK */}
+                {/* 3. âœ… SME: Submitted â†’ REVIEW WORK */}
                 {escrow.status === "Submitted" && (
                   <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
                     <button
@@ -308,16 +310,16 @@ export default function EscrowManagement() {
                         fontSize: "13px",
                       }}
                     >
-                      ⏳ Awaiting your review
+                      â³ Awaiting your review
                     </span>
                   </div>
                 )}
 
-                {/* 4. SME: Rejected → awaiting resubmission or dispute */}
+                {/* 4. SME: Rejected â†’ awaiting resubmission or dispute */}
                 {escrow.status === "Rejected" && (
                   <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
                     <span style={{ color: "#c53030", fontSize: "13px" }}>
-                      ❌ Work rejected — awaiting freelancer resubmission
+                      âŒ Work rejected â€” awaiting freelancer resubmission
                     </span>
                     <button
                       onClick={() =>
@@ -347,7 +349,7 @@ export default function EscrowManagement() {
                       margin: 0,
                     }}
                   >
-                    ✅ Payment released to freelancer
+                    âœ… Payment released to freelancer
                   </p>
                 )}
 
@@ -360,7 +362,7 @@ export default function EscrowManagement() {
                       margin: 0,
                     }}
                   >
-                    ⚠️ Dispute raised — awaiting admin resolution
+                    âš ï¸ Dispute raised â€” awaiting admin resolution
                   </p>
                 )}
 
@@ -373,7 +375,7 @@ export default function EscrowManagement() {
                       margin: 0,
                     }}
                   >
-                    Refund of ₹{escrow.refundAmount?.toLocaleString()} processed
+                    Refund of â‚¹{escrow.refundAmount?.toLocaleString()} processed
                   </p>
                 )}
               </div>

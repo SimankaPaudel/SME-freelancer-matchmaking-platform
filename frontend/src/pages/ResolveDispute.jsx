@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -27,8 +27,8 @@ export default function ResolveDispute() {
         );
         setEscrow(res.data);
       } catch (err) {
-        console.error(err);
-        setMessage("❌ Failed to load escrow details");
+        
+        setMessage("âŒ Failed to load escrow details");
       } finally {
         setLoading(false);
       }
@@ -37,13 +37,13 @@ export default function ResolveDispute() {
   }, [escrowId]);
 
   const handleResolve = async () => {
-    if (!reason.trim()) return setMessage("❌ Please enter a reason for the resolution");
+    if (!reason.trim()) return setMessage("âŒ Please enter a reason for the resolution");
 
     setSubmitting(true);
     setMessage("");
 
     try {
-      // ✅ FIXED: correct endpoint + correct payload keys matching backend
+      // âœ… FIXED: correct endpoint + correct payload keys matching backend
       const res = await axios.post(
         `http://localhost:5000/api/escrows/${escrowId}/resolve-dispute`,
         {
@@ -56,12 +56,12 @@ export default function ResolveDispute() {
         }
       );
 
-      setMessage("✅ Dispute resolved successfully!");
+      setMessage("âœ… Dispute resolved successfully!");
       setTimeout(() => navigate("/dashboard/escrow-management"), 2500);
     } catch (err) {
-      console.error(err);
+      
       const errMsg = err.response?.data?.message || "Failed to resolve dispute";
-      setMessage(`❌ ${errMsg}`);
+      setMessage(`âŒ ${errMsg}`);
     } finally {
       setSubmitting(false);
     }
@@ -89,11 +89,11 @@ export default function ResolveDispute() {
             marginBottom: "24px",
           }}
         >
-          <h3 style={{ marginTop: 0 }}>⚠️ Disputed Escrow Details</h3>
+          <h3 style={{ marginTop: 0 }}>âš ï¸ Disputed Escrow Details</h3>
           <p><strong>Project:</strong> {escrow.projectId?.title || "N/A"}</p>
           <p><strong>Freelancer:</strong> {escrow.freelancerId?.fullName} ({escrow.freelancerId?.email})</p>
           <p><strong>SME:</strong> {escrow.smeId?.fullName} ({escrow.smeId?.email})</p>
-          <p><strong>Escrow Amount:</strong> ₹{escrow.amount?.toLocaleString()}</p>
+          <p><strong>Escrow Amount:</strong> â‚¹{escrow.amount?.toLocaleString()}</p>
           <p><strong>Dispute Reason:</strong> {escrow.disputeReason}</p>
         </div>
       )}
@@ -113,7 +113,7 @@ export default function ResolveDispute() {
               onChange={() => setResolution("release")}
               style={{ marginRight: "6px" }}
             />
-            ✅ Release Payment to Freelancer
+            âœ… Release Payment to Freelancer
           </label>
           <label style={{ cursor: "pointer" }}>
             <input
@@ -124,7 +124,7 @@ export default function ResolveDispute() {
               onChange={() => setResolution("refund")}
               style={{ marginRight: "6px" }}
             />
-            💰 Refund to SME
+            ðŸ’° Refund to SME
           </label>
         </div>
       </div>
@@ -150,7 +150,7 @@ export default function ResolveDispute() {
             }}
           />
           <span style={{ marginLeft: "12px", color: "#555" }}>
-            % → Refund Amount: <strong>₹{refundAmount}</strong>
+            % â†’ Refund Amount: <strong>â‚¹{refundAmount}</strong>
           </span>
         </div>
       )}
@@ -195,8 +195,8 @@ export default function ResolveDispute() {
           {submitting
             ? "Processing..."
             : resolution === "refund"
-            ? `💰 Refund ₹${refundAmount} to SME`
-            : "✅ Release Payment to Freelancer"}
+            ? `ðŸ’° Refund â‚¹${refundAmount} to SME`
+            : "âœ… Release Payment to Freelancer"}
         </button>
 
         <button
@@ -222,9 +222,9 @@ export default function ResolveDispute() {
             marginTop: "16px",
             padding: "12px",
             borderRadius: "6px",
-            background: message.startsWith("✅") ? "#f0fff4" : "#fff5f5",
-            color: message.startsWith("✅") ? "#276749" : "#c53030",
-            border: `1px solid ${message.startsWith("✅") ? "#9ae6b4" : "#feb2b2"}`,
+            background: message.startsWith("âœ…") ? "#f0fff4" : "#fff5f5",
+            color: message.startsWith("âœ…") ? "#276749" : "#c53030",
+            border: `1px solid ${message.startsWith("âœ…") ? "#9ae6b4" : "#feb2b2"}`,
           }}
         >
           {message}

@@ -1,4 +1,4 @@
-const Proposal = require("../models/Proposal");
+﻿const Proposal = require("../models/Proposal");
 const Project = require("../models/Project");
 const User = require("../models/User");
 const Escrow = require("../models/EscrowPayment");
@@ -49,7 +49,7 @@ exports.submitProposal = async (req, res) => {
       await createNotification({
         userId: project.postedBy,
         title: "New Proposal Received",
-        message: `Your project "${project.title}" has received a new proposal for ₹${req.body.bidAmount}`,
+        message: `Your project "${project.title}" has received a new proposal for â‚¹${req.body.bidAmount}`,
         type: "proposal_received",
         link: `/dashboard/manage-projects/${req.body.projectId}`,
       });
@@ -57,7 +57,7 @@ exports.submitProposal = async (req, res) => {
 
     res.status(201).json(proposal);
   } catch (err) {
-    console.error("Submit proposal error:", err);
+    
     res.status(500).json({ message: "Proposal submission failed" });
   }
 };
@@ -73,7 +73,7 @@ exports.getProjectProposals = async (req, res) => {
 
     res.json(proposals);
   } catch (err) {
-    console.error("Get project proposals error:", err);
+    
     res.status(500).json({ message: "Failed to fetch proposals" });
   }
 };
@@ -89,13 +89,13 @@ exports.getMyProposals = async (req, res) => {
 
     res.json(proposals);
   } catch (err) {
-    console.error("Get my proposals error:", err);
+    
     res.status(500).json({ message: "Failed to fetch proposals" });
   }
 };
 
 /**
- * ✅ FIXED: Update proposal status - escrow amount is already in NPR (no conversion needed)
+ * âœ… FIXED: Update proposal status - escrow amount is already in NPR (no conversion needed)
  */
 exports.updateProposalStatus = async (req, res) => {
   try {
@@ -122,10 +122,6 @@ exports.updateProposalStatus = async (req, res) => {
       return res.status(403).json({ message: "Unauthorized" });
     }
 
-    console.log("\n[INFO] Updating Proposal Status");
-    console.log("   Proposal ID:", proposal._id);
-    console.log("   New Status:", status);
-    console.log("   Bid Amount (NPR):", proposal.bidAmount);
 
     // Update proposal status
     proposal.status = status;
@@ -141,9 +137,8 @@ exports.updateProposalStatus = async (req, res) => {
       escrow = await Escrow.findOne({ proposalId: proposal._id });
 
       if (!escrow) {
-        console.log("   Creating escrow...");
         
-        // ✅ CRITICAL: Amount is already in NPR, use it directly
+        // âœ… CRITICAL: Amount is already in NPR, use it directly
         // No conversion needed - bidAmount is in NPR from the proposal form
         const amountInNPR = proposal.bidAmount;
 
@@ -159,31 +154,25 @@ exports.updateProposalStatus = async (req, res) => {
           paymentGateway: "eSewa",
           timeline: [
             { 
-              action: `Proposal Accepted – Escrow Created (₹${amountInNPR})`
+              action: `Proposal Accepted â€“ Escrow Created (â‚¹${amountInNPR})`
             }
           ],
         });
 
-        console.log("   ✅ Escrow created:");
-        console.log("      Escrow ID:", escrow._id);
-        console.log("      Amount (NPR):", escrow.amount);
-        console.log("      Currency:", escrow.currency);
       } else {
-        console.log("   ⚠️ Escrow already exists:", escrow._id);
       }
 
       // Close the project to prevent other acceptances
       project.status = "Closed";
       await project.save();
       
-      console.log("   ✅ Project closed");
     }
 
     // Send notification based on status change (AFTER escrow is created)
     if (status === "Accepted") {
       await createNotification({
         userId: proposal.freelancerId,
-        title: "✅ Proposal Accepted",
+        title: "âœ… Proposal Accepted",
         message: `Your proposal for "${project.title}" has been accepted! Escrow will be created shortly.`,
         type: "proposal_accepted",
         link: "/dashboard/my-proposals",
@@ -191,14 +180,13 @@ exports.updateProposalStatus = async (req, res) => {
     } else if (status === "Rejected") {
       await createNotification({
         userId: proposal.freelancerId,
-        title: "❌ Proposal Rejected",
+        title: "âŒ Proposal Rejected",
         message: `Your proposal for "${project.title}" was not selected. Keep trying!`,
         type: "general",
         link: "/dashboard/my-proposals",
       });
     }
 
-    console.log("   ✅ Proposal status updated\n");
 
     res.status(200).json({
       message: "Proposal status updated successfully",
@@ -206,7 +194,7 @@ exports.updateProposalStatus = async (req, res) => {
       escrow, // return escrow immediately to frontend
     });
   } catch (err) {
-    console.error("Update proposal status error:", err);
+    
     res.status(500).json({ message: "Failed to update proposal status" });
   }
 };
@@ -259,7 +247,7 @@ exports.cancelProposal = async (req, res) => {
 
     res.json({ message: "Proposal cancelled successfully", proposal });
   } catch (err) {
-    console.error("Cancel proposal error:", err);
+    
     res.status(500).json({ message: "Failed to cancel proposal" });
   }
 };
@@ -316,7 +304,7 @@ exports.updateProposal = async (req, res) => {
     await proposal.save();
     res.json({ message: "Proposal updated successfully", proposal });
   } catch (err) {
-    console.error("Update proposal error:", err);
+    
     res.status(500).json({ message: "Failed to update proposal" });
   }
 };

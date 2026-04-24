@@ -1,38 +1,38 @@
-const User = require("../models/User");
+﻿const User = require("../models/User");
 const Project = require("../models/Project");
 const EscrowPayment = require("../models/EscrowPayment");
 const Review = require("../models/Review");
 
-// ── helper ────────────────────────────────────────────────
+// â”€â”€ helper â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function startOfMonth(date) {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // GET /api/admin/analytics
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.getAnalytics = async (req, res) => {
   try {
     const now = new Date();
 
-    // ── User counts ──
+    // â”€â”€ User counts â”€â”€
     const totalUsers      = await User.countDocuments({ role: { $ne: "Admin" } });
     const totalFreelancers = await User.countDocuments({ role: "Freelancer" });
     const totalSMEs        = await User.countDocuments({ role: "SME" });
     const pendingKYC       = await User.countDocuments({ kycStatus: "Pending", kycDocument: { $exists: true, $ne: null } });
 
-    // ── Project counts ──
+    // â”€â”€ Project counts â”€â”€
     const totalProjects     = await Project.countDocuments();
     const activeProjects    = await Project.countDocuments({ status: "Open" });
     const completedProjects = await Project.countDocuments({ status: "Closed" });
 
-    // ── Escrow / payment counts ──
+    // â”€â”€ Escrow / payment counts â”€â”€
     const totalEscrows   = await EscrowPayment.countDocuments();
     const disputedCount  = await EscrowPayment.countDocuments({ status: "Disputed" });
     const releasedEscrows = await EscrowPayment.find({ status: "Released" });
     const totalPayments  = releasedEscrows.reduce((sum, e) => sum + (e.amount || 0), 0);
 
-    // ── Monthly transaction volume (last 6 months) ──
+    // â”€â”€ Monthly transaction volume (last 6 months) â”€â”€
     const monthlyData = [];
     for (let i = 5; i >= 0; i--) {
       const d     = new Date(now.getFullYear(), now.getMonth() - i, 1);
@@ -51,7 +51,7 @@ exports.getAnalytics = async (req, res) => {
       });
     }
 
-    // ── Top freelancers (by released escrow count) ──
+    // â”€â”€ Top freelancers (by released escrow count) â”€â”€
     const topFreelancers = await EscrowPayment.aggregate([
       { $match: { status: "Released" } },
       { $group: { _id: "$freelancerId", completedJobs: { $sum: 1 }, totalEarned: { $sum: "$amount" } } },
@@ -62,7 +62,7 @@ exports.getAnalytics = async (req, res) => {
       { $project: { _id: 1, completedJobs: 1, totalEarned: 1, fullName: "$user.fullName", email: "$user.email" } },
     ]);
 
-    // ── Most active SMEs (by project count) ──
+    // â”€â”€ Most active SMEs (by project count) â”€â”€
     const topSMEs = await Project.aggregate([
       { $group: { _id: "$postedBy", projectCount: { $sum: 1 } } },
       { $sort: { projectCount: -1 } },
@@ -72,7 +72,7 @@ exports.getAnalytics = async (req, res) => {
       { $project: { _id: 1, projectCount: 1, fullName: "$user.fullName", email: "$user.email" } },
     ]);
 
-    // ── Dispute summary ──
+    // â”€â”€ Dispute summary â”€â”€
     const disputedEscrows = await EscrowPayment.find({ status: "Disputed" })
       .populate("projectId", "title")
       .populate("freelancerId", "fullName email")
@@ -90,14 +90,14 @@ exports.getAnalytics = async (req, res) => {
       disputedEscrows,
     });
   } catch (err) {
-    console.error("getAnalytics error:", err);
+    
     res.status(500).json({ message: err.message });
   }
 };
 
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // GET /api/admin/users
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.getUsers = async (req, res) => {
   try {
     const { role, kycStatus, search, page = 1, limit = 20 } = req.query;
@@ -123,9 +123,9 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // PATCH /api/admin/users/:id/toggle-active
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.toggleUserActive = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -141,10 +141,10 @@ exports.toggleUserActive = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // PATCH /api/admin/users/:id/kyc
 // body: { status: "Approved" | "Rejected", note?: string }
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.updateKYC = async (req, res) => {
   try {
     const { status, note } = req.body;
@@ -163,8 +163,8 @@ exports.updateKYC = async (req, res) => {
     const { createNotification } = require("../utils/notificationHelper");
     
     const kycMessages = {
-      "Approved": "✅ Congratulations! Your KYC has been APPROVED! You can now post projects and access all features.",
-      "Rejected": `❌ Your KYC verification was REJECTED. ${note ? `Reason: ${note}` : "Please resubmit with updated documents."}`,
+      "Approved": "âœ… Congratulations! Your KYC has been APPROVED! You can now post projects and access all features.",
+      "Rejected": `âŒ Your KYC verification was REJECTED. ${note ? `Reason: ${note}` : "Please resubmit with updated documents."}`,
     };
     
     await createNotification({
@@ -181,9 +181,9 @@ exports.updateKYC = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // GET /api/admin/projects
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.getProjects = async (req, res) => {
   try {
     const { status, search, page = 1, limit = 20 } = req.query;
@@ -205,9 +205,9 @@ exports.getProjects = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // GET /api/admin/disputes
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.getDisputes = async (req, res) => {
   try {
     const disputes = await EscrowPayment.find({ status: "Disputed" })
@@ -222,10 +222,10 @@ exports.getDisputes = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // PATCH /api/admin/disputes/:escrowId/resolve
 // body: { resolution: "release" | "refund", note }
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.resolveDispute = async (req, res) => {
   try {
     const { resolution, note } = req.body;
@@ -260,7 +260,7 @@ exports.resolveDispute = async (req, res) => {
       link: "/dashboard/escrow-management",
     });
 
-    res.json({ message: `Dispute resolved — ${escrow.status}`, escrow });
+    res.json({ message: `Dispute resolved â€” ${escrow.status}`, escrow });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

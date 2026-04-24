@@ -3,7 +3,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 32px 20px;
-  background: linear-gradient(180deg, #fef9f4 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #f5f0e6 0%, #f0ebe0 100%);
   min-height: 100vh;
 }
 
@@ -386,11 +386,11 @@
 }
 
 .filters {
-  background: linear-gradient(135deg, #ffffff 0%, #faf8f5 100%);
+  background: linear-gradient(135deg, #fdf8f1 0%, #f9f3eb 100%);
   padding: 28px;
   border-radius: 16px;
-  border: 1px solid #e8dcd0;
-  box-shadow: 0 8px 24px rgba(74, 55, 40, 0.1);
+  border: 1.5px solid #e8dcd0;
+  box-shadow: 0 8px 24px rgba(74, 55, 40, 0.12);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -404,12 +404,15 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .filters input,
 .filters select {
   width: 100%;
-  padding: 12px 16px;
+  padding: 13px 16px;
   border-radius: 10px;
   border: 1.5px solid #e0d4c0;
   background: #ffffff;
@@ -418,18 +421,21 @@
   box-sizing: border-box;
   transition: all 0.3s ease;
   font-family: inherit;
+  box-shadow: 0 2px 6px rgba(74, 55, 40, 0.05);
 }
 
 .filters input::placeholder {
   color: #a89880;
+  font-weight: 500;
 }
 
 .filters input:focus,
 .filters select:focus {
   outline: none;
   border-color: #b08968;
-  box-shadow: 0 0 0 4px rgba(176, 137, 104, 0.15);
+  box-shadow: 0 0 0 4px rgba(176, 137, 104, 0.15), 0 2px 8px rgba(74, 55, 40, 0.08);
   background: #fffbf7;
+  transform: translateY(-1px);
 }
 
 .filters button {
@@ -445,13 +451,13 @@
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(176, 137, 104, 0.25);
+  box-shadow: 0 4px 12px rgba(176, 137, 104, 0.3);
 }
 
 .filters button:hover {
   background: linear-gradient(135deg, #9d7559 0%, #6b4f3f 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(176, 137, 104, 0.35);
+  box-shadow: 0 6px 16px rgba(176, 137, 104, 0.4);
 }
 
 .filters button:active {
@@ -887,4 +893,71 @@
 
 .actions .edit:hover {
   background-color: #9d7559;
+}
+
+/* ─── Mobile Responsive Enhancements ──────────────────────── */
+@media (max-width: 1024px) {
+  .project-card {
+    padding: 22px;
+  }
+
+  .actions button {
+    font-size: 12px;
+    padding: 7px 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 16px 12px;
+  }
+
+  .page-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .project-card {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .project-card h3 {
+    font-size: 18px;
+  }
+
+  .edit-form {
+    padding: 16px;
+  }
+
+  .edit-form h3 {
+    font-size: 18px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .edit-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .edit-actions button {
+    width: 100%;
+    font-size: 13px;
+    padding: 10px 14px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .actions button {
+    flex: 1;
+    min-width: 80px;
+    font-size: 11px;
+    padding: 6px 10px;
+  }
 }

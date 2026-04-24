@@ -6,6 +6,19 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+# Accept build arguments for environment variables
+# These will be passed from docker-compose.yaml
+ARG VITE_API_URL
+ARG VITE_SOCKET_URL
+ARG VITE_ESEWA_PAYMENT_URL
+ARG VITE_ENV=production
+
+# Set environment variables for build
+ENV VITE_API_URL=${VITE_API_URL}
+ENV VITE_SOCKET_URL=${VITE_SOCKET_URL}
+ENV VITE_ESEWA_PAYMENT_URL=${VITE_ESEWA_PAYMENT_URL}
+ENV VITE_ENV=${VITE_ENV}
+
 # Copy package files
 COPY package*.json ./
 

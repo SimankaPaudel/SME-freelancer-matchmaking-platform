@@ -1,4 +1,4 @@
-const express = require("express");
+﻿const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/authMiddleware");
 const proposalCtrl = require("../controllers/ProposalController");
@@ -11,7 +11,7 @@ const uploadFiles = (req, res, next) => {
     { name: "cvFile", maxCount: 1 },
   ])(req, res, (err) => {
     if (err) {
-      console.error("Multer error:", err.message);
+      
       return res.status(400).json({ message: err.message });
     }
     next();

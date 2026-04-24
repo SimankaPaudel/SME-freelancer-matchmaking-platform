@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Project.css";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export default function ManageProjects() {
   const [projects, setProjects] = useState([]);
@@ -11,7 +13,7 @@ export default function ManageProjects() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/projects/mine", {
+        const res = await fetch(`${API_BASE_URL}/projects/mine`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
@@ -20,10 +22,9 @@ export default function ManageProjects() {
         if (!res.ok) throw new Error("Failed to fetch projects");
 
         const data = await res.json();
-        console.log("Projects fetched:", data);
         setProjects(data);
       } catch (err) {
-        console.error(err);
+        
         alert("Failed to fetch projects. Check login and token.");
       }
     };
@@ -33,7 +34,7 @@ export default function ManageProjects() {
 
   const updateStatus = async (id, status) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/projects/${id}/status`, {
+      const res = await fetch(`${API_BASE_URL}/projects/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +50,7 @@ export default function ManageProjects() {
         prev.map((p) => (p._id === id ? { ...p, status } : p))
       );
     } catch (err) {
-      console.error(err);
+      
       alert("Failed to update status: " + err.message);
     }
   };
@@ -61,7 +62,7 @@ export default function ManageProjects() {
       const isoDate = new Date(newDate).toISOString();
 
       const res = await fetch(
-        `http://localhost:5000/api/projects/${project._id}/deadline`,
+        `${API_BASE_URL}/projects/${project._id}/deadline`,
         {
           method: "PATCH",
           headers: {
@@ -83,7 +84,7 @@ export default function ManageProjects() {
 
       alert("Deadline updated successfully!");
     } catch (err) {
-      console.error(err);
+      
       alert("Failed to update deadline: " + err.message);
     }
   };
@@ -139,7 +140,7 @@ export default function ManageProjects() {
         deadline: deadlineDate.toISOString(),
       };
 
-      const res = await fetch(`http://localhost:5000/api/projects/${projectId}`, {
+      const res = await fetch(`${API_BASE_URL}/projects/${projectId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -159,45 +160,68 @@ export default function ManageProjects() {
       setEditForm({});
       alert("Project updated successfully!");
     } catch (err) {
-      console.error(err);
+      
       alert("Failed to update project: " + err.message);
     }
   };
 
   return (
     <div className="page-container">
-      <h1>Manage Projects</h1>
+      <div style={{ marginBottom: "28px" }}>
+        <h1>ðŸ—‚ï¸ Manage Your Projects</h1>
+        <p style={{ fontSize: "15px", color: "#7a6a55", margin: "12px 0 0 0" }}>
+          {projects.length === 0 
+            ? "No projects yet. Create your first project to get started."
+            : `You have ${projects.length} project${projects.length !== 1 ? 's' : ''}`}
+        </p>
+      </div>
 
-      {projects.length === 0 && <p>No projects found.</p>}
+      {projects.length === 0 && (
+        <div style={{
+          background: "#fef9f4",
+          border: "1px solid #e0d4c0",
+          borderRadius: "14px",
+          padding: "48px 29px",
+          textAlign: "center",
+          color: "#7a6a55"
+        }}>
+          <p style={{ fontSize: "16px", margin: "0" }}>ðŸ“­ No projects found yet</p>
+          <p style={{ fontSize: "14px", margin: "8px 0 0 0" }}>
+            Start by posting your first project to connect with freelancers
+          </p>
+        </div>
+      )}
 
       {projects.map((p) => (
         <div className="project-card" key={p._id}>
           {editingId === p._id ? (
             <div className="edit-form">
-              <h3>Edit Project</h3>
+              <h3>âœï¸ Edit Project</h3>
               <div className="form-group">
-                <label>Title:</label>
+                <label>ðŸ“Œ Project Title</label>
                 <input
                   type="text"
                   name="title"
                   value={editForm.title || ""}
                   onChange={handleEditChange}
                   maxLength="100"
+                  placeholder="Enter project title"
                 />
               </div>
 
               <div className="form-group">
-                <label>Description:</label>
+                <label>ðŸ“ Description</label>
                 <textarea
                   name="description"
                   value={editForm.description || ""}
                   onChange={handleEditChange}
                   rows="4"
+                  placeholder="Describe your project in detail"
                 />
               </div>
 
               <div className="form-group">
-                <label>Skills (comma-separated):</label>
+                <label>ðŸ› ï¸ Required Skills</label>
                 <input
                   type="text"
                   name="skills"
@@ -208,12 +232,13 @@ export default function ManageProjects() {
               </div>
 
               <div className="form-group">
-                <label>Experience Level:</label>
+                <label>ðŸ‘¤ Experience Level</label>
                 <select
                   name="experienceLevel"
                   value={editForm.experienceLevel || ""}
                   onChange={handleEditChange}
                 >
+                  <option value="">Select level</option>
                   <option value="Beginner">Beginner</option>
                   <option value="Intermediate">Intermediate</option>
                   <option value="Expert">Expert</option>
@@ -222,27 +247,29 @@ export default function ManageProjects() {
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>Budget Min:</label>
+                  <label>ðŸ’° Budget Min (â‚¹)</label>
                   <input
                     type="number"
                     name="budgetMin"
                     value={editForm.budgetMin || ""}
                     onChange={handleEditChange}
+                    placeholder="Minimum budget"
                   />
                 </div>
                 <div className="form-group">
-                  <label>Budget Max:</label>
+                  <label>ðŸ’° Budget Max (â‚¹)</label>
                   <input
                     type="number"
                     name="budgetMax"
                     value={editForm.budgetMax || ""}
                     onChange={handleEditChange}
+                    placeholder="Maximum budget"
                   />
                 </div>
               </div>
 
               <div className="form-group">
-                <label>Deadline:</label>
+                <label>ðŸ“… Deadline</label>
                 <input
                   type="date"
                   name="deadline"
@@ -256,70 +283,113 @@ export default function ManageProjects() {
                   className="success"
                   onClick={() => saveProjectChanges(p._id)}
                 >
-                  Save Changes
+                  âœ… Save Changes
                 </button>
                 <button
                   className="cancel"
                   onClick={() => toggleEdit(p)}
                 >
-                  Cancel
+                  âŒ Cancel
                 </button>
               </div>
             </div>
           ) : (
             <>
-              <h3>{p.title}</h3>
-              <p>{p.description}</p>
-              <p>
-                Skills: {p.skills?.length > 0 ? p.skills.join(", ") : "N/A"}
-              </p>
-              <p>Experience Level: {p.experienceLevel}</p>
-              <p>
-                Status: <span className={`status ${p.status.toLowerCase()}`}>{p.status}</span>
-              </p>
-              <p>
-                Deadline:{" "}
-                <input
-                  type="date"
-                  value={p.deadline ? new Date(p.deadline).toISOString().slice(0, 10) : ""}
-                  onChange={(e) => extendDeadline(p, e.target.value)}
-                />
-              </p>
-              <p>
-                Budget: {p.budgetMin} – {p.budgetMax}
-              </p>
-              <p>Posted by: {p.postedBy?.fullName || "SME"}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "start", gap: "16px" }}>
+                <div style={{ flex: 1 }}>
+                  <h3>ðŸ“‹ {p.title}</h3>
+                  <p style={{ color: "#7a6a55", fontSize: "14px", lineHeight: "1.6", margin: "8px 0" }}>
+                    {p.description}
+                  </p>
+                </div>
+                <span className={`status ${p.status.toLowerCase()}`} style={{ whiteSpace: "nowrap" }}>
+                  {p.status}
+                </span>
+              </div>
 
-              <div className="actions">
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "12px",
+                padding: "16px 0",
+                borderTop: "1px solid #e0d4c0",
+                borderBottom: "1px solid #e0d4c0"
+              }}>
+                <div>
+                  <span style={{ fontSize: "12px", color: "#a89880", textTransform: "uppercase", fontWeight: "600" }}>Skills</span>
+                  <p style={{ margin: "6px 0 0", color: "#4a3728", fontSize: "13px" }}>
+                    {p.skills?.length > 0 ? p.skills.join(", ") : "N/A"}
+                  </p>
+                </div>
+                <div>
+                  <span style={{ fontSize: "12px", color: "#a89880", textTransform: "uppercase", fontWeight: "600" }}>Level</span>
+                  <p style={{ margin: "6px 0 0", color: "#4a3728", fontSize: "13px" }}>
+                    {p.experienceLevel}
+                  </p>
+                </div>
+                <div>
+                  <span style={{ fontSize: "12px", color: "#a89880", textTransform: "uppercase", fontWeight: "600" }}>Budget</span>
+                  <p style={{ margin: "6px 0 0", color: "#4a3728", fontSize: "13px" }}>
+                    â‚¹{p.budgetMin?.toLocaleString() || "0"} â€“ â‚¹{p.budgetMax?.toLocaleString() || "0"}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <span style={{ fontSize: "12px", color: "#a89880", textTransform: "uppercase", fontWeight: "600" }}>Deadline</span>
+                <div style={{ display: "flex", gap: "12px", alignItems: "center", marginTop: "8px" }}>
+                  <input
+                    type="date"
+                    value={p.deadline ? new Date(p.deadline).toISOString().slice(0, 10) : ""}
+                    onChange={(e) => extendDeadline(p, e.target.value)}
+                    style={{
+                      padding: "8px 12px",
+                      borderRadius: "8px",
+                      border: "1px solid #e0d4c0",
+                      fontSize: "13px",
+                      flex: 1
+                    }}
+                  />
+                  <span style={{ fontSize: "13px", color: "#7a6a55" }}>
+                    {p.deadline && new Date(p.deadline).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+
+              <div className="actions" style={{ marginTop: "16px", paddingTop: "16px", borderTop: "1px solid #e0d4c0" }}>
                 <button
                   className="info"
                   onClick={() =>
                     navigate("/dashboard/applicants", { state: { projectId: p._id } })
                   }
+                  title="View all applicants for this project"
                 >
-                  View Applicants
+                  ðŸ‘¥ View Applicants
                 </button>
 
                 <button
                   className="primary"
                   onClick={() => navigate(`/dashboard/matched-freelancers/${p._id}`)}
+                  title="See AI-matched freelancers"
                 >
-                  Matched Freelancers
+                  â­ Matched Freelancers
                 </button>
 
                 <button
                   className="edit"
                   onClick={() => toggleEdit(p)}
+                  title="Edit project details"
                 >
-                  Edit Project
+                  âœï¸ Edit
                 </button>
 
                 {p.status.toLowerCase() !== "closed" && (
                   <button
                     className="danger"
                     onClick={() => updateStatus(p._id, "Closed")}
+                    title="Close this project"
                   >
-                    Close
+                    ðŸ”’ Close
                   </button>
                 )}
               </div>

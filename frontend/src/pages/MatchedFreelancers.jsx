@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./MatchedFreelancers.css";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
 export default function MatchedFreelancers() {
   const { projectId } = useParams();
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ export default function MatchedFreelancers() {
         setError("");
 
         const res = await fetch(
-          `http://localhost:5000/api/matchmaking/project/${projectId}/matching-freelancers?limit=15`,
+          `${API_BASE_URL}/matchmaking/project/${projectId}/matching-freelancers?limit=15`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -51,7 +53,7 @@ export default function MatchedFreelancers() {
     try {
       setInvitingId(freelancerId);
       const res = await fetch(
-        "http://localhost:5000/api/matchmaking/send-invite",
+        `${API_BASE_URL}/matchmaking/send-invite`,
         {
           method: "POST",
           headers: {

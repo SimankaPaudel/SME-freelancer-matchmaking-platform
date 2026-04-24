@@ -4,6 +4,9 @@ import { approveWork, rejectWork } from "../services/escrowService";
 import { getReviewByEscrow } from "../services/reviewService";
 import axios from "axios";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || "http://localhost:5000";
+
 export default function SMEReviewWork() {
   const { escrowId } = useParams();
   const navigate = useNavigate();
@@ -19,7 +22,7 @@ export default function SMEReviewWork() {
     const fetchEscrow = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/escrows/${escrowId}`,
+          `${API_BASE_URL}/escrows/${escrowId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -54,7 +57,7 @@ export default function SMEReviewWork() {
       setMessage("✅ Work approved and payment released!");
       // Refresh escrow so the review button appears
       const res = await axios.get(
-        `http://localhost:5000/api/escrows/${escrowId}`,
+        `${API_BASE_URL}/escrows/${escrowId}`,
         { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }
       );
       setEscrow(res.data);
@@ -129,7 +132,7 @@ export default function SMEReviewWork() {
       {escrow.submittedFile && (
         <div style={{ marginBottom: "16px" }}>
           <a
-            href={`http://localhost:5000/${escrow.submittedFile}`}
+            href={`${API_BASE}/${escrow.submittedFile}`}
             download
             target="_blank"
             rel="noopener noreferrer"

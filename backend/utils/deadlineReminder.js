@@ -1,4 +1,4 @@
-/**
+﻿/**
  * deadlineReminder.js
  * Sends email reminders to freelancers when a project deadline is within 2 days.
  * Called from server.js on startup.
@@ -15,7 +15,7 @@ const cron = require("node-cron");
 const nodemailer = require("nodemailer");
 const Escrow = require("../models/EscrowPayment");
 
-// ── Nodemailer transporter ────────────────────────────────────────────────
+// â”€â”€ Nodemailer transporter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// ── Helper: send one email ────────────────────────────────────────────────
+// â”€â”€ Helper: send one email â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 async function sendReminderEmail({ to, freelancerName, projectTitle, deadline, amount }) {
   const deadlineStr = new Date(deadline).toLocaleDateString("en-NP", {
@@ -38,10 +38,10 @@ async function sendReminderEmail({ to, freelancerName, projectTitle, deadline, a
   const mailOptions = {
     from: `"FreelanceNepal Platform" <${process.env.EMAIL_USER}>`,
     to,
-    subject: `⏰ Deadline Reminder: "${projectTitle}" is due in 2 days`,
+    subject: `â° Deadline Reminder: "${projectTitle}" is due in 2 days`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 24px; border: 1px solid #e0e0e0; border-radius: 8px;">
-        <h2 style="color: #e53e3e;">⏰ Project Deadline Reminder</h2>
+        <h2 style="color: #e53e3e;">â° Project Deadline Reminder</h2>
         <p>Hi <strong>${freelancerName}</strong>,</p>
         <p>
           This is a reminder that your project <strong>"${projectTitle}"</strong> has a deadline
@@ -59,7 +59,7 @@ async function sendReminderEmail({ to, freelancerName, projectTitle, deadline, a
           </tr>
           <tr>
             <td style="padding: 8px; border: 1px solid #e0e0e0; font-weight: bold;">Escrow Amount</td>
-            <td style="padding: 8px; border: 1px solid #e0e0e0;">₹${amount}</td>
+            <td style="padding: 8px; border: 1px solid #e0e0e0;">â‚¹${amount}</td>
           </tr>
         </table>
 
@@ -80,15 +80,14 @@ async function sendReminderEmail({ to, freelancerName, projectTitle, deadline, a
   };
 
   await transporter.sendMail(mailOptions);
-  console.log(`[INFO] Reminder sent to ${to} for project "${projectTitle}"`);;
+
 }
 
-// ── Main cron job ─────────────────────────────────────────────────────────
+// â”€â”€ Main cron job â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function startDeadlineReminders() {
   // Runs every day at 9:00 AM
   cron.schedule("0 9 * * *", async () => {
-    console.log("\n⏰ Running deadline reminder cron job...");
 
     try {
       const now = new Date();
@@ -137,20 +136,15 @@ function startDeadlineReminders() {
 
           reminderCount++;
         } catch (emailErr) {
-          console.error(
-            `❌ Failed to send reminder for escrow ${escrow._id}:`,
-            emailErr.message
-          );
+          
         }
       }
 
-      console.log(`✅ Deadline reminders sent: ${reminderCount}`);
     } catch (err) {
-      console.error("❌ Deadline reminder cron error:", err.message);
+      
     }
   });
 
-  console.log("✅ Deadline reminder cron job scheduled (runs daily at 9:00 AM)");
 }
 
 module.exports = { startDeadlineReminders };

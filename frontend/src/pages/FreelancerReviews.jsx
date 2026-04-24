@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { getReviewsForUser } from "../services/reviewService";
 import "./Review.css";
 
-// ─── Static stars display ────────────────────────────────────
+// â”€â”€â”€ Static stars display â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Stars({ value, size = "md" }) {
   const full = Math.floor(value || 0);
   const half = (value || 0) - full >= 0.4;
@@ -15,14 +15,14 @@ function Stars({ value, size = "md" }) {
             s <= full ? "star-full" : s === full + 1 && half ? "star-half" : "star-empty"
           }`}
         >
-          ★
+          â˜…
         </span>
       ))}
     </span>
   );
 }
 
-// ─── Mini stat bar ───────────────────────────────────────────
+// â”€â”€â”€ Mini stat bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function StatBar({ label, value }) {
   if (!value) return null;
   const pct = ((value / 5) * 100).toFixed(0);
@@ -37,7 +37,7 @@ function StatBar({ label, value }) {
   );
 }
 
-// ─── Rating distribution (1–5 star counts) ──────────────────
+// â”€â”€â”€ Rating distribution (1â€“5 star counts) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function RatingDistribution({ reviews }) {
   const counts = [5, 4, 3, 2, 1].map((star) => ({
     star,
@@ -49,7 +49,7 @@ function RatingDistribution({ reviews }) {
     <div className="rating-dist">
       {counts.map(({ star, count }) => (
         <div key={star} className="dist-row">
-          <span className="dist-star">{star} ★</span>
+          <span className="dist-star">{star} â˜…</span>
           <div className="dist-track">
             <div
               className="dist-fill"
@@ -63,7 +63,7 @@ function RatingDistribution({ reviews }) {
   );
 }
 
-// ─── Single Review Card ──────────────────────────────────────
+// â”€â”€â”€ Single Review Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function ReviewCard({ review }) {
   const isSMEReview = review.reviewType === "SME_TO_FREELANCER";
   const date = new Date(review.createdAt).toLocaleDateString("en-US", {
@@ -104,16 +104,16 @@ function ReviewCard({ review }) {
       <div className="review-breakdown">
         {isSMEReview ? (
           <>
-            {review.qualityRating && <span className="breakdown-chip">Quality {review.qualityRating}★</span>}
-            {review.communicationRating && <span className="breakdown-chip">Communication {review.communicationRating}★</span>}
-            {review.punctualityRating && <span className="breakdown-chip">Punctuality {review.punctualityRating}★</span>}
-            {review.professionalismRating && <span className="breakdown-chip">Professionalism {review.professionalismRating}★</span>}
+            {review.qualityRating && <span className="breakdown-chip">Quality {review.qualityRating}â˜…</span>}
+            {review.communicationRating && <span className="breakdown-chip">Communication {review.communicationRating}â˜…</span>}
+            {review.punctualityRating && <span className="breakdown-chip">Punctuality {review.punctualityRating}â˜…</span>}
+            {review.professionalismRating && <span className="breakdown-chip">Professionalism {review.professionalismRating}â˜…</span>}
           </>
         ) : (
           <>
-            {review.sme_professionalismRating && <span className="breakdown-chip chip-sme">Professionalism {review.sme_professionalismRating}★</span>}
-            {review.sme_communicationRating && <span className="breakdown-chip chip-sme">Communication {review.sme_communicationRating}★</span>}
-            {review.paymentTimelinessRating && <span className="breakdown-chip chip-sme">Payment Timeliness {review.paymentTimelinessRating}★</span>}
+            {review.sme_professionalismRating && <span className="breakdown-chip chip-sme">Professionalism {review.sme_professionalismRating}â˜…</span>}
+            {review.sme_communicationRating && <span className="breakdown-chip chip-sme">Communication {review.sme_communicationRating}â˜…</span>}
+            {review.paymentTimelinessRating && <span className="breakdown-chip chip-sme">Payment Timeliness {review.paymentTimelinessRating}â˜…</span>}
           </>
         )}
       </div>
@@ -129,7 +129,7 @@ function ReviewCard({ review }) {
   );
 }
 
-// ─── Main Export ─────────────────────────────────────────────
+// â”€â”€â”€ Main Export â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function FreelancerReviews({ userId }) {
   const [reviews, setReviews] = useState([]);
   const [stats, setStats] = useState(null);
@@ -143,7 +143,7 @@ export default function FreelancerReviews({ userId }) {
         setReviews(res.data.reviews || []);
         setStats(res.data.stats || null);
       })
-      .catch(console.error)
+      
       .finally(() => setLoading(false));
   }, [userId]);
 
@@ -221,7 +221,7 @@ export default function FreelancerReviews({ userId }) {
         </>
       ) : (
         <div className="no-reviews">
-          <div className="no-reviews-icon">☆</div>
+          <div className="no-reviews-icon">â˜†</div>
           <p>No reviews yet. Complete a project to receive your first review!</p>
         </div>
       )}

@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./AdminDashboard.css";
 
-const API = "http://localhost:5000/api/admin";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API = `${API_BASE_URL}/admin`;
 const headers = () => ({ Authorization: `Bearer ${localStorage.getItem("accessToken")}` });
 
-// ── Small reusable stat card ──────────────────────────────
+// â”€â”€ Small reusable stat card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function StatCard({ label, value, sub, color }) {
   return (
     <div className="ad-stat-card" style={{ borderTopColor: color }}>
@@ -17,12 +18,12 @@ function StatCard({ label, value, sub, color }) {
   );
 }
 
-// ═════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 export default function AdminDashboard() {
   const navigate  = useNavigate();
   const [tab, setTab] = useState("analytics");
 
-  // Guard — must be Admin
+  // Guard â€” must be Admin
   useEffect(() => {
     try {
       const token = localStorage.getItem("accessToken");
@@ -37,7 +38,7 @@ export default function AdminDashboard() {
     { id: "analytics", label: "Analytics" },
     { id: "users",     label: "Users" },
     { id: "projects",  label: "Projects" },
-    { id: "disputes",  label: "⚠️ Disputes" },
+    { id: "disputes",  label: "âš ï¸ Disputes" },
   ];
 
   return (
@@ -71,9 +72,9 @@ export default function AdminDashboard() {
   );
 }
 
-// ═════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // ANALYTICS PANEL
-// ═════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function AnalyticsPanel() {
   const [data, setData]     = useState(null);
   const [loading, setLoading] = useState(true);
@@ -81,7 +82,7 @@ function AnalyticsPanel() {
   useEffect(() => {
     axios.get(`${API}/analytics`, { headers: headers() })
       .then((r) => setData(r.data))
-      .catch(console.error)
+      
       .finally(() => setLoading(false));
   }, []);
 
@@ -93,7 +94,7 @@ function AnalyticsPanel() {
 
   return (
     <div className="ad-analytics">
-      {/* ── Summary stats ── */}
+      {/* â”€â”€ Summary stats â”€â”€ */}
       <section>
         <h2 className="ad-section-title">Overview</h2>
         <div className="ad-stats-grid">
@@ -104,18 +105,18 @@ function AnalyticsPanel() {
           <StatCard label="Total Projects"     value={projects.total}     color="#b08968" />
           <StatCard label="Active Projects"    value={projects.active}    color="#4a9b6f" />
           <StatCard label="Completed Projects" value={projects.completed} color="#6b4f3f" />
-          <StatCard label="Total Payments"     value={`₹${payments.total.toLocaleString()}`} color="#b08968" sub={`${payments.escrows} escrows`} />
+          <StatCard label="Total Payments"     value={`â‚¹${payments.total.toLocaleString()}`} color="#b08968" sub={`${payments.escrows} escrows`} />
           <StatCard label="Disputes"           value={payments.disputed}  color="#c0392b" sub="active disputes" />
         </div>
       </section>
 
-      {/* ── Monthly bar chart ── */}
+      {/* â”€â”€ Monthly bar chart â”€â”€ */}
       <section>
         <h2 className="ad-section-title">Monthly Transaction Volume</h2>
         <div className="ad-bar-chart">
           {monthlyData.map((m) => (
             <div key={m.month} className="ad-bar-col">
-              <span className="ad-bar-amount">₹{m.volume.toLocaleString()}</span>
+              <span className="ad-bar-amount">â‚¹{m.volume.toLocaleString()}</span>
               <div
                 className="ad-bar"
                 style={{ height: `${Math.max((m.volume / maxVol) * 180, 4)}px` }}
@@ -127,7 +128,7 @@ function AnalyticsPanel() {
         </div>
       </section>
 
-      {/* ── Top freelancers ── */}
+      {/* â”€â”€ Top freelancers â”€â”€ */}
       <section>
         <h2 className="ad-section-title">Top Performing Freelancers</h2>
         <table className="ad-table">
@@ -146,14 +147,14 @@ function AnalyticsPanel() {
                 <td>{f.fullName}</td>
                 <td>{f.email}</td>
                 <td><strong>{f.completedJobs}</strong></td>
-                <td>₹{f.totalEarned.toLocaleString()}</td>
+                <td>â‚¹{f.totalEarned.toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </section>
 
-      {/* ── Most active SMEs ── */}
+      {/* â”€â”€ Most active SMEs â”€â”€ */}
       <section>
         <h2 className="ad-section-title">Most Active SMEs</h2>
         <table className="ad-table">
@@ -179,9 +180,9 @@ function AnalyticsPanel() {
   );
 }
 
-// ═════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // USERS PANEL
-// ═════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function UsersPanel() {
   const [users,   setUsers]   = useState([]);
   const [total,   setTotal]   = useState(0);
@@ -202,7 +203,7 @@ function UsersPanel() {
       });
       setUsers(data.users);
       setTotal(data.total);
-    } catch (e) { console.error(e); }
+    } catch (e) { }
     finally { setLoading(false); }
   };
 
@@ -277,7 +278,7 @@ function UsersPanel() {
                 <td>{(u.role === "SME" || u.role === "Freelancer") ? kycBadge(u.kycStatus) : <span className="ad-muted">N/A</span>}</td>
                 <td>
                   {(u.role === "SME" || u.role === "Freelancer") && u.kycDocument
-                    ? <a href={`http://localhost:5000/${u.kycDocument}`} target="_blank" rel="noreferrer" className="ad-link">View</a>
+                    ? <a href={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/${u.kycDocument}`} target="_blank" rel="noreferrer" className="ad-link">View</a>
                     : <span className="ad-muted">None</span>}
                 </td>
                 <td>
@@ -294,20 +295,20 @@ function UsersPanel() {
                     {u.isActive === false ? "Activate" : "Deactivate"}
                   </button>
 
-                  {/* KYC actions — for SME & Freelancer with doc uploaded and pending */}
+                  {/* KYC actions â€” for SME & Freelancer with doc uploaded and pending */}
                   {(u.role === "SME" || u.role === "Freelancer") && u.kycDocument && u.kycStatus === "Pending" && (
                     <>
                       <button
                         className="ad-btn-sm success"
                         onClick={() => setKycModal({ user: u, action: "Approved" })}
                       >
-                        ✓ Approve KYC
+                        âœ“ Approve KYC
                       </button>
                       <button
                         className="ad-btn-sm danger"
                         onClick={() => setKycModal({ user: u, action: "Rejected" })}
                       >
-                        ✗ Reject KYC
+                        âœ— Reject KYC
                       </button>
                     </>
                   )}
@@ -320,20 +321,20 @@ function UsersPanel() {
 
       {/* Pagination */}
       <div className="ad-pagination">
-        <button disabled={page === 1} onClick={() => setPage(page - 1)} className="ad-page-btn">← Prev</button>
+        <button disabled={page === 1} onClick={() => setPage(page - 1)} className="ad-page-btn">â† Prev</button>
         <span>Page {page}</span>
-        <button disabled={users.length < 15} onClick={() => setPage(page + 1)} className="ad-page-btn">Next →</button>
+        <button disabled={users.length < 15} onClick={() => setPage(page + 1)} className="ad-page-btn">Next â†’</button>
       </div>
 
       {/* KYC modal */}
       {kycModal && (
         <div className="ad-modal-overlay" onClick={() => setKycModal(null)}>
           <div className="ad-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>{kycModal.action === "Approved" ? "✓ Approve KYC" : "✗ Reject KYC"}</h3>
+            <h3>{kycModal.action === "Approved" ? "âœ“ Approve KYC" : "âœ— Reject KYC"}</h3>
             <p>User: <strong>{kycModal.user.fullName}</strong></p>
             {kycModal.user.kycDocument && (
               <a
-                href={`http://localhost:5000/${kycModal.user.kycDocument}`}
+                href={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/${kycModal.user.kycDocument}`}
                 target="_blank" rel="noreferrer"
                 className="ad-link"
                 style={{ display: "block", marginBottom: 12 }}
@@ -364,9 +365,9 @@ function UsersPanel() {
   );
 }
 
-// ═════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PROJECTS PANEL
-// ═════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function ProjectsPanel() {
   const [projects, setProjects] = useState([]);
   const [total,    setTotal]    = useState(0);
@@ -382,7 +383,7 @@ function ProjectsPanel() {
       params: { search, status, page, limit: 15 },
     })
       .then(({ data }) => { setProjects(data.projects); setTotal(data.total); })
-      .catch(console.error)
+      
       .finally(() => setLoading(false));
   }, [search, status, page]);
 
@@ -426,9 +427,9 @@ function ProjectsPanel() {
                   <br />
                   <span className="ad-muted">{p.postedBy?.email}</span>
                 </td>
-                <td>₹{p.budgetMin?.toLocaleString()} – ₹{p.budgetMax?.toLocaleString()}</td>
+                <td>â‚¹{p.budgetMin?.toLocaleString()} â€“ â‚¹{p.budgetMax?.toLocaleString()}</td>
                 <td>{statusBadge(p.status)}</td>
-                <td>{p.deadline ? new Date(p.deadline).toLocaleDateString() : "—"}</td>
+                <td>{p.deadline ? new Date(p.deadline).toLocaleDateString() : "â€”"}</td>
                 <td>{new Date(p.createdAt).toLocaleDateString()}</td>
               </tr>
             ))}
@@ -437,17 +438,17 @@ function ProjectsPanel() {
       )}
 
       <div className="ad-pagination">
-        <button disabled={page === 1} onClick={() => setPage(page - 1)} className="ad-page-btn">← Prev</button>
+        <button disabled={page === 1} onClick={() => setPage(page - 1)} className="ad-page-btn">â† Prev</button>
         <span>Page {page}</span>
-        <button disabled={projects.length < 15} onClick={() => setPage(page + 1)} className="ad-page-btn">Next →</button>
+        <button disabled={projects.length < 15} onClick={() => setPage(page + 1)} className="ad-page-btn">Next â†’</button>
       </div>
     </div>
   );
 }
 
-// ═════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // DISPUTES PANEL
-// ═════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function DisputesPanel() {
   const [disputes, setDisputes] = useState([]);
   const [loading,  setLoading]  = useState(true);
@@ -459,7 +460,7 @@ function DisputesPanel() {
     setLoading(true);
     axios.get(`${API}/disputes`, { headers: headers() })
       .then(({ data }) => setDisputes(data.disputes))
-      .catch(console.error)
+      
       .finally(() => setLoading(false));
   };
 
@@ -485,7 +486,7 @@ function DisputesPanel() {
       </div>
 
       {loading ? <Loader /> : disputes.length === 0 ? (
-        <div className="ad-empty-box">✅ No active disputes. Everything looks good!</div>
+        <div className="ad-empty-box">âœ… No active disputes. Everything looks good!</div>
       ) : (
         <table className="ad-table">
           <thead>
@@ -506,8 +507,8 @@ function DisputesPanel() {
                   {d.smeId?.fullName}<br />
                   <span className="ad-muted">{d.smeId?.email}</span>
                 </td>
-                <td>₹{d.amount?.toLocaleString()}</td>
-                <td className="ad-dispute-reason">{d.disputeReason || "—"}</td>
+                <td>â‚¹{d.amount?.toLocaleString()}</td>
+                <td className="ad-dispute-reason">{d.disputeReason || "â€”"}</td>
                 <td>{new Date(d.updatedAt).toLocaleDateString()}</td>
                 <td>
                   <button className="ad-btn-sm primary" onClick={() => setModal(d)}>
@@ -526,7 +527,7 @@ function DisputesPanel() {
           <div className="ad-modal" onClick={(e) => e.stopPropagation()}>
             <h3>Resolve Dispute</h3>
             <p><strong>Project:</strong> {modal.projectId?.title}</p>
-            <p><strong>Amount:</strong> ₹{modal.amount?.toLocaleString()}</p>
+            <p><strong>Amount:</strong> â‚¹{modal.amount?.toLocaleString()}</p>
             <p><strong>Reason:</strong> {modal.disputeReason || "Not specified"}</p>
 
             <div className="ad-radio-group">
@@ -561,7 +562,7 @@ function DisputesPanel() {
   );
 }
 
-// ── Loader ────────────────────────────────────────────────
+// â”€â”€ Loader â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function Loader() {
   return (
     <div className="ad-loader">

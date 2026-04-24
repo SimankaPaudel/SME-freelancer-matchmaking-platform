@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import FreelancerReviews from "./FreelancerReviews";
 import "./Profile.css";
 
-const API = "http://localhost:5000/api/auth";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || "http://localhost:5000";
+const API = API_BASE_URL + "/auth";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -151,7 +153,7 @@ export default function Profile() {
     fd.append("kycDocument", kycFile);
 
     try {
-      const res = await fetch("http://localhost:5000/api/kyc/upload", {
+      const res = await fetch(`${API_BASE_URL}/kyc/upload`, {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: fd,
@@ -310,7 +312,7 @@ export default function Profile() {
           {user.profilePhoto ? (
             <div style={{ textAlign: "center" }}>
               <img 
-                src={`http://localhost:5000/${user.profilePhoto}`} 
+                src={`${API_BASE}/${user.profilePhoto}`} 
                 alt="Profile" 
                 style={{ 
                   width: "120px", 
@@ -725,7 +727,7 @@ export default function Profile() {
           {user.kycDocument && (
             <p style={{ marginBottom: "12px", fontSize: "14px", color: "#a89880" }}>
               Current Document:{" "}
-              <a href={`http://localhost:5000/${user.kycDocument}`} target="_blank" rel="noreferrer" className="profile-link">
+              <a href={`${API_BASE}/${user.kycDocument}`} target="_blank" rel="noreferrer" className="profile-link">
                 📄 View
               </a>
             </p>
@@ -785,7 +787,7 @@ export default function Profile() {
           {user.cv ? (
             <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "12px" }}>
               <a
-                href={`http://localhost:5000/${user.cv}`}
+                href={`${API_BASE}/${user.cv}`}
                 target="_blank"
                 rel="noreferrer"
                 style={{

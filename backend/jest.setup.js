@@ -1,4 +1,4 @@
-// Set test environment variable before tests run
+﻿// Set test environment variable before tests run
 process.env.NODE_ENV = 'test';
 
 // CRITICAL: Force test database to prevent production data deletion
@@ -15,5 +15,5 @@ jest.setTimeout(10000);
 
 // Handle unhandled rejections
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  
 });

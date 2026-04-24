@@ -1,14 +1,14 @@
-import { useEffect, useState, useRef } from "react";
+﻿import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Icon emoji map per notification type
 const typeIcon = {
-  proposal_accepted: "✅",
+  proposal_accepted: "âœ…",
   proposal_received: "[MSG]",
   escrow_funded: "[MONEY]",
   work_submitted: "[PKG]",
   work_approved: "[DONE]",
-  work_rejected: "❌",
+  work_rejected: "âŒ",
   dispute_raised: "[WARN]",
   dispute_resolved: "[SCALE]",
   payment_released: "[PAY]",
@@ -70,7 +70,8 @@ export default function NotificationBell() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/notifications", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_BASE_URL}/notifications`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -90,15 +91,16 @@ export default function NotificationBell() {
       setNotifications(data.notifications || []);
       setUnreadCount(data.unreadCount || 0);
     } catch (err) {
-      console.error("Notification fetch error:", err);
-      // Silently fail — don't crash the navbar
+      
+      // Silently fail â€” don't crash the navbar
     }
   };
 
   const handleMarkAsRead = async (notif) => {
     if (!notif.isRead) {
       try {
-        await fetch(`http://localhost:5000/api/notifications/${notif._id}/read`, {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+        await fetch(`${API_BASE_URL}/notifications/${notif._id}/read`, {
           method: "PATCH",
           headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
         });
@@ -118,7 +120,8 @@ export default function NotificationBell() {
 
   const handleMarkAllRead = async () => {
     try {
-      await fetch("http://localhost:5000/api/notifications/mark-all-read", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      await fetch(`${API_BASE_URL}/notifications/mark-all-read`, {
         method: "PATCH",
         headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       });
@@ -129,7 +132,8 @@ export default function NotificationBell() {
 
   const handleClearAll = async () => {
     try {
-      await fetch("http://localhost:5000/api/notifications/clear-all", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      await fetch(`${API_BASE_URL}/notifications/clear-all`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       });
@@ -150,7 +154,7 @@ export default function NotificationBell() {
 
   return (
     <div ref={dropdownRef} style={{ position: "relative", display: "inline-block" }}>
-      {/* ── Bell button ── */}
+      {/* â”€â”€ Bell button â”€â”€ */}
       <button
         onClick={() => setOpen((o) => !o)}
         style={{
@@ -166,6 +170,7 @@ export default function NotificationBell() {
         title="Notifications"
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
       >
+        ðŸ””
         {unreadCount > 0 && (
           <span
             style={{
@@ -191,7 +196,7 @@ export default function NotificationBell() {
         )}
       </button>
 
-      {/* ── Dropdown ── */}
+      {/* â”€â”€ Dropdown â”€â”€ */}
       {open && (
         <div
           style={{
@@ -365,7 +370,7 @@ export default function NotificationBell() {
                   fontWeight: "bold",
                 }}
               >
-                View all notifications →
+                View all notifications â†’
               </button>
             </div>
           )}

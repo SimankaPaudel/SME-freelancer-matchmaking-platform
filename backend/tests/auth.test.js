@@ -1,4 +1,4 @@
-const request = require("supertest");
+﻿const request = require("supertest");
 const app = require("../server");
 const mongoose = require("mongoose");
 const User = require("../models/User");
@@ -9,9 +9,8 @@ describe("UNIT TESTS - Authentication Module", () => {
     if (mongoose.connection.readyState === 0) {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
-        console.log("✅ MongoDB connected");
       } catch (err) {
-        console.error("MongoDB error:", err.message);
+        
       }
     }
     // Give connection a moment to stabilize
@@ -19,10 +18,10 @@ describe("UNIT TESTS - Authentication Module", () => {
   });
 
   
-  // ─────────────────────────────────────────────────────────
-  // UT001 – Login (Valid Credentials)
-  // ─────────────────────────────────────────────────────────
-  describe("UT001 – Login (Valid Credentials)", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT001 â€“ Login (Valid Credentials)
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT001 â€“ Login (Valid Credentials)", () => {
     test("Should allow login with correct credentials", async () => {
       // Register
       await request(app)
@@ -50,10 +49,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT002 – Login (Invalid Credentials)
-  // ─────────────────────────────────────────────────────────
-  describe("UT002 – Login (Invalid Credentials)", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT002 â€“ Login (Invalid Credentials)
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT002 â€“ Login (Invalid Credentials)", () => {
     test("Should deny access with wrong password", async () => {
       await request(app)
         .post("/api/auth/register")
@@ -77,10 +76,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT003 – Registration Validation
-  // ─────────────────────────────────────────────────────────
-  describe("UT003 – Registration Validation", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT003 â€“ Registration Validation
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT003 â€“ Registration Validation", () => {
     test("Should reject registration with missing required fields", async () => {
       const response = await request(app)
         .post("/api/auth/register")
@@ -104,10 +103,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT004 – Duplicate Registration
-  // ─────────────────────────────────────────────────────────
-  describe("UT004 – Duplicate Registration", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT004 â€“ Duplicate Registration
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT004 â€“ Duplicate Registration", () => {
     test("Should reject duplicate email registration", async () => {
       await request(app)
         .post("/api/auth/register")
@@ -136,10 +135,10 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT009 – AI Cost Estimation
-  // ─────────────────────────────────────────────────────────
-  describe("UT009 – AI Cost Estimation", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT009 â€“ AI Cost Estimation
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT009 â€“ AI Cost Estimation", () => {
     test("Should provide accurate cost estimation based on project details", async () => {
       const response = await request(app)
         .post("/api/estimate")
@@ -154,35 +153,35 @@ describe("UNIT TESTS - Authentication Module", () => {
     });
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT010 – Notification Trigger
-  // ─────────────────────────────────────────────────────────
-  describe("UT010 – Notification Trigger", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT010 â€“ Notification Trigger
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT010 â€“ Notification Trigger", () => {
     test("Should have notification infrastructure", async () => {
       expect(true).toBe(true);
     });
   });
 });
 
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // INTEGRATION TESTS
-// ─────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 describe("INTEGRATION TESTS", () => {
   beforeAll(async () => {
     if (mongoose.connection.readyState === 0) {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
       } catch (err) {
-        console.error("MongoDB error:", err.message);
+        
       }
     }
     await new Promise(resolve => setTimeout(resolve, 500));
   });
 
-  // ─────────────────────────────────────────────────────────
-  // IT001 – Login and Dashboard Connection
-  // ─────────────────────────────────────────────────────────
-  describe("IT001 – Login and Dashboard Connection", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // IT001 â€“ Login and Dashboard Connection
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("IT001 â€“ Login and Dashboard Connection", () => {
     test("Should complete login flow successfully", async () => {
       await request(app)
         .post("/api/auth/register")

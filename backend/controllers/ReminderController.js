@@ -1,4 +1,4 @@
-const Escrow = require("../models/EscrowPayment");
+﻿const Escrow = require("../models/EscrowPayment");
 const Project = require("../models/Project");
 const nodemailer = require("nodemailer");
 
@@ -50,9 +50,8 @@ exports.checkDeadlines = async () => {
       }
     }
 
-    console.log("Deadline check completed");
   } catch (err) {
-    console.error("Deadline check error:", err);
+    
   }
 };
 
@@ -66,7 +65,7 @@ async function sendDeadlineReminder(escrow) {
       <p>Hi ${escrow.freelancerId.fullName},</p>
       <p>This is a reminder that your project <strong>"${escrow.projectId.title}"</strong> is due in 3 days.</p>
       <p><strong>Deadline:</strong> ${new Date(escrow.projectId.deadline).toLocaleDateString()}</p>
-      <p><strong>Amount:</strong> ₹${escrow.amount}</p>
+      <p><strong>Amount:</strong> â‚¹${escrow.amount}</p>
       <p>Please ensure you submit your work on time.</p>
       <p>Best regards,<br>Your Platform Team</p>
     `,

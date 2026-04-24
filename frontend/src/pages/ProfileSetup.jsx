@@ -72,7 +72,8 @@ export default function ProfileSetup() {
     }
 
     try {
-      const res  = await fetch("http://localhost:5000/api/auth/profile/setup", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res  = await fetch(`${API_BASE_URL}/auth/profile/setup`, {
         method:  "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body:    JSON.stringify(body),

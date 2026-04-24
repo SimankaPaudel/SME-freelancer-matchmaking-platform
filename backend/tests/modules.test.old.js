@@ -1,4 +1,4 @@
-const request = require("supertest");
+﻿const request = require("supertest");
 const app = require("../server");
 const mongoose = require("mongoose");
 const Proposal = require("../models/Proposal");
@@ -16,7 +16,7 @@ describe("UNIT TESTS - Proposal Module", () => {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
       } catch (err) {
-        console.error("MongoDB connection error:", err.message);
+        
       }
     }
 
@@ -67,10 +67,10 @@ describe("UNIT TESTS - Proposal Module", () => {
     }
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT006 – Proposal Submission (Detailed)
-  // ─────────────────────────────────────────────────────────
-  describe("UT006 – Proposal Submission", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT006 â€“ Proposal Submission (Detailed)
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT006 â€“ Proposal Submission", () => {
     test("Should submit proposal successfully and record in system", async () => {
       const response = await request(app)
         .post("/api/proposals")
@@ -127,7 +127,7 @@ describe("UNIT TESTS - Notification Module", () => {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
       } catch (err) {
-        console.error("MongoDB connection error:", err.message);
+        
       }
     }
 
@@ -158,10 +158,10 @@ describe("UNIT TESTS - Notification Module", () => {
     }
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT010 – Notification Trigger
-  // ─────────────────────────────────────────────────────────
-  describe("UT010 – Notification Trigger", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT010 â€“ Notification Trigger
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT010 â€“ Notification Trigger", () => {
     test("Should retrieve user notifications", async () => {
       const response = await request(app)
         .get("/api/notifications")
@@ -200,7 +200,7 @@ describe("UNIT TESTS - File Upload", () => {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
       } catch (err) {
-        console.error("MongoDB connection error:", err.message);
+        
       }
     }
 
@@ -231,10 +231,10 @@ describe("UNIT TESTS - File Upload", () => {
     }
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT007 – File Upload Validation
-  // ─────────────────────────────────────────────────────────
-  describe("UT007 – File Upload Validation", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT007 â€“ File Upload Validation
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT007 â€“ File Upload Validation", () => {
     test("Should reject unsupported file types", async () => {
       const response = await request(app)
         .post("/api/upload/portfolio")
@@ -269,7 +269,7 @@ describe("UNIT TESTS - Escrow Payment", () => {
       try {
         await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
       } catch (err) {
-        console.error("MongoDB connection error:", err.message);
+        
       }
     }
 
@@ -301,10 +301,10 @@ describe("UNIT TESTS - Escrow Payment", () => {
     }
   });
 
-  // ─────────────────────────────────────────────────────────
-  // UT008 – Escrow Payment Processing
-  // ─────────────────────────────────────────────────────────
-  describe("UT008 – Escrow Payment Processing", () => {
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // UT008 â€“ Escrow Payment Processing
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  describe("UT008 â€“ Escrow Payment Processing", () => {
     test("Should initiate escrow payment and return confirmation", async () => {
       const response = await request(app)
         .post("/api/escrow/initiate")

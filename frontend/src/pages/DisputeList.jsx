@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -11,8 +11,9 @@ export default function DisputeList() {
   useEffect(() => {
     const fetchDisputes = async () => {
       try {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
         const res = await axios.get(
-          "http://localhost:5000/api/escrows/disputes",
+          `${API_BASE_URL}/escrows/disputes`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -21,7 +22,7 @@ export default function DisputeList() {
         );
         setDisputes(res.data.disputes || []);
       } catch (err) {
-        console.error(err);
+        
         setError(err.response?.data?.message || "Failed to load disputes");
       } finally {
         setLoading(false);
@@ -35,13 +36,13 @@ export default function DisputeList() {
 
   return (
     <div>
-      <h2>⚠️ Active Disputes</h2>
+      <h2>âš ï¸ Active Disputes</h2>
       <p>Review and resolve disputes between SMEs and freelancers.</p>
 
-      {error && <p style={{ color: "red" }}>❌ {error}</p>}
+      {error && <p style={{ color: "red" }}>âŒ {error}</p>}
 
       {!disputes.length && !error && (
-        <p>✅ No active disputes. Everything looks good!</p>
+        <p>âœ… No active disputes. Everything looks good!</p>
       )}
 
       {disputes.length > 0 && (
@@ -84,12 +85,12 @@ export default function DisputeList() {
                   <br />
                   {d.smeId?.email}
                 </td>
-                <td style={{ padding: "8px" }}>₹{d.amount?.toLocaleString()}</td>
-                <td style={{ padding: "8px" }}>{d.disputeReason || "—"}</td>
+                <td style={{ padding: "8px" }}>â‚¹{d.amount?.toLocaleString()}</td>
+                <td style={{ padding: "8px" }}>{d.disputeReason || "â€”"}</td>
                 <td style={{ padding: "8px" }}>
                   {d.updatedAt
                     ? new Date(d.updatedAt).toLocaleDateString()
-                    : "—"}
+                    : "â€”"}
                 </td>
                 <td style={{ padding: "8px" }}>
                   <button

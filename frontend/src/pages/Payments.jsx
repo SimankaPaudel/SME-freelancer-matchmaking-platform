@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import axios from "axios";
 import "./Payment.css";
 
@@ -13,8 +13,9 @@ export default function Payments() {
   useEffect(() => {
     const fetchEscrows = async () => {
       try {
-        // FIXED: use /my-escrows — backend figures out role from JWT
-        const { data } = await axios.get("http://localhost:5000/api/escrows/my-escrows", {
+        // FIXED: use /my-escrows â€” backend figures out role from JWT
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+        const { data } = await axios.get(`${API_BASE_URL}/escrows/my-escrows`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
@@ -22,7 +23,7 @@ export default function Payments() {
 
         setEscrows(Array.isArray(data) ? data : []);
       } catch (err) {
-        console.error("Failed to fetch escrows:", err);
+        
         setError("Failed to load payments");
       } finally {
         setLoading(false);
@@ -71,7 +72,7 @@ export default function Payments() {
 
             <div className="card-amount">
               <span className="amount-label">Amount</span>
-              <span className="amount-value">₹{escrow.amount?.toLocaleString()}</span>
+              <span className="amount-value">â‚¹{escrow.amount?.toLocaleString()}</span>
             </div>
 
             <div className="card-details">
@@ -87,14 +88,14 @@ export default function Payments() {
 
             {escrow.paymentVerifiedAt && (
               <div className="verified-badge">
-                <span>✓ Payment Verified:</span>
+                <span>âœ“ Payment Verified:</span>
                 <span>{new Date(escrow.paymentVerifiedAt).toLocaleDateString()}</span>
               </div>
             )}
 
             {escrow.releasedAt && (
               <div className="released-badge">
-                <span>✓ Payment Released:</span>
+                <span>âœ“ Payment Released:</span>
                 <span>{new Date(escrow.releasedAt).toLocaleDateString()}</span>
               </div>
             )}
@@ -120,7 +121,7 @@ export default function Payments() {
             onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
           >
-            ← Previous
+            â† Previous
           </button>
 
           <div className="pagination-info">
@@ -133,7 +134,7 @@ export default function Payments() {
             onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage === totalPages}
           >
-            Next →
+            Next â†’
           </button>
         </div>
       )}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Payment.css";
 
@@ -28,19 +28,15 @@ export default function PaymentSuccess() {
         signed_field_names: searchParams.get("signed_field_names")
       };
 
-      console.log("🔍 Payment Success Page Loaded");
-      console.log("Payment data from URL:", paymentData);
-      console.log("Full URL:", window.location.href);
 
-      // ✅ If individual params not found, try to decode base64 'data' parameter
+      // âœ… If individual params not found, try to decode base64 'data' parameter
       if (!paymentData.transaction_uuid && searchParams.get("data")) {
         try {
           const encodedData = searchParams.get("data");
           const decodedData = atob(encodedData); // Decode base64
           paymentData = JSON.parse(decodedData);
-          console.log("✅ Decoded payment data from base64:", paymentData);
         } catch (e) {
-          console.error("❌ Failed to decode base64 data:", e);
+          
           setSuccess(false);
           setMessage("Payment data not found. eSewa may not have redirected properly.");
           setVerifying(false);
@@ -49,9 +45,9 @@ export default function PaymentSuccess() {
         }
       }
 
-      // ✅ Check if we have transaction_uuid at minimum
+      // âœ… Check if we have transaction_uuid at minimum
       if (!paymentData.transaction_uuid) {
-        console.warn("⚠️ No transaction_uuid in URL");
+        console.warn("âš ï¸ No transaction_uuid in URL");
         setSuccess(false);
         setMessage("Payment data not found. eSewa may not have redirected properly.");
         setVerifying(false);
@@ -61,9 +57,9 @@ export default function PaymentSuccess() {
 
       setTransactionUuid(paymentData.transaction_uuid);
 
-      // ✅ Check if we have transaction_code (required for verification)
+      // âœ… Check if we have transaction_code (required for verification)
       if (!paymentData.transaction_code) {
-        console.warn("⚠️ No transaction_code in URL - eSewa sandbox limitation");
+        console.warn("âš ï¸ No transaction_code in URL - eSewa sandbox limitation");
         setSuccess(false);
         setMessage("eSewa callback incomplete. Transaction code not provided by payment gateway.");
         setVerifying(false);
@@ -71,10 +67,10 @@ export default function PaymentSuccess() {
         return;
       }
 
-      console.log("✅ Payment data complete, verifying with backend...");
 
-      // ✅ Call backend verification
-      const res = await fetch("http://localhost:5000/api/escrows/verify-payment", {
+      // âœ… Call backend verification
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_BASE_URL}/escrows/verify-payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -82,13 +78,10 @@ export default function PaymentSuccess() {
         body: JSON.stringify(paymentData),
       });
 
-      console.log("Backend response status:", res.status);
 
       const data = await res.json();
-      console.log("Backend response data:", data);
 
       if (data.success) {
-        console.log("✅ Payment verified successfully");
         setSuccess(true);
         setMessage("Payment verified successfully! Your escrow has been funded.");
         
@@ -97,7 +90,6 @@ export default function PaymentSuccess() {
           navigate("/dashboard/escrow-management");
         }, 3000);
       } else {
-        console.log("❌ Verification failed:", data.message);
         setSuccess(false);
         setMessage(data.message || "Payment verification failed.");
         
@@ -107,7 +99,7 @@ export default function PaymentSuccess() {
         }
       }
     } catch (err) {
-      console.error("❌ Payment verification error:", err);
+      
       setSuccess(false);
       setMessage("Failed to verify payment. Please contact support.");
       setShowTestModeOption(true);
@@ -140,12 +132,12 @@ export default function PaymentSuccess() {
           </>
         ) : success ? (
           <>
-            <div className="success-icon">✅</div>
+            <div className="success-icon">âœ…</div>
             <h2>Payment Successful!</h2>
             <p>{message}</p>
             <div className="payment-details">
               <p><strong>Transaction ID:</strong> {searchParams.get("transaction_uuid")}</p>
-              <p><strong>Amount:</strong> ₹{searchParams.get("total_amount")}</p>
+              <p><strong>Amount:</strong> â‚¹{searchParams.get("total_amount")}</p>
               {searchParams.get("transaction_code") && (
                 <p><strong>eSewa Ref:</strong> {searchParams.get("transaction_code")}</p>
               )}
@@ -160,7 +152,7 @@ export default function PaymentSuccess() {
           </>
         ) : (
           <>
-            <div className="warning-icon">⚠️</div>
+            <div className="warning-icon">âš ï¸</div>
             <h2>Payment Verification Issue</h2>
             <p>{message}</p>
             

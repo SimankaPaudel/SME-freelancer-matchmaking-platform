@@ -1,4 +1,4 @@
-const Notification = require("../models/Notification");
+﻿const Notification = require("../models/Notification");
 
 /**
  * GET /api/notifications
@@ -17,7 +17,7 @@ exports.getMyNotifications = async (req, res) => {
 
     res.json({ success: true, notifications, unreadCount });
   } catch (err) {
-    console.error("Get notifications error:", err);
+    
     res.status(500).json({ message: "Failed to fetch notifications" });
   }
 };

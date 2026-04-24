@@ -30,7 +30,8 @@ export default function ApplyProposal() {
       formData.append("description", description);
       formData.append("proposalFile", proposalFile);
 
-      const res = await fetch("http://localhost:5000/api/proposals", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_BASE_URL}/proposals`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

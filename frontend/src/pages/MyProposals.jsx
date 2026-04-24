@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Proposal.css";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || "http://localhost:5000";
 
 export default function MyProposals() {
   const [proposals, setProposals] = useState([]);
@@ -18,7 +21,7 @@ export default function MyProposals() {
 
   const fetchProposals = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/proposals/mine", {
+      const res = await fetch(`${API_BASE_URL}/proposals/mine`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -33,7 +36,7 @@ export default function MyProposals() {
           if (p.status === "Accepted") {
             try {
               const escrowRes = await fetch(
-                `http://localhost:5000/api/escrows/proposal/${p._id}`,
+                `${API_BASE_URL}/escrows/proposal/${p._id}`,
                 {
                   headers: {
                     Authorization: `Bearer ${token}`,
@@ -54,10 +57,7 @@ export default function MyProposals() {
 
               return { ...p, escrow: null };
             } catch (err) {
-              console.error(
-                `Error fetching escrow for proposal ${p._id}:`,
-                err
-              );
+              
               return { ...p, escrow: null };
             }
           }
@@ -67,7 +67,7 @@ export default function MyProposals() {
 
       setProposals(dataWithEscrow);
     } catch (err) {
-      console.error(err);
+      
       setError("Failed to load proposals");
     } finally {
       setLoading(false);
@@ -134,7 +134,7 @@ export default function MyProposals() {
         formData.append("cvFile", editForm.cvFile);
       }
 
-      const res = await fetch(`http://localhost:5000/api/proposals/${proposalId}`, {
+      const res = await fetch(`${API_BASE_URL}/proposals/${proposalId}`, {
         method: "PATCH",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -153,7 +153,7 @@ export default function MyProposals() {
       setEditForm({});
       alert("Proposal updated successfully!");
     } catch (err) {
-      console.error(err);
+      
       alert("Failed to update proposal: " + err.message);
     }
   };
@@ -164,7 +164,7 @@ export default function MyProposals() {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/proposals/${proposalId}`, {
+      const res = await fetch(`${API_BASE_URL}/proposals/${proposalId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -180,7 +180,7 @@ export default function MyProposals() {
 
       alert("Proposal cancelled successfully!");
     } catch (err) {
-      console.error(err);
+      
       alert("Failed to cancel proposal: " + err.message);
     }
   };
@@ -225,7 +225,7 @@ export default function MyProposals() {
             <div className="edit-form">
               <h3>Edit Proposal</h3>
               <div className="form-group">
-                <label>Bid Amount (₹):</label>
+                <label>Bid Amount (â‚¹):</label>
                 <input
                   type="number"
                   name="bidAmount"
@@ -287,7 +287,7 @@ export default function MyProposals() {
 
               <div className="proposal-details">
                 <p>
-                  <strong>Bid Amount:</strong> ₹
+                  <strong>Bid Amount:</strong> â‚¹
                   {p.bidAmount?.toLocaleString()}
                 </p>
 
@@ -298,8 +298,8 @@ export default function MyProposals() {
                 {p.projectId && (
                   <>
                     <p>
-                      <strong>Budget Range:</strong> ₹
-                      {p.projectId.budgetMin?.toLocaleString()} - ₹
+                      <strong>Budget Range:</strong> â‚¹
+                      {p.projectId.budgetMin?.toLocaleString()} - â‚¹
                       {p.projectId.budgetMax?.toLocaleString()}
                     </p>
 
@@ -322,13 +322,13 @@ export default function MyProposals() {
 
               {(p.proposalFile || p.cvFile) && (
                 <div className="files-section">
-                  <h4>📎 Attached Files:</h4>
+                  <h4>ðŸ“Ž Attached Files:</h4>
 
                   {p.proposalFile && (
                     <p>
                       <span className="file-label">Proposal:</span>{" "}
                       <a
-                        href={`http://localhost:5000/${p.proposalFile}`}
+                        href={`${API_BASE}/${p.proposalFile}`}
                         download
                         target="_blank"
                         rel="noopener noreferrer"
@@ -343,7 +343,7 @@ export default function MyProposals() {
                     <p>
                       <span className="file-label">CV:</span>{" "}
                       <a
-                        href={`http://localhost:5000/${p.cvFile}`}
+                        href={`${API_BASE}/${p.cvFile}`}
                         download
                         target="_blank"
                         rel="noopener noreferrer"
@@ -379,7 +379,7 @@ export default function MyProposals() {
                     onMouseEnter={(e) => e.target.style.background = "#9d7559"}
                     onMouseLeave={(e) => e.target.style.background = "#b08968"}
                   >
-                    ✏️ Edit Proposal
+                    âœï¸ Edit Proposal
                   </button>
                   <button
                     onClick={() => handleCancelProposal(p._id)}
@@ -397,7 +397,7 @@ export default function MyProposals() {
                     onMouseEnter={(e) => e.target.style.background = "#a02d24"}
                     onMouseLeave={(e) => e.target.style.background = "#c0392b"}
                   >
-                    ❌ Cancel Proposal
+                    âŒ Cancel Proposal
                   </button>
                 </div>
               )}
@@ -411,7 +411,7 @@ export default function MyProposals() {
                       navigate(`/dashboard/chat/${p.projectId._id}`)
                     }
                   >
-                    💬 Chat with SME
+                    ðŸ’¬ Chat with SME
                   </button>
                 </div>
               )}
@@ -422,8 +422,8 @@ export default function MyProposals() {
                   {p.escrow ? (
                     <>
                       <p className="escrow-info">
-                        💰 Escrow Status:{" "}
-                        <strong>{p.escrow.status}</strong> | Amount: ₹
+                        ðŸ’° Escrow Status:{" "}
+                        <strong>{p.escrow.status}</strong> | Amount: â‚¹
                         {p.escrow.amount?.toLocaleString()}
                       </p>
 
@@ -438,14 +438,14 @@ export default function MyProposals() {
                               handleSubmitWork(p._id)
                             }
                           >
-                            📤 Submit Work
+                            ðŸ“¤ Submit Work
                           </button>
                         </div>
                       )}
 
                       {p.escrow.status === "Pending Deposit" && (
                         <p className="info-text">
-                          ⏳ Waiting for SME to deposit escrow
+                          â³ Waiting for SME to deposit escrow
                           funds...
                         </p>
                       )}
@@ -463,16 +463,16 @@ export default function MyProposals() {
                               handleViewEscrow(p.escrow._id)
                             }
                           >
-                            👁️ View Escrow Details
+                            ðŸ‘ï¸ View Escrow Details
                           </button>
 
                           <p className="info-text">
                             {p.escrow.status === "Submitted" &&
-                              "⏳ Waiting for SME review..."}
+                              "â³ Waiting for SME review..."}
                             {p.escrow.status === "Released" &&
-                              "✅ Payment released!"}
+                              "âœ… Payment released!"}
                             {p.escrow.status === "Disputed" &&
-                              "⚠️ In dispute resolution"}
+                              "âš ï¸ In dispute resolution"}
                           </p>
                         </div>
                       )}
@@ -480,7 +480,7 @@ export default function MyProposals() {
                   ) : (
                     <div className="escrow-pending">
                       <p className="warning-text">
-                        ⏳ Proposal accepted! Waiting for SME to
+                        â³ Proposal accepted! Waiting for SME to
                         create escrow and deposit funds...
                       </p>
 

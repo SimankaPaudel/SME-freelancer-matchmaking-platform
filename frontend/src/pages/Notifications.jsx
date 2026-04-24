@@ -1,18 +1,20 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+
 const typeIcon = {
-  proposal_accepted: "✅",
-  proposal_received: "📨",
-  escrow_funded: "💰",
-  work_submitted: "📦",
-  work_approved: "🎉",
-  work_rejected: "❌",
-  dispute_raised: "⚠️",
-  dispute_resolved: "⚖️",
-  payment_released: "💸",
-  deadline_reminder: "⏰",
-  general: "🔔",
+  proposal_accepted: "âœ…",
+  proposal_received: "ðŸ“¨",
+  escrow_funded: "ðŸ’°",
+  work_submitted: "ðŸ“¦",
+  work_approved: "ðŸŽ‰",
+  work_rejected: "âŒ",
+  dispute_raised: "âš ï¸",
+  dispute_resolved: "âš–ï¸",
+  payment_released: "ðŸ’¸",
+  deadline_reminder: "â°",
+  general: "ðŸ””",
 };
 
 const typeBadgeColor = {
@@ -27,7 +29,7 @@ const typeBadgeColor = {
   general: { bg: "#e2e8f0", color: "#2d3748" },
 };
 
-// ✅ export default is on the function itself
+// âœ… export default is on the function itself
 export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -41,14 +43,15 @@ export default function Notifications() {
 
   const fetchNotifications = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/notifications", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_BASE_URL}/notifications`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       });
       const data = await res.json();
       setNotifications(data.notifications || []);
       setUnreadCount(data.unreadCount || 0);
     } catch (err) {
-      console.error("Failed to fetch notifications:", err);
+      
     } finally {
       setLoading(false);
     }
@@ -56,7 +59,8 @@ export default function Notifications() {
 
   const markAsRead = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/notifications/${id}/read`, {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      await fetch(`${API_BASE_URL}/notifications/${id}/read`, {
         method: "PATCH",
         headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       });
@@ -70,7 +74,7 @@ export default function Notifications() {
   const deleteNotification = async (id, e) => {
     e.stopPropagation();
     try {
-      await fetch(`http://localhost:5000/api/notifications/${id}`, {
+      await fetch(`${API_BASE_URL}/notifications/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       });
@@ -82,7 +86,8 @@ export default function Notifications() {
 
   const markAllRead = async () => {
     try {
-      await fetch("http://localhost:5000/api/notifications/mark-all-read", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      await fetch(`${API_BASE_URL}/notifications/mark-all-read`, {
         method: "PATCH",
         headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       });
@@ -94,7 +99,8 @@ export default function Notifications() {
   const clearAll = async () => {
     if (!window.confirm("Clear all notifications?")) return;
     try {
-      await fetch("http://localhost:5000/api/notifications/clear-all", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      await fetch(`${API_BASE_URL}/notifications/clear-all`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` },
       });
@@ -145,7 +151,7 @@ export default function Notifications() {
         }}
       >
         <div>
-          <h1 style={{ margin: 0 }}>🔔 Notifications</h1>
+          <h1 style={{ margin: 0 }}>ðŸ”” Notifications</h1>
           {unreadCount > 0 && (
             <p style={{ margin: "4px 0 0 0", color: "#718096", fontSize: "14px" }}>
               {unreadCount} unread notification{unreadCount !== 1 ? "s" : ""}
@@ -168,7 +174,7 @@ export default function Notifications() {
                 fontWeight: "bold",
               }}
             >
-              ✓ Mark all read
+              âœ“ Mark all read
             </button>
           )}
           {notifications.length > 0 && (
@@ -185,7 +191,7 @@ export default function Notifications() {
                 fontWeight: "bold",
               }}
             >
-              🗑 Clear all
+              ðŸ—‘ Clear all
             </button>
           )}
         </div>
@@ -233,7 +239,7 @@ export default function Notifications() {
             color: "#a0aec0",
           }}
         >
-          <div style={{ fontSize: "48px", marginBottom: "12px" }}>🔔</div>
+          <div style={{ fontSize: "48px", marginBottom: "12px" }}>ðŸ””</div>
           <p style={{ fontSize: "16px", margin: 0 }}>
             {filter === "unread" ? "No unread notifications" : "No notifications yet"}
           </p>
@@ -266,7 +272,7 @@ export default function Notifications() {
               >
                 {/* Icon */}
                 <span style={{ fontSize: "24px", flexShrink: 0, marginTop: "2px" }}>
-                  {typeIcon[notif.type] || "🔔"}
+                  {typeIcon[notif.type] || "ðŸ””"}
                 </span>
 
                 {/* Content */}
@@ -357,7 +363,7 @@ export default function Notifications() {
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#e53e3e")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#cbd5e0")}
                 >
-                  ✕
+                  âœ•
                 </button>
 
                 {/* Unread dot */}

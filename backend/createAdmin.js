@@ -1,4 +1,4 @@
-// Run this ONCE from your backend folder:
+﻿// Run this ONCE from your backend folder:
 // node createAdmin.js
 
 require("dotenv").config();
@@ -8,11 +8,9 @@ const User     = require("./models/User");
 
 async function createAdmin() {
   await mongoose.connect(process.env.MONGO_URI);
-  console.log("MongoDB connected");
 
   const existing = await User.findOne({ email: "admin@taskhive.com" });
   if (existing) {
-    console.log("Admin already exists:", existing.email);
     process.exit(0);
   }
 
@@ -30,13 +28,10 @@ async function createAdmin() {
     kycStatus: "Approved",
   });
 
-  console.log("Admin created!");
-  console.log("   Email:    admin@taskhive.com");
-  console.log("   Password: Admin@1234");
   process.exit(0);
 }
 
 createAdmin().catch((err) => {
-  console.error(err);
+  
   process.exit(1);
 });

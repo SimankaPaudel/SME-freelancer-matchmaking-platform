@@ -1,4 +1,4 @@
-const Project = require("../models/Project");
+﻿const Project = require("../models/Project");
 const { createNotification } = require("../utils/notificationHelper");
 
 exports.createProject = async (req, res) => {
@@ -29,7 +29,7 @@ exports.createProject = async (req, res) => {
     
     res.status(201).json(project);
   } catch (err) {
-    console.error(err);
+    
     res.status(500).json({ message: "Failed to create project" });
   }
 };
@@ -74,7 +74,7 @@ exports.getOpenProjects = async (req, res) => {
 
     res.json(projects);
   } catch (err) {
-    console.error(err);
+    
     res.status(500).json({ message: "Failed to fetch projects" });
   }
 };
@@ -101,7 +101,7 @@ exports.getProjectById = async (req, res) => {
     
     res.json(project);
   } catch (err) {
-    console.error("Get project by ID error:", err);
+    
     res.status(500).json({ message: "Failed to fetch project" });
   }
 };
@@ -207,7 +207,7 @@ exports.updateProject = async (req, res) => {
     await project.save();
     res.json({ message: "Project updated successfully", project });
   } catch (err) {
-    console.error("Update project error:", err);
+    
     res.status(500).json({ message: err.message || "Failed to update project" });
   }
 };

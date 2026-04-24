@@ -7,7 +7,7 @@ import {
 } from "../../services/chatService";
 import SingleMessage from "./SingleMessage";
 
-const SOCKET_URL = "http://localhost:5000";
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5000";
 const POLL_INTERVAL = 5000; // fallback polling every 5s
 
 export default function ChatWindow({ projectId }) {
@@ -235,7 +235,7 @@ export default function ChatWindow({ projectId }) {
         />
 
         <label className="file-upload-label" title="Attach file">
-          [File]
+          📎
           <input
             type="file"
             accept="image/*,.pdf,.doc,.docx,.zip,.txt"

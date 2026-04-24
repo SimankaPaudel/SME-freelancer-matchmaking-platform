@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Project.css";
 import "./PostProject.css";
@@ -33,7 +33,8 @@ export default function PostProject() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/auth/profile", {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+        const res = await fetch(`${API_BASE_URL}/auth/profile`, {
           headers: { "Authorization": `Bearer ${localStorage.getItem("accessToken")}` }
         });
         if (res.ok) {
@@ -41,7 +42,7 @@ export default function PostProject() {
           setUser(data);
         }
       } catch (err) {
-        console.error("Failed to fetch user:", err);
+        
       } finally {
         setLoadingUser(false);
       }
@@ -60,7 +61,7 @@ export default function PostProject() {
     }
   };
 
-  // ── AI Estimate ──────────────────────────────────────────
+  // â”€â”€ AI Estimate â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const handleEstimate = async () => {
     if (!form.title.trim() || !form.description.trim()) {
       setEstError("Please fill in at least Title and Description before estimating.");
@@ -72,7 +73,8 @@ export default function PostProject() {
     setEstimation(null);
 
     try {
-      const res = await fetch("http://localhost:5000/api/estimate", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const res = await fetch(`${API_BASE_URL}/estimate`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,7 +103,7 @@ export default function PostProject() {
     }
   };
 
-  // ── Apply estimate to form ───────────────────────────────
+  // â”€â”€ Apply estimate to form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const applyEstimate = () => {
     if (!estimation) return;
     const { budgetMin, budgetMax, timelineMax, recommendedExperienceLevel } = estimation.estimation;
@@ -122,7 +124,7 @@ export default function PostProject() {
     }));
 
     // Show success feedback
-    setSuccess("✅ Form updated with AI improvements! Review and submit.");
+    setSuccess("âœ… Form updated with AI improvements! Review and submit.");
 
     // Close the estimation panel after applying
     setEstimation(null);
@@ -142,7 +144,7 @@ export default function PostProject() {
     setTimeout(() => setSuccess(""), 4000);
   };
 
-  // ── Submit project ───────────────────────────────────────
+  // â”€â”€ Submit project â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -150,7 +152,8 @@ export default function PostProject() {
     setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/projects", {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const response = await fetch(`${API_BASE_URL}/projects`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -173,7 +176,7 @@ export default function PostProject() {
         throw err;
       }
 
-      setSuccess("✅ Project posted successfully!");
+      setSuccess("âœ… Project posted successfully!");
       setForm({ title: "", description: "", skills: "", experienceLevel: "", budgetMin: "", budgetMax: "", deadline: "" });
       setEstimation(null);
       setEditingTitle(null);
@@ -186,7 +189,7 @@ export default function PostProject() {
     }
   };
 
-  // ── Helpers ──────────────────────────────────────────────
+  // â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const complexityColor = (score) => {
     if (score <= 3) return "#4a9b6f";
     if (score <= 6) return "#b08968";
@@ -206,7 +209,7 @@ export default function PostProject() {
 
       <div className="pp-layout">
 
-        {/* ── Left: Form ── */}
+        {/* â”€â”€ Left: Form â”€â”€ */}
         <div className="pp-form-col">
           {/* KYC Warning Banner */}
           {!loadingUser && user?.role === "SME" && user?.kycStatus !== "Approved" && (
@@ -218,7 +221,7 @@ export default function PostProject() {
               marginBottom: "20px",
               color: "#7a5c1e"
             }}>
-              <strong>⚠️ KYC Verification Required</strong>
+              <strong>âš ï¸ KYC Verification Required</strong>
               <p style={{ margin: "8px 0 0 0", fontSize: "14px", lineHeight: "1.5" }}>
                 Your KYC verification must be approved before posting projects. 
                 <button 
@@ -234,7 +237,7 @@ export default function PostProject() {
                     textDecoration: "underline"
                   }}
                 >
-                  Complete KYC Now →
+                  Complete KYC Now â†’
                 </button>
               </p>
             </div>
@@ -297,7 +300,7 @@ export default function PostProject() {
               {estimating ? (
                 <><span className="pp-spinner" /> Analyzing project...</>
               ) : (
-                <>🤖 Get AI Estimate</>
+                <>ðŸ¤– Get AI Estimate</>
               )}
             </button>
 
@@ -307,7 +310,7 @@ export default function PostProject() {
 
             <div className="pp-budget-row">
               <div className="form-group">
-                <label>Min Budget (₹)</label>
+                <label>Min Budget (â‚¹)</label>
                 <input
                   name="budgetMin"
                   type="number"
@@ -318,7 +321,7 @@ export default function PostProject() {
                 />
               </div>
               <div className="form-group">
-                <label>Max Budget (₹)</label>
+                <label>Max Budget (â‚¹)</label>
                 <input
                   name="budgetMax"
                   type="number"
@@ -342,7 +345,7 @@ export default function PostProject() {
             </div>
 
             <button type="submit" disabled={loading} className="pp-btn-submit">
-              {loading ? "Posting..." : "📤 Post Project"}
+              {loading ? "Posting..." : "ðŸ“¤ Post Project"}
             </button>
 
             {error && (
@@ -355,7 +358,7 @@ export default function PostProject() {
                 color: "#c0392b",
                 fontSize: "14px"
               }}>
-                <strong>❌ {error}</strong>
+                <strong>âŒ {error}</strong>
                 {error.includes("KYC") && (
                   <button 
                     type="button"
@@ -373,7 +376,7 @@ export default function PostProject() {
                       width: "100%"
                     }}
                   >
-                    Go to Profile & Verify KYC →
+                    Go to Profile & Verify KYC â†’
                   </button>
                 )}
               </div>
@@ -382,18 +385,18 @@ export default function PostProject() {
           </form>
         </div>
 
-        {/* ── Right: AI Estimation Panel ── */}
+        {/* â”€â”€ Right: AI Estimation Panel â”€â”€ */}
         <div className="pp-estimate-col">
           {!estimation && !estimating && (
             <div className="pp-estimate-placeholder">
-              <div className="pp-placeholder-icon">🤖</div>
+              <div className="pp-placeholder-icon">ðŸ¤–</div>
               <h3>AI Project Estimator</h3>
               <p>Fill in your project title and description, then click <strong>"Get AI Estimate"</strong> to receive:</p>
               <ul>
-                <li>💰 Recommended budget range</li>
-                <li>📅 Expected timeline</li>
-                <li>👤 Freelancer skill level</li>
-                <li>⚠️ Risk warnings</li>
+                <li>ðŸ’° Recommended budget range</li>
+                <li>ðŸ“… Expected timeline</li>
+                <li>ðŸ‘¤ Freelancer skill level</li>
+                <li>âš ï¸ Risk warnings</li>
               </ul>
               <p className="pp-placeholder-note">Powered by TaskHive Intelligent Estimation Engine + Real Platform Data</p>
             </div>
@@ -410,7 +413,7 @@ export default function PostProject() {
           {estimation && !estimating && (
             <div className="pp-estimate-result">
               <div className="pp-result-header">
-                <h3>🤖 AI Estimation</h3>
+                <h3>ðŸ¤– AI Estimation</h3>
                 <div className="pp-result-badges">
                   <span
                     className="pp-badge"
@@ -426,15 +429,15 @@ export default function PostProject() {
 
               {/* Budget */}
               <div className="pp-result-card">
-                <p className="pp-result-label">💰 Recommended Budget</p>
+                <p className="pp-result-label">ðŸ’° Recommended Budget</p>
                 <p className="pp-result-main">
-                  ₹{estimation.estimation.budgetMin?.toLocaleString()}
-                  <span> – </span>
-                  ₹{estimation.estimation.budgetMax?.toLocaleString()}
+                  â‚¹{estimation.estimation.budgetMin?.toLocaleString()}
+                  <span> â€“ </span>
+                  â‚¹{estimation.estimation.budgetMax?.toLocaleString()}
                 </p>
                 {estimation.meta.avgMarketRate && (
                   <p className="pp-result-sub">
-                    Platform avg: ₹{estimation.meta.avgMarketRate.toLocaleString()}
+                    Platform avg: â‚¹{estimation.meta.avgMarketRate.toLocaleString()}
                   </p>
                 )}
               </div>
@@ -442,7 +445,7 @@ export default function PostProject() {
               {/* Suggested Title Editor */}
               {estimation.estimation.suggestedTitle && (
                 <div className="pp-result-card">
-                  <p className="pp-result-label">✨ Improved Title</p>
+                  <p className="pp-result-label">âœ¨ Improved Title</p>
                   <p className="pp-result-sub">AI has polished your title. Edit if needed:</p>
                   <input
                     className="pp-title-editor"
@@ -457,7 +460,7 @@ export default function PostProject() {
               {/* Suggested Description Editor */}
               {estimation.estimation.suggestedDescription && (
                 <div className="pp-result-card">
-                  <p className="pp-result-label">📝 Improved Description</p>
+                  <p className="pp-result-label">ðŸ“ Improved Description</p>
                   <p className="pp-result-sub">AI has refined your description. Edit if needed:</p>
                   <textarea
                     className="pp-description-editor"
@@ -472,7 +475,7 @@ export default function PostProject() {
               {/* Suggested Skills Editor */}
               {estimation.estimation.suggestedSkills && estimation.estimation.suggestedSkills.length > 0 && (
                 <div className="pp-result-card">
-                  <p className="pp-result-label">🛠️ Recommended Skills</p>
+                  <p className="pp-result-label">ðŸ› ï¸ Recommended Skills</p>
                   <p className="pp-result-sub">AI has suggested these skills. Edit if needed (comma-separated):</p>
                   <textarea
                     className="pp-skills-editor"
@@ -486,21 +489,21 @@ export default function PostProject() {
 
               {/* Timeline */}
               <div className="pp-result-card">
-                <p className="pp-result-label">📅 Expected Timeline</p>
+                <p className="pp-result-label">ðŸ“… Expected Timeline</p>
                 <p className="pp-result-main">
-                  {estimation.estimation.timelineMin} – {estimation.estimation.timelineMax} days
+                  {estimation.estimation.timelineMin} â€“ {estimation.estimation.timelineMax} days
                 </p>
               </div>
 
               {/* Experience */}
               <div className="pp-result-card">
-                <p className="pp-result-label">👤 Recommended Freelancer Level</p>
+                <p className="pp-result-label">ðŸ‘¤ Recommended Freelancer Level</p>
                 <p className="pp-result-main">{estimation.estimation.recommendedExperienceLevel}</p>
               </div>
 
               {/* Complexity bar */}
               <div className="pp-result-card">
-                <p className="pp-result-label">⚙️ Complexity</p>
+                <p className="pp-result-label">âš™ï¸ Complexity</p>
                 <div className="pp-complexity-bar-bg">
                   <div
                     className="pp-complexity-bar"
@@ -516,9 +519,9 @@ export default function PostProject() {
               {/* Risk warnings */}
               {estimation.estimation.riskWarnings?.length > 0 && (
                 <div className="pp-risk-box">
-                  <p className="pp-risk-title">⚠️ Risk Warnings</p>
+                  <p className="pp-risk-title">âš ï¸ Risk Warnings</p>
                   {estimation.estimation.riskWarnings.map((w, i) => (
-                    <p key={i} className="pp-risk-item">• {w}</p>
+                    <p key={i} className="pp-risk-item">â€¢ {w}</p>
                   ))}
                 </div>
               )}
@@ -526,7 +529,7 @@ export default function PostProject() {
               {/* Reasoning */}
               {estimation.estimation.reasoning && (
                 <div className="pp-reasoning">
-                  <p className="pp-result-label">💡 AI Reasoning</p>
+                  <p className="pp-result-label">ðŸ’¡ AI Reasoning</p>
                   <p className="pp-reasoning-text">{estimation.estimation.reasoning}</p>
                 </div>
               )}
@@ -534,7 +537,7 @@ export default function PostProject() {
               {/* Suggested skills */}
               {estimation.estimation.suggestedSkills?.length > 0 && (
                 <div className="pp-result-card">
-                  <p className="pp-result-label">🛠 Suggested Skills</p>
+                  <p className="pp-result-label">ðŸ›  Suggested Skills</p>
                   <div className="pp-skills-list">
                     {estimation.estimation.suggestedSkills.map((s, i) => (
                       <span key={i} className="pp-skill-tag">{s}</span>
@@ -552,7 +555,7 @@ export default function PostProject() {
 
               {/* Apply button */}
               <button className="pp-btn-apply" onClick={applyEstimate}>
-                ✅ Apply Estimate to Form
+                âœ… Apply Estimate to Form
               </button>
             </div>
           )}

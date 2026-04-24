@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -11,7 +11,7 @@ export default function RaiseDispute() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!reason.trim()) return setMessage("❌ Please enter a dispute reason");
+    if (!reason.trim()) return setMessage("âŒ Please enter a dispute reason");
 
     setLoading(true);
     setMessage("");
@@ -29,9 +29,9 @@ export default function RaiseDispute() {
       setMessage(" Dispute raised successfully! An admin will review it shortly.");
       setTimeout(() => navigate("/dashboard/escrow-management"), 2500);
     } catch (err) {
-      console.error(err);
+      
       const errMsg = err.response?.data?.message || "Failed to raise dispute";
-      setMessage(`❌ ${errMsg}`);
+      setMessage(`âŒ ${errMsg}`);
     } finally {
       setLoading(false);
     }
@@ -80,7 +80,7 @@ export default function RaiseDispute() {
               fontWeight: "bold",
             }}
           >
-            {loading ? "Submitting..." : "🚨 Submit Dispute"}
+            {loading ? "Submitting..." : "ðŸš¨ Submit Dispute"}
           </button>
 
           <button
@@ -106,9 +106,9 @@ export default function RaiseDispute() {
             marginTop: "16px",
             padding: "12px",
             borderRadius: "6px",
-            background: message.startsWith("✅") ? "#f0fff4" : "#fff5f5",
-            color: message.startsWith("✅") ? "#276749" : "#c53030",
-            border: `1px solid ${message.startsWith("✅") ? "#9ae6b4" : "#feb2b2"}`,
+            background: message.startsWith("âœ…") ? "#f0fff4" : "#fff5f5",
+            color: message.startsWith("âœ…") ? "#276749" : "#c53030",
+            border: `1px solid ${message.startsWith("âœ…") ? "#9ae6b4" : "#feb2b2"}`,
           }}
         >
           {message}

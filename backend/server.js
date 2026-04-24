@@ -1,4 +1,4 @@
-require("dotenv").config();
+﻿require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
@@ -22,19 +22,19 @@ const estimationRoutes = require("./routes/estimationRoutes");
 const KycRoutes = require("./routes/KycRoutes");
 const matchmakingRoutes = require("./routes/matchmakingRoutes");
 
-       // ← NEW
+       // â† NEW
 
 const { startDeadlineReminders } = require("./utils/deadlineReminder");
 
 const app = express();
-const server = http.createServer(app);                      // ← NEW
+const server = http.createServer(app);                      // â† NEW
 
 // Socket.IO setup
-const io = new Server(server, {                             // ← NEW
+const io = new Server(server, {                             // â† NEW
   cors: { origin: "*", methods: ["GET", "POST"] }
 });
 
-app.set("io", io);                                          // ← makes io accessible in controllers
+app.set("io", io);                                          // â† makes io accessible in controllers
 
 io.on("connection", (socket) => {
   // Client calls joinRoom with a conversationId to receive messages for that chat
@@ -63,7 +63,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/estimate", estimationRoutes);
 app.use("/api/kyc", KycRoutes);
 app.use("/api/matchmaking", matchmakingRoutes);
-                          // ← NEW
+                          // â† NEW
 
 // app.get("/", (req, res) =>
 //   res.json({ activeStatus: true, error: false })
@@ -74,7 +74,7 @@ app.get("/", (req, res) => {
 })
 
 app.use((err, req, res, next) => {
-  console.error("Error:", err.stack);
+  
   res.status(500).json({ message: "Something went wrong!", error: err.message });
 });
 
@@ -82,7 +82,6 @@ app.use((err, req, res, next) => {
 if (process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 5000;
   server.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
     startDeadlineReminders();
   });
 }

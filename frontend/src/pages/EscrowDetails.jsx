@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import EscrowTimeline from "../component/EscrowTimeline";
 import { getReviewByEscrow } from "../services/reviewService";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || "http://localhost:5000";
 
 export default function EscrowDetails() {
   const { escrowId } = useParams();
@@ -23,14 +26,14 @@ export default function EscrowDetails() {
 
   const loadEscrow = async () => {
     if (!escrowId) {
-      setMessage("❌ Invalid escrow link.");
+      setMessage("âŒ Invalid escrow link.");
       setLoading(false);
       return;
     }
 
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/escrows/${escrowId}`,
+        `${API_BASE_URL}/escrows/${escrowId}`,
         { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }
       );
       setEscrow(res.data);
@@ -43,8 +46,8 @@ export default function EscrowDetails() {
         } catch {}
       }
     } catch (err) {
-      console.error("Failed to load escrow", err);
-      setMessage("❌ Failed to load escrow details.");
+      
+      setMessage("âŒ Failed to load escrow details.");
     } finally {
       setLoading(false);
     }
@@ -59,7 +62,7 @@ export default function EscrowDetails() {
     return (
       <div className="page-container">
         <p style={{ color: "red" }}>{message || "Escrow not found"}</p>
-        <button onClick={() => navigate(-1)}>← Go Back</button>
+        <button onClick={() => navigate(-1)}>â† Go Back</button>
       </div>
     );
 
@@ -81,7 +84,7 @@ export default function EscrowDetails() {
     <div className="page-container" style={{ maxWidth: "700px" }}>
       <h2>Escrow Details</h2>
 
-      {/* ── Summary card ── */}
+      {/* â”€â”€ Summary card â”€â”€ */}
       <div style={{
         padding: "20px",
         background: "#f7f1e8",
@@ -97,7 +100,7 @@ export default function EscrowDetails() {
           <div>
             <p style={{ margin: "4px 0", color: "#7a6a55", fontSize: "13px" }}>Amount</p>
             <p style={{ margin: 0, fontWeight: "bold", fontSize: "18px", color: "#4a3728" }}>
-              ₹{escrow.amount?.toLocaleString()}
+              â‚¹{escrow.amount?.toLocaleString()}
             </p>
           </div>
           <div>
@@ -136,7 +139,7 @@ export default function EscrowDetails() {
         {/* Payment verified */}
         {escrow.paymentVerifiedAt && (
           <p style={{ marginTop: "12px", color: "#276749", fontSize: "13px" }}>
-            ✅ Payment verified on {new Date(escrow.paymentVerifiedAt).toLocaleString()}
+            âœ… Payment verified on {new Date(escrow.paymentVerifiedAt).toLocaleString()}
           </p>
         )}
 
@@ -184,7 +187,7 @@ export default function EscrowDetails() {
         {escrow.submittedFile && (
           <div style={{ marginTop: "12px" }}>
             <a
-              href={`http://localhost:5000/${escrow.submittedFile}`}
+              href={`${API_BASE}/${escrow.submittedFile}`}
               download
               target="_blank"
               rel="noopener noreferrer"
@@ -205,7 +208,7 @@ export default function EscrowDetails() {
         )}
       </div>
 
-      {/* ── Leave a Review — shown to FREELANCER only after payment released ── */}
+      {/* â”€â”€ Leave a Review â€” shown to FREELANCER only after payment released â”€â”€ */}
       {isReleased && currentUserRole === "Freelancer" && (
         <div style={{
           padding: "16px 20px",
@@ -215,30 +218,30 @@ export default function EscrowDetails() {
           marginBottom: "24px",
         }}>
           <p style={{ margin: "0 0 10px 0", fontWeight: "600", color: "#4a3728" }}>
-            ⭐ How was your experience with this client?
+            â­ How was your experience with this client?
           </p>
           {!alreadyReviewed ? (
             <button
               className="btn-review"
               onClick={() => navigate(`/dashboard/submit-review/${escrowId}`)}
             >
-              ⭐ Leave a Review
+              â­ Leave a Review
             </button>
           ) : (
             <p style={{ margin: 0, color: "#7a6a55", fontSize: "14px" }}>
-              ✓ You have already submitted your review for this project.
+              âœ“ You have already submitted your review for this project.
             </p>
           )}
         </div>
       )}
 
-      {/* ── Timeline ── */}
+      {/* â”€â”€ Timeline â”€â”€ */}
       <div>
         <h4 style={{ color: "#4a3728" }}>Timeline</h4>
         <EscrowTimeline timeline={escrow.timeline} />
       </div>
 
-      {/* ── Back button ── */}
+      {/* â”€â”€ Back button â”€â”€ */}
       <button
         onClick={() => navigate(-1)}
         style={{
@@ -247,7 +250,7 @@ export default function EscrowDetails() {
           border: "1px solid #e0d4c0", borderRadius: "6px", cursor: "pointer",
         }}
       >
-        ← Go Back
+        â† Go Back
       </button>
 
       {message && (

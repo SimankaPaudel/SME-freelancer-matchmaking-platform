@@ -1,12 +1,12 @@
-const Project = require("../models/Project");
+﻿const Project = require("../models/Project");
 const EscrowPayment = require("../models/EscrowPayment");
 
-// ─────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // AI-FREE CUSTOM ESTIMATION ENGINE
 // Uses platform data + intelligent algorithms instead of external AI APIs
-// ─────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-// ── Complexity scoring based on keywords ──────────────────────────────────
+// â”€â”€ Complexity scoring based on keywords â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function analyzeProjectComplexity(title, description, skillsArray, experienceLevel) {
   const text = `${title} ${description}`.toLowerCase();
   let complexityScore = 3; // Base: medium
@@ -43,7 +43,7 @@ function analyzeProjectComplexity(title, description, skillsArray, experienceLev
   return Math.min(Math.max(Math.round(complexityScore), 1), 10);
 }
 
-// ── Timeline estimation (days) ────────────────────────────────────────────
+// â”€â”€ Timeline estimation (days) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function estimateTimeline(complexityScore, experienceLevel) {
   let baseTimeline;
 
@@ -67,13 +67,13 @@ function estimateTimeline(complexityScore, experienceLevel) {
   ];
 }
 
-// ── Budget estimation based on Nepal market ───────────────────────────────
+// â”€â”€ Budget estimation based on Nepal market â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function estimateBudget(complexityScore, experienceLevel, marketData, skillsArray) {
   // Base rates per day in NPR (adjusted for Nepal market)
   const baseRates = {
-    Beginner: 400,    // ₹400/day
-    Intermediate: 800, // ₹800/day
-    Expert: 1500,     // ₹1500/day
+    Beginner: 400,    // â‚¹400/day
+    Intermediate: 800, // â‚¹800/day
+    Expert: 1500,     // â‚¹1500/day
   };
 
   const baseRate = baseRates[experienceLevel] || 800;
@@ -115,13 +115,13 @@ function estimateBudget(complexityScore, experienceLevel, marketData, skillsArra
 
   // Ensure reasonable range
   if (budgetMin > budgetMax) [budgetMin, budgetMax] = [budgetMax, budgetMin];
-  budgetMin = Math.max(budgetMin, 2000); // Minimum ₹2000
+  budgetMin = Math.max(budgetMin, 2000); // Minimum â‚¹2000
   budgetMax = Math.max(budgetMax, budgetMin + 5000);
 
   return { budgetMin, budgetMax };
 }
 
-// ── Generate risk warnings ────────────────────────────────────────────────
+// â”€â”€ Generate risk warnings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function generateRiskWarnings(budgetMin, budgetMax, complexityScore, timeline, experienceLevel) {
   const warnings = [];
 
@@ -149,7 +149,7 @@ function generateRiskWarnings(budgetMin, budgetMax, complexityScore, timeline, e
   return warnings.slice(0, 3); // Max 3 warnings
 }
 
-// ── Improve project description - Professional Polishing ──────────────────
+// â”€â”€ Improve project description - Professional Polishing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function improveDescription(title, description, skillsArray, complexityScore, timeline) {
   let originalDesc = description.trim();
 
@@ -219,7 +219,7 @@ function improveDescription(title, description, skillsArray, complexityScore, ti
     expansion += "Key Focus Areas:\n";
     const focusAreas = contextualPhrases.slice(0, 3);
     focusAreas.forEach((area, idx) => {
-      expansion += `• ${area.charAt(0).toUpperCase() + area.slice(1)}\n`;
+      expansion += `â€¢ ${area.charAt(0).toUpperCase() + area.slice(1)}\n`;
     });
 
     expansion += "\n";
@@ -235,12 +235,12 @@ function improveDescription(title, description, skillsArray, complexityScore, ti
   const hasRequirements = text.includes("require") || text.includes("need") || text.includes("must");
   if (!hasRequirements) {
     expandedDesc += "Requirements:\n";
-    expandedDesc += `• Proficiency in ${skillsArray.slice(0, 2).join(" and ")}\n`;
+    expandedDesc += `â€¢ Proficiency in ${skillsArray.slice(0, 2).join(" and ")}\n`;
     if (skillsArray.length > 2) {
-      expandedDesc += `• Experience with ${skillsArray.slice(2, 4).join(", ")}\n`;
+      expandedDesc += `â€¢ Experience with ${skillsArray.slice(2, 4).join(", ")}\n`;
     }
-    expandedDesc += "• Strong problem-solving and communication skills\n";
-    expandedDesc += "• Ability to deliver high-quality, well-documented code\n\n";
+    expandedDesc += "â€¢ Strong problem-solving and communication skills\n";
+    expandedDesc += "â€¢ Ability to deliver high-quality, well-documented code\n\n";
   }
 
   // 2. DELIVERABLES SECTION
@@ -249,24 +249,24 @@ function improveDescription(title, description, skillsArray, complexityScore, ti
     expandedDesc += "Expected Deliverables:\n";
     
     if (projectCategory.includes("Web")) {
-      expandedDesc += "• Fully functional web application with responsive design\n";
-      expandedDesc += "• Clean, maintainable, well-documented source code\n";
-      expandedDesc += "• Comprehensive testing and bug fixes\n";
+      expandedDesc += "â€¢ Fully functional web application with responsive design\n";
+      expandedDesc += "â€¢ Clean, maintainable, well-documented source code\n";
+      expandedDesc += "â€¢ Comprehensive testing and bug fixes\n";
     } else if (projectCategory.includes("Mobile")) {
-      expandedDesc += "• Production-ready mobile application\n";
-      expandedDesc += "• Complete source code with proper documentation\n";
-      expandedDesc += "• Testing across multiple devices\n";
+      expandedDesc += "â€¢ Production-ready mobile application\n";
+      expandedDesc += "â€¢ Complete source code with proper documentation\n";
+      expandedDesc += "â€¢ Testing across multiple devices\n";
     } else if (projectCategory.includes("Backend")) {
-      expandedDesc += "• Scalable backend architecture and database design\n";
-      expandedDesc += "• Well-documented API with clear specifications\n";
-      expandedDesc += "• Implementation and deployment support\n";
+      expandedDesc += "â€¢ Scalable backend architecture and database design\n";
+      expandedDesc += "â€¢ Well-documented API with clear specifications\n";
+      expandedDesc += "â€¢ Implementation and deployment support\n";
     } else {
-      expandedDesc += "• Complete project deliverables as specified\n";
-      expandedDesc += "• Full source code and documentation\n";
-      expandedDesc += "• Quality assurance and testing\n";
+      expandedDesc += "â€¢ Complete project deliverables as specified\n";
+      expandedDesc += "â€¢ Full source code and documentation\n";
+      expandedDesc += "â€¢ Quality assurance and testing\n";
     }
     
-    expandedDesc += "• Ongoing support and maintenance as needed\n\n";
+    expandedDesc += "â€¢ Ongoing support and maintenance as needed\n\n";
   }
 
   // 3. TIMELINE SECTION
@@ -275,16 +275,16 @@ function improveDescription(title, description, skillsArray, complexityScore, ti
     const estimatedTime = timeline[1] <= 7 ? "1-2 weeks" : 
                          timeline[1] <= 14 ? "2-4 weeks" : 
                          timeline[1] <= 30 ? "1-2 months" : "2+ months";
-    expandedDesc += `Timeline:\n• Project Duration: ${estimatedTime}\n`;
-    expandedDesc += `• Estimated Completion: ${timeline[1]} days from start\n\n`;
+    expandedDesc += `Timeline:\nâ€¢ Project Duration: ${estimatedTime}\n`;
+    expandedDesc += `â€¢ Estimated Completion: ${timeline[1]} days from start\n\n`;
   }
 
   // 4. PROFESSIONAL CLOSING
   expandedDesc += "What We Value:\n";
-  expandedDesc += "• Attention to detail and quality craftsmanship\n";
-  expandedDesc += "• Professional communication and regular updates\n";
-  expandedDesc += "• Ability to meet deadlines and handle revisions\n";
-  expandedDesc += "• Willingness to collaborate and iterate\n\n";
+  expandedDesc += "â€¢ Attention to detail and quality craftsmanship\n";
+  expandedDesc += "â€¢ Professional communication and regular updates\n";
+  expandedDesc += "â€¢ Ability to meet deadlines and handle revisions\n";
+  expandedDesc += "â€¢ Willingness to collaborate and iterate\n\n";
 
   expandedDesc += `We look forward to working with talented professionals who can bring expertise and dedication to this ${projectCategory.toLowerCase()} project. Please share your portfolio and relevant experience when submitting your proposal.`;
 
@@ -308,7 +308,7 @@ function improveDescription(title, description, skillsArray, complexityScore, ti
   return expandedDesc;
 }
 
-// ── Improve project title ──────────────────────────────────────────────────
+// â”€â”€ Improve project title â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function improveTitle(title, description, skillsArray, complexityScore) {
   let improvedTitle = title.trim();
 
@@ -350,7 +350,7 @@ function improveTitle(title, description, skillsArray, complexityScore) {
   return improvedTitle;
 }
 
-// ── Suggest improved skills ────────────────────────────────────────────────
+// â”€â”€ Suggest improved skills â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function suggestImprovedSkills(title, description, skillsArray, complexityScore) {
   const text = `${title} ${description}`.toLowerCase();
   const improvementMap = {
@@ -427,9 +427,9 @@ function suggestImprovedSkills(title, description, skillsArray, complexityScore)
   return suggestedSkills.slice(0, 6);
 }
 
-// ──────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // MAIN ESTIMATION ENDPOINT
-// ──────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.estimateProject = async (req, res) => {
   try {
     const { title, description, skills, experienceLevel } = req.body;
@@ -441,7 +441,7 @@ exports.estimateProject = async (req, res) => {
       ? skills
       : (skills || "").split(",").map((s) => s.trim()).filter(Boolean);
 
-    // ── Fetch platform data ────────────────────────────────────
+    // â”€â”€ Fetch platform data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const titleWords = title.split(" ").filter((w) => w.length > 3);
     const titleRegex = titleWords.length > 0 ? new RegExp(titleWords.join("|"), "i") : /.*/;
 
@@ -475,18 +475,18 @@ exports.estimateProject = async (req, res) => {
         ? Math.round(marketData.reduce((s, e) => s + e.amount, 0) / marketData.length)
         : null;
 
-    // ── Run estimation algorithm ────────────────────────────────
+    // â”€â”€ Run estimation algorithm â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const complexityScore = analyzeProjectComplexity(title, description, skillsArray, experienceLevel);
     const timeline = estimateTimeline(complexityScore, experienceLevel);
     const { budgetMin, budgetMax } = estimateBudget(complexityScore, experienceLevel, marketData, skillsArray);
     const riskWarnings = generateRiskWarnings(budgetMin, budgetMax, complexityScore, timeline, experienceLevel);
 
-    // ── Improve all fields ─────────────────────────────────────
+    // â”€â”€ Improve all fields â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const suggestedTitle = improveTitle(title, description, skillsArray, complexityScore);
     const suggestedDescription = improveDescription(title, description, skillsArray, complexityScore, timeline);
     const suggestedSkills = suggestImprovedSkills(title, description, skillsArray, complexityScore);
 
-    // ── Determine confidence level ──────────────────────────────
+    // â”€â”€ Determine confidence level â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     let confidenceLevel = "Medium";
     if (similarProjects.length >= 3 || marketData.length >= 5) {
       confidenceLevel = "High"; // More data = more confidence
@@ -494,14 +494,14 @@ exports.estimateProject = async (req, res) => {
       confidenceLevel = "Low"; // Little data = less confident
     }
 
-    // ── Generate recommendation reasoning ──────────────────────
+    // â”€â”€ Generate recommendation reasoning â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     const reasoning =
       `Based on ${similarProjects.length} similar projects and ${marketData.length} market data points, ` +
       `this ${complexityScore <= 3 ? "simple" : complexityScore <= 6 ? "moderately complex" : "highly complex"} project ` +
-      `is estimated at ₹${budgetMin}-${budgetMax} over ${timeline[0]}-${timeline[1]} days. ` +
-      (avgMarketRate ? `Platform average is ₹${avgMarketRate}.` : "");
+      `is estimated at â‚¹${budgetMin}-${budgetMax} over ${timeline[0]}-${timeline[1]} days. ` +
+      (avgMarketRate ? `Platform average is â‚¹${avgMarketRate}.` : "");
 
-    // ── Extract skills from description for suggestions ───────
+    // â”€â”€ Extract skills from description for suggestions â”€â”€â”€â”€â”€â”€â”€
     const allSkills = [...new Set([...skillsArray, ...skillsArray])];
 
     const estimation = {
@@ -529,7 +529,7 @@ exports.estimateProject = async (req, res) => {
       },
     });
   } catch (err) {
-    console.error("estimateProject error:", err);
+    
     res.status(500).json({ message: err.message || "Estimation failed" });
   }
 };

@@ -1,4 +1,4 @@
-const Conversation = require("../models/Conversation");
+﻿const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
 const Project = require("../models/Project");
 const Proposal = require("../models/Proposal");
@@ -85,18 +85,19 @@ exports.getMessages = async (req, res) => {
     const convo = await Conversation.findById(conversationId).populate("projectId");
     if (!convo) return res.status(404).json({ message: "Conversation not found" });
 
-    // Check if user is authorized: is project poster or has a proposal for this project
-    const project = convo.projectId;
-    const isProjectPoster = project.postedBy.toString() === userId;
-    const hasProposal = await Proposal.findOne({ projectId: project._id, freelancerId: userId });
-
-    if (!isProjectPoster && !hasProposal) {
-      return res.status(403).json({ message: "Unauthorized" });
-    }
-
-    // Add user to participants if not already there
+    // Check if user is a participant in the conversation
     const participants = convo.participants.map((p) => p.toString());
     if (!participants.includes(userId)) {
+      // Fallback: check if user is project poster or has a proposal
+      const project = convo.projectId;
+      const isProjectPoster = project.postedBy.toString() === userId;
+      const hasProposal = await Proposal.findOne({ projectId: project._id, freelancerId: userId });
+
+      if (!isProjectPoster && !hasProposal) {
+        return res.status(403).json({ message: "Unauthorized" });
+      }
+
+      // Add user to participants if authorized
       convo.participants.push(userId);
       await convo.save();
     }
@@ -169,13 +170,12 @@ exports.sendMessage = async (req, res) => {
         .map((p) => p.toString())
         .filter((p) => p !== userId);
       
-      console.log(`Message sent from ${userId}, notifying ${otherParticipants.length} participants:`, otherParticipants);
       
       if (otherParticipants.length > 0) {
         const sender = await User.findById(userId).select("fullName");
         
         if (!sender) {
-          console.warn("⚠️ Notification: Sender not found");
+          console.warn("âš ï¸ Notification: Sender not found");
         } else {
           for (const participantId of otherParticipants) {
             try {
@@ -186,17 +186,15 @@ exports.sendMessage = async (req, res) => {
                 type: "general",
                 link: `/dashboard/messages`,
               });
-              console.log(`✅ Notification sent to ${participantId}`);
             } catch (notifErr) {
-              console.error(`⚠️ Failed to notify ${participantId}:`, notifErr.message);
+              
             }
           }
         }
       } else {
-        console.log(`ℹ️ No other participants to notify`);
       }
     } catch (notifErr) {
-      console.error("⚠️ Notification system error:", notifErr.message);
+      
     }
 
     // Emit via socket if available

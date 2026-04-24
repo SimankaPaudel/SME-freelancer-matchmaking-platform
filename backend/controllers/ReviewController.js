@@ -1,18 +1,18 @@
-const Review = require("../models/Review");
+﻿const Review = require("../models/Review");
 const Escrow = require("../models/EscrowPayment");
 const User   = require("../models/User");
 const { createNotification } = require("../utils/notificationHelper");
 
-// ─── helper: compute average from a list of numeric values ───
+// â”€â”€â”€ helper: compute average from a list of numeric values â”€â”€â”€
 function computeAvg(values) {
   const valid = values.filter((v) => typeof v === "number" && !isNaN(v));
   if (valid.length === 0) return 0;
   return Math.round((valid.reduce((a, b) => a + b, 0) / valid.length) * 10) / 10;
 }
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // POST /api/reviews
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.submitReview = async (req, res) => {
   try {
     const reviewerId   = req.user.userId;
@@ -20,12 +20,12 @@ exports.submitReview = async (req, res) => {
 
     const {
       escrowId,
-      // SME → Freelancer
+      // SME â†’ Freelancer
       qualityRating,
       communicationRating,
       punctualityRating,
       professionalismRating,
-      // Freelancer → SME
+      // Freelancer â†’ SME
       sme_professionalismRating,
       sme_communicationRating,
       paymentTimelinessRating,
@@ -33,7 +33,7 @@ exports.submitReview = async (req, res) => {
       comment,
     } = req.body;
 
-    // 1. Load escrow — all IDs are direct fields on EscrowPayment
+    // 1. Load escrow â€” all IDs are direct fields on EscrowPayment
     const escrow = await Escrow.findById(escrowId);
     if (!escrow)
       return res.status(404).json({ message: "Escrow not found." });
@@ -80,7 +80,7 @@ exports.submitReview = async (req, res) => {
       const pr = Number(professionalismRating);
 
       if (!q || !c || !p || !pr || [q,c,p,pr].some(v => v < 1 || v > 5))
-        return res.status(400).json({ message: "All four ratings (1–5) are required." });
+        return res.status(400).json({ message: "All four ratings (1â€“5) are required." });
 
       ratingFields   = { qualityRating: q, communicationRating: c, punctualityRating: p, professionalismRating: pr };
       averageRating  = computeAvg([q, c, p, pr]);
@@ -91,13 +91,13 @@ exports.submitReview = async (req, res) => {
       const pt = Number(paymentTimelinessRating);
 
       if (!sp || !sc || !pt || [sp,sc,pt].some(v => v < 1 || v > 5))
-        return res.status(400).json({ message: "All three ratings (1–5) are required." });
+        return res.status(400).json({ message: "All three ratings (1â€“5) are required." });
 
       ratingFields  = { sme_professionalismRating: sp, sme_communicationRating: sc, paymentTimelinessRating: pt };
       averageRating = computeAvg([sp, sc, pt]);
     }
 
-    // 5. Save — averageRating computed here, no pre-save hook needed
+    // 5. Save â€” averageRating computed here, no pre-save hook needed
     const review = await Review.create({
       escrowId,
       projectId,
@@ -120,7 +120,7 @@ exports.submitReview = async (req, res) => {
     
     await createNotification({
       userId: revieweeId,
-      title: `⭐ New Review from ${reviewer.role}`,
+      title: `â­ New Review from ${reviewer.role}`,
       message: `${reviewer.fullName} left a ${averageRating}/5 star review: "${(comment || "No comment").substring(0, 50)}..."`,
       type: "general",
       link: `/dashboard/my-reviews`,
@@ -131,14 +131,14 @@ exports.submitReview = async (req, res) => {
   } catch (err) {
     if (err.code === 11000)
       return res.status(409).json({ message: "You have already reviewed this project." });
-    console.error("submitReview error:", err);
+    
     res.status(500).json({ message: err.message });
   }
 };
 
-// ─────────────────────────────────────────────────────────────
-// GET /api/reviews/user/:userId  — public profile
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// GET /api/reviews/user/:userId  â€” public profile
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.getReviewsForUser = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -154,9 +154,9 @@ exports.getReviewsForUser = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────
-// GET /api/reviews/escrow/:escrowId  — did current user review?
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// GET /api/reviews/escrow/:escrowId  â€” did current user review?
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 exports.getReviewByEscrow = async (req, res) => {
   try {
     const { escrowId } = req.params;
@@ -172,9 +172,9 @@ exports.getReviewByEscrow = async (req, res) => {
   }
 };
 
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Helpers
-// ─────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 async function recalcUserRating(userId) {
   try {
     const reviews = await Review.find({ revieweeId: userId });
@@ -186,7 +186,7 @@ async function recalcUserRating(userId) {
       totalReviews:  reviews.length,
     });
   } catch (err) {
-    console.error("recalcUserRating error:", err);
+    
   }
 }
 

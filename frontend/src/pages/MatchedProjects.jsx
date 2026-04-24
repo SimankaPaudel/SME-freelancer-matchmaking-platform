@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./MatchedProjects.css";
 
@@ -24,8 +24,9 @@ export default function MatchedProjects() {
           return;
         }
 
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
         const res = await fetch(
-          `http://localhost:5000/api/matchmaking/freelancer/matching-projects?limit=20`,
+          `${API_BASE_URL}/matchmaking/freelancer/matching-projects?limit=20`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -42,7 +43,7 @@ export default function MatchedProjects() {
         setMatches(data.matches);
         setStatistics(data.statistics);
       } catch (err) {
-        console.error("Matchmaking fetch error:", err);
+        
         setError(err.message);
       } finally {
         setLoading(false);
@@ -104,8 +105,8 @@ export default function MatchedProjects() {
           </div>
           <div className="mp-summary-right">
             <div className="mp-info">
-              <span>💵 Hourly Rate: ₹{freelancer.hourlyRate || "Not Set"}</span>
-              <span>⭐ Your Rating: {freelancer.averageRating?.toFixed(1) || "N/A"}</span>
+              <span>ðŸ’µ Hourly Rate: â‚¹{freelancer.hourlyRate || "Not Set"}</span>
+              <span>â­ Your Rating: {freelancer.averageRating?.toFixed(1) || "N/A"}</span>
             </div>
           </div>
         </div>
@@ -161,13 +162,13 @@ export default function MatchedProjects() {
                 {/* Project Meta */}
                 <div className="mp-project-meta">
                   <span className="mp-meta-item">
-                    💰 {match.budgetRange}
+                    ðŸ’° {match.budgetRange}
                   </span>
                   <span className="mp-meta-item">
-                    👤 Level: {match.experienceLevel}
+                    ðŸ‘¤ Level: {match.experienceLevel}
                   </span>
                   <span className="mp-meta-item">
-                    📅 {new Date(match.deadline).toLocaleDateString()}
+                    ðŸ“… {new Date(match.deadline).toLocaleDateString()}
                   </span>
                 </div>
 
@@ -186,8 +187,8 @@ export default function MatchedProjects() {
                   className="mp-metrics-toggle"
                   onClick={() => setExpandedId(expandedId === match.id ? null : match.id)}
                 >
-                  <span>📊 Match Breakdown</span>
-                  <span className="mp-toggle-icon">{expandedId === match.id ? "▼" : "▶"}</span>
+                  <span>ðŸ“Š Match Breakdown</span>
+                  <span className="mp-toggle-icon">{expandedId === match.id ? "â–¼" : "â–¶"}</span>
                 </div>
 
                 {expandedId === match.id && (
@@ -232,14 +233,14 @@ export default function MatchedProjects() {
                   onClick={() => navigate(`/dashboard/apply/${match._id || match.id}`)}
                   title="View project details and submit a proposal"
                 >
-                  ✨ View & Apply
+                  âœ¨ View & Apply
                 </button>
                 <button 
                   className="mp-btn-details"
                   onClick={() => navigate(`/dashboard/project/${match._id || match.id}`)}
                   title="View complete project details"
                 >
-                  📖 View Details
+                  ðŸ“– View Details
                 </button>
               </div>
             </div>

@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+﻿import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import RatingDisplay from "../components/RatingDisplay";
 import "./Proposal.css";
@@ -21,8 +21,9 @@ export default function Applicants() {
 
     const fetchApplicants = async () => {
       try {
+        const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
         const res = await fetch(
-          `http://localhost:5000/api/proposals/project/${state.projectId}`,
+          `${API_BASE_URL}/proposals/project/${state.projectId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -39,7 +40,7 @@ export default function Applicants() {
             if (p.status === "Accepted") {
               try {
                 const escrowRes = await fetch(
-                  `http://localhost:5000/api/escrows/proposal/${p._id}`,
+                  `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/escrows/proposal/${p._id}`,
                   {
                     headers: {
                       Authorization: `Bearer ${token}`,
@@ -60,10 +61,7 @@ export default function Applicants() {
 
                 return { ...p, escrow: null };
               } catch (err) {
-                console.error(
-                  `Error fetching escrow for proposal ${p._id}:`,
-                  err
-                );
+                
                 return { ...p, escrow: null };
               }
             }
@@ -73,7 +71,7 @@ export default function Applicants() {
 
         setProposals(dataWithEscrow);
       } catch (err) {
-        console.error(err);
+        
       } finally {
         setLoading(false);
       }
@@ -87,7 +85,7 @@ export default function Applicants() {
     return () => clearInterval(refreshInterval);
   }, [state?.projectId, token]);
 
-  // ── Sorting Logic ──
+  // â”€â”€ Sorting Logic â”€â”€
   const getSortedProposals = () => {
     const sorted = [...proposals];
     let result;
@@ -109,7 +107,7 @@ export default function Applicants() {
           
           // If one has reviews and other doesn't, rated comes first
           if ((aReviews > 0) !== (bReviews > 0)) {
-            return (bReviews > 0) ? 1 : -1;  // b has reviews → b first (return positive)
+            return (bReviews > 0) ? 1 : -1;  // b has reviews â†’ b first (return positive)
           }
           
           // Both have same review status (both rated or both unrated), sort by rating
@@ -126,7 +124,7 @@ export default function Applicants() {
           
           // If one has reviews and other doesn't, unrated comes first
           if ((aReviews > 0) !== (bReviews > 0)) {
-            return (aReviews > 0) ? 1 : -1;  // a has reviews → b first (return positive/put a second)
+            return (aReviews > 0) ? 1 : -1;  // a has reviews â†’ b first (return positive/put a second)
           }
           
           // Both have same review status (both rated or both unrated), sort by rating ascending
@@ -163,7 +161,7 @@ export default function Applicants() {
   const updateStatus = async (id, status) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/proposals/${id}/status`,
+        `${import.meta.env.VITE_API_URL || "http://localhost:5000/api"}/proposals/${id}/status`,
         {
           method: "PATCH",
           headers: {
@@ -195,7 +193,7 @@ export default function Applicants() {
         );
       }
     } catch (err) {
-      console.error("Failed to update status:", err);
+      
       alert("Failed to update status: " + err.message);
     }
   };
@@ -219,7 +217,7 @@ export default function Applicants() {
 
       {proposals.length > 0 && (
         <>
-          {/* ── Toolbar ── */}
+          {/* â”€â”€ Toolbar â”€â”€ */}
           <div style={{
             background: "#f7f1e8",
             border: "1px solid #e0d4c0",
@@ -248,8 +246,8 @@ export default function Applicants() {
                 <option value="date">Newest First</option>
                 <option value="price-asc">Price: Low to High</option>
                 <option value="price-desc">Price: High to Low</option>
-                <option value="rating-high">⭐ Highest Rated</option>
-                <option value="rating-low">⭐ Lowest Rated</option>
+                <option value="rating-high">â­ Highest Rated</option>
+                <option value="rating-low">â­ Lowest Rated</option>
                 <option value="status">Status</option>
               </select>
             </div>
@@ -273,7 +271,7 @@ export default function Applicants() {
             )}
           </div>
 
-          {/* ── Proposals List ── */}
+          {/* â”€â”€ Proposals List â”€â”€ */}
           {sortedProposals.map((p) => (
             <div className="proposal-card" key={p._id} style={{ position: "relative" }}>
               {/* Selection Checkbox */}
@@ -296,18 +294,18 @@ export default function Applicants() {
                 <div style={{ flex: 1 }}>
                   <h3 style={{ margin: "0 0 4px 0" }}>{p.freelancerId?.fullName || "Freelancer Removed"}</h3>
                   <p style={{ margin: "2px 0", color: "#7a6a55", fontSize: "13px" }}>
-                    ✉️ {p.freelancerId?.email || "N/A"}
+                    âœ‰ï¸ {p.freelancerId?.email || "N/A"}
                   </p>
                   
                   {/* Rating & Review Count */}
                   {p.freelancerId?.totalReviews > 0 ? (
                     <p style={{ margin: "4px 0", fontSize: "13px", color: "#d68910", fontWeight: "600" }}>
-                      ⭐ {(p.freelancerId.averageRating || 0).toFixed(1)} / 5 
+                      â­ {(p.freelancerId.averageRating || 0).toFixed(1)} / 5 
                       <span style={{ color: "#7a6a55", marginLeft: "6px", fontWeight: "normal" }}>({p.freelancerId.totalReviews} review{p.freelancerId.totalReviews !== 1 ? "s" : ""})</span>
                     </p>
                   ) : (
                     <p style={{ margin: "4px 0", fontSize: "13px", color: "#a89880", fontStyle: "italic" }}>
-                      ☆ No reviews yet
+                      â˜† No reviews yet
                     </p>
                   )}
                   
@@ -358,7 +356,7 @@ export default function Applicants() {
 
               {/* Bid & Description */}
               <p style={{ margin: "6px 0" }}>
-                <strong>Bid Amount:</strong> ₹{p.bidAmount?.toLocaleString()}
+                <strong>Bid Amount:</strong> â‚¹{p.bidAmount?.toLocaleString()}
               </p>
 
               <p style={{ margin: "6px 0", color: "#7a6a55" }}>
@@ -369,14 +367,14 @@ export default function Applicants() {
               <div style={{ margin: "10px 0" }}>
                 {p.proposalFile && (
                   <p style={{ margin: "4px 0" }}>
-                    <a href={`http://localhost:5000/${p.proposalFile}`} download target="_blank" rel="noopener noreferrer" style={{ color: "#b08968" }}>
+                    <a href={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/${p.proposalFile}`} download target="_blank" rel="noopener noreferrer" style={{ color: "#b08968" }}>
                       Proposal Document
                     </a>
                   </p>
                 )}
                 {p.cvFile && (
                   <p style={{ margin: "4px 0" }}>
-                    <a href={`http://localhost:5000/${p.cvFile}`} download target="_blank" rel="noopener noreferrer" style={{ color: "#b08968" }}>
+                    <a href={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}/${p.cvFile}`} download target="_blank" rel="noopener noreferrer" style={{ color: "#b08968" }}>
                       CV/Resume
                     </a>
                   </p>
@@ -393,7 +391,7 @@ export default function Applicants() {
                   <>
                     {p.status !== "Shortlisted" && (
                       <button onClick={() => updateStatus(p._id, "Shortlisted")} style={{ padding: "8px 14px", background: "#fdf3e3", border: "1px solid #e0d4c0", borderRadius: "6px", cursor: "pointer", fontWeight: "600" }}>
-                        ⭐ Shortlist
+                        â­ Shortlist
                       </button>
                     )}
 
@@ -401,7 +399,7 @@ export default function Applicants() {
                       onClick={() => updateStatus(p._id, "Accepted")}
                       style={{ padding: "8px 14px", background: "#d4f0e0", border: "1px solid #a8dfc0", borderRadius: "6px", cursor: "pointer", fontWeight: "600", color: "#1a5c38" }}
                     >
-                      ✅ Accept
+                      âœ… Accept
                     </button>
 
                     {p.status !== "Rejected" && (
@@ -409,7 +407,7 @@ export default function Applicants() {
                         onClick={() => updateStatus(p._id, "Rejected")}
                         style={{ padding: "8px 14px", background: "#f8d7da", border: "1px solid #f5c6c0", borderRadius: "6px", cursor: "pointer", fontWeight: "600", color: "#721c24" }}
                       >
-                        ❌ Reject
+                        âŒ Reject
                       </button>
                     )}
                   </>
@@ -434,11 +432,11 @@ export default function Applicants() {
                   {p.escrow ? (
                     <>
                       <p style={{ margin: "4px 0", fontSize: "13px", fontWeight: "600" }}>
-                        Escrow: <strong style={{ color: p.escrow.status === "Pending Deposit" ? "#7a5c1e" : "#1a5c38" }}>{p.escrow.status}</strong> | ₹{p.escrow.amount}
+                        Escrow: <strong style={{ color: p.escrow.status === "Pending Deposit" ? "#7a5c1e" : "#1a5c38" }}>{p.escrow.status}</strong> | â‚¹{p.escrow.amount}
                       </p>
                       {p.escrow.status === "Pending Deposit" && (
                         <p style={{ margin: "4px 0", fontSize: "12px", color: "#c0392b" }}>
-                          ⚠️ Awaiting deposit
+                          âš ï¸ Awaiting deposit
                         </p>
                       )}
                     </>
@@ -452,7 +450,7 @@ export default function Applicants() {
         </>
       )}
 
-      {/* ── Profile Modal ── */}
+      {/* â”€â”€ Profile Modal â”€â”€ */}
       {showProfileModal && selectedFreelancer && (
         <div style={{
           position: "fixed",
@@ -481,7 +479,7 @@ export default function Applicants() {
             <div style={{ marginBottom: "16px" }}>
                 <p><strong>Email:</strong> {selectedFreelancer.email}</p>
               {selectedFreelancer.hourlyRate && (
-                <p><strong>Hourly Rate:</strong> ₹{selectedFreelancer.hourlyRate.toLocaleString()}/hr</p>
+                <p><strong>Hourly Rate:</strong> â‚¹{selectedFreelancer.hourlyRate.toLocaleString()}/hr</p>
               )}
             </div>
 
@@ -551,7 +549,7 @@ export default function Applicants() {
         </div>
       )}
 
-      {/* ── Comparison Modal ── */}
+      {/* â”€â”€ Comparison Modal â”€â”€ */}
       {showComparisonModal && (
         <div style={{
           position: "fixed",
@@ -598,7 +596,7 @@ export default function Applicants() {
                     <td style={{ padding: "10px", fontWeight: "600" }}>Bid Amount</td>
                     {comparisonData.map(p => (
                       <td key={p._id} style={{ padding: "10px", textAlign: "center", borderLeft: "1px solid #e0d4c0" }}>
-                        ₹{p.bidAmount?.toLocaleString()}
+                        â‚¹{p.bidAmount?.toLocaleString()}
                       </td>
                     ))}
                   </tr>
@@ -606,7 +604,7 @@ export default function Applicants() {
                     <td style={{ padding: "10px", fontWeight: "600" }}>Rating</td>
                     {comparisonData.map(p => (
                       <td key={p._id} style={{ padding: "10px", textAlign: "center", borderLeft: "1px solid #e0d4c0" }}>
-                        ⭐ {(p.freelancerId?.averageRating || 0).toFixed(1)}/5
+                        â­ {(p.freelancerId?.averageRating || 0).toFixed(1)}/5
                       </td>
                     ))}
                   </tr>

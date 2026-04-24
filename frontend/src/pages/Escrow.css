@@ -21,9 +21,16 @@
 
 .page-container > h2,
 .page-container > h1 {
-  color: #ffffff;
+  color: #3d2f22;
   font-weight: 800;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-shadow: none;
+}
+
+/* Override for Escrow Management wrapper */
+.escrow-management-wrapper .page-container > h2,
+.escrow-management-wrapper .page-container > h1 {
+  color: #ffffff !important;
+  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4) !important;
 }
 .escrows-grid {
   display: grid;
@@ -35,17 +42,18 @@
 
 /* Escrow Card */
 .escrow-card {
-  background: white;
+  background: linear-gradient(135deg, #fdfbf7 0%, #f9f3ec 100%);
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(93, 75, 60, 0.1);
+  border: 1px solid #e8dcc8;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .escrow-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(93, 75, 60, 0.15);
+  border-color: #d4af8c;
 }
 
 /* Escrow Header */
@@ -55,12 +63,12 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid #e8dcc8;
 }
 
 .escrow-header h3 {
   margin: 0;
-  color: #333;
+  color: #3d2f22;
   font-size: 1.3rem;
 }
 
@@ -113,16 +121,16 @@
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #f5f5f5;
+  border-bottom: 1px solid #e8dcc8;
 }
 
 .detail-row .label {
-  color: #666;
+  color: #6b5437;
   font-weight: 500;
 }
 
 .detail-row .value {
-  color: #333;
+  color: #3d2f22;
   font-weight: 600;
 }
 
@@ -133,7 +141,7 @@
 
 .timeline-section h4 {
   margin-bottom: 1rem;
-  color: #555;
+  color: #3d2f22;
   font-size: 1rem;
 }
 
@@ -149,7 +157,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: #e0e0e0;
+  background: #e8dcc8;
 }
 
 .timeline-item {
@@ -164,9 +172,9 @@
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #4CAF50;
+  background: #b08968;
   border: 2px solid white;
-  box-shadow: 0 0 0 2px #4CAF50;
+  box-shadow: 0 0 0 2px #b08968;
 }
 
 .timeline-content {
@@ -175,13 +183,13 @@
 
 .timeline-action {
   font-weight: 500;
-  color: #333;
+  color: #3d2f22;
   margin: 0 0 0.2rem 0;
   font-size: 0.95rem;
 }
 
 .timeline-date {
-  color: #888;
+  color: #6b5437;
   font-size: 0.85rem;
   margin: 0;
 }
@@ -190,7 +198,7 @@
 .escrow-actions {
   margin-top: 1.5rem;
   padding-top: 1rem;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #e8dcc8;
 }
 
 .action-group {
