@@ -7,9 +7,12 @@
 
 const crypto = require("crypto");
 
-// âœ… EXACT values from eSewa test documentation
-const TEST_SECRET_KEY = "8gBm/:&EnhH.1/q";
-const TEST_MERCHANT_CODE = "EPAYTEST";
+// âœ… Load environment variables
+require("dotenv").config();
+
+const TEST_SECRET_KEY = process.env.ESEWA_SECRET_KEY || "8gBm/:&EnhH.1/q";
+const TEST_MERCHANT_CODE = process.env.ESEWA_MERCHANT_CODE || "EPAYTEST";
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
 
 // Test function
@@ -37,8 +40,8 @@ function testSignature(total_amount, transaction_uuid, product_code, secret_key)
       product_code: product_code,
       product_service_charge: "0",
       product_delivery_charge: "0",
-      success_url: "http://localhost:5173/payment/success",
-      failure_url: "http://localhost:5173/payment/failure",
+      success_url: `${FRONTEND_URL}/payment/success`,
+      failure_url: `${FRONTEND_URL}/payment/failure`,
       signed_field_names: "total_amount,transaction_uuid,product_code",
       signature: signature,
     }

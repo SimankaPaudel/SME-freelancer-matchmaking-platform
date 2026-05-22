@@ -6,7 +6,8 @@ describe("UNIT TESTS - Feature Modules", () => {
   beforeAll(async () => {
     if (mongoose.connection.readyState === 0) {
       try {
-        await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/fyp_test");
+        const mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI || process.env.MONGO_TEST_URI || "mongodb://localhost:27017/fyp_test";
+        await mongoose.connect(mongoUri);
       } catch (err) {
         
       }

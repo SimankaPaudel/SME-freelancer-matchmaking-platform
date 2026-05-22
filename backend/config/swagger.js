@@ -1,5 +1,7 @@
 const swaggerJSDoc = require("swagger-jsdoc");
 
+const swaggerApiUrl = process.env.SWAGGER_API_URL || "http://localhost:5000";
+
 const options = {
   definition: {
     openapi: "3.0.0",
@@ -10,7 +12,8 @@ const options = {
     },
     servers: [
       {
-        url: "http://api.simankapaudel.com.np", // update this if deployed
+        url: swaggerApiUrl,
+        description: process.env.NODE_ENV === 'production' ? 'Production API' : 'Development API'
       },
     ],
   },

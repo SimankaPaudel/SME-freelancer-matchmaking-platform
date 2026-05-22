@@ -12,12 +12,14 @@ ARG VITE_API_URL
 ARG VITE_SOCKET_URL
 ARG VITE_ESEWA_PAYMENT_URL
 ARG VITE_ENV=production
+ARG FRONTEND_PORT=5173
 
 # Set environment variables for build
 ENV VITE_API_URL=${VITE_API_URL}
 ENV VITE_SOCKET_URL=${VITE_SOCKET_URL}
 ENV VITE_ESEWA_PAYMENT_URL=${VITE_ESEWA_PAYMENT_URL}
 ENV VITE_ENV=${VITE_ENV}
+ENV FRONTEND_PORT=${FRONTEND_PORT}
 
 # Copy package files
 COPY package*.json ./
@@ -37,6 +39,9 @@ RUN npm run build
 FROM node:20-alpine
 
 WORKDIR /app
+
+# Accept runtime arguments
+ARG FRONTEND_PORT=5173
 
 # Install dumb-init for proper signal handling and curl for health checks
 RUN apk add --no-cache dumb-init curl
@@ -58,15 +63,15 @@ RUN rm -rf /app/.env* /app/.git*
 # Switch to non-root user
 USER nodejs
 
-# Expose port
-EXPOSE 5173
+# Expose port (using build arg)
+EXPOSE ${FRONTEND_PORT}
 
 # Use dumb-init to handle signals properly
 ENTRYPOINT ["dumb-init", "--"]
 
-# Start the application
-CMD ["serve", "-s", "dist", "-l", "5173"]
+# Start the application with dynamic port
+CMD ["sh", "-c", "serve -s dist -l ${FRONTEND_PORT:-5173}"]
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=20s --retries=3 \
-    CMD curl -f http://localhost:5173 || exit 1
+    CMD curl -f http://localhost:${FRONTEND_PORT:-5173} || exit 1

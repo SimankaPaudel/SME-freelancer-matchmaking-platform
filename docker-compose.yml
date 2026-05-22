@@ -1,26 +1,27 @@
 services:
   # MongoDB Database
   mongodb:
-    image: mongo:7.0
+    image: mongo:4.4
     container_name: fyp-mongodb
     restart: unless-stopped
+    env_file: .env
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-admin}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-password}
-      MONGO_INITDB_DATABASE: ${MONGO_DB:-freelance_db}
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
     volumes:
       - mongodb_data:/data/db
       - mongodb_config:/data/configdb
     networks:
       - fyp-network
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 40s
+      start_period: 90s
     logging:
       driver: "json-file"
       options:
@@ -29,67 +30,26 @@ services:
 
   # Backend API Service
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: simanka/taskhive-be:latest
     container_name: fyp-backend
     restart: unless-stopped
-    env_file: ./backend/.env
-
+    env_file: .env
     ports:
-      - "${BACKEND_PORT:-5000}:5000"
-    environment:
-      # Server Configuration
-      NODE_ENV: ${NODE_ENV:-production}
-      PORT: 5000
-      
-      
-      # Database Configuration
-      MONGO_URI: mongodb://${MONGO_ROOT_USER:-admin}:${MONGO_ROOT_PASSWORD:-password}@mongodb:27017/${MONGO_DB:-freelance_db}?authSource=admin
-      
-      # JWT Configuration
-      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
-      JWT_EXPIRE: ${JWT_EXPIRE:-7d}
-      
-      # eSewa Configuration
-      ESEWA_SECRET_KEY: ${ESEWA_SECRET_KEY}
-      ESEWA_MERCHANT_CODE: ${ESEWA_MERCHANT_CODE:-EPAYTEST}
-      ESEWA_PAYMENT_URL: ${ESEWA_PAYMENT_URL:-https://rc-epay.esewa.com.np/api/epay/main/v2/form}
-      ESEWA_VERIFY_URL: ${ESEWA_VERIFY_URL:-https://rc-epay.esewa.com.np/api/epay/transaction/status/}
-      
-      # Email Configuration
-      EMAIL_HOST: ${EMAIL_HOST}
-      EMAIL_PORT: ${EMAIL_PORT:-587}
-      EMAIL_USER: ${EMAIL_USER}
-      EMAIL_PASSWORD: ${EMAIL_PASSWORD}
-      EMAIL_FROM: ${EMAIL_FROM}
-      
-      # Frontend URL
-      FRONTEND_URL: ${FRONTEND_URL:-https://simankapaudel.com.np}
-      
-      # CORS Configuration
-      CORS_ORIGIN: ${CORS_ORIGIN:-https://simankapaudel.com.np}
-      
-      # Logging
-      LOG_LEVEL: ${LOG_LEVEL:-info}
-    
+      - "${PORT}:5000"
     depends_on:
       mongodb:
         condition: service_healthy
-    
     networks:
       - fyp-network
-    
     volumes:
       - ./backend/uploads:/app/uploads
-    
+    user: root
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:5000/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"]
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    
     logging:
       driver: "json-file"
       options:
@@ -102,32 +62,49 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        VITE_API_URL: ${VITE_API_URL:-http://localhost:5000/api}
-        VITE_SOCKET_URL: ${VITE_SOCKET_URL:-http://localhost:5000}
-        VITE_ENV: ${VITE_ENV:-production}
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_SOCKET_URL: ${VITE_SOCKET_URL}
+        VITE_ESEWA_PAYMENT_URL: ${VITE_ESEWA_PAYMENT_URL}
+        VITE_ENV: ${VITE_ENV}
+        FRONTEND_PORT: ${FRONTEND_PORT}
+    image: simanka/taskhive-fe:latest
     container_name: fyp-frontend
     restart: unless-stopped
     ports:
-      - "${FRONTEND_PORT:-5173}:5173"
-    environment:
-      # Frontend Configuration
-      VITE_API_URL: ${VITE_API_URL:-http://localhost:5000/api}
-      VITE_SOCKET_URL: ${VITE_SOCKET_URL:-http://localhost:5000}
-      VITE_ENV: ${VITE_ENV:-production}
-    
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     depends_on:
       - backend
-    
     networks:
       - fyp-network
-    
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5173"]
+      test: ["CMD", "curl", "-f", "http://localhost:${FRONTEND_PORT}"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 20s
-    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Mongo Express (Admin UI)
+  mongo-express:
+    image: mongo-express:1.0.0
+    container_name: fyp-mongo-express
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_ROOT_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_ROOT_PASSWORD}
+      ME_CONFIG_MONGODB_SERVER: mongodb
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - fyp-network
     logging:
       driver: "json-file"
       options:

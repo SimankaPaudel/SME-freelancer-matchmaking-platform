@@ -3,10 +3,12 @@ process.env.NODE_ENV = 'test';
 
 // CRITICAL: Force test database to prevent production data deletion
 // This MUST be set BEFORE any mongoose connections are made
-process.env.MONGODB_URI = 'mongodb://localhost:27017/fyp_test';
+const testMongoUri = process.env.MONGO_TEST_URI || 'mongodb://localhost:27017/fyp_test';
+process.env.MONGO_URI = testMongoUri;
+process.env.MONGODB_URI = testMongoUri;
 
 // Verify we're using the test database
-if (process.env.MONGODB_URI !== 'mongodb://localhost:27017/fyp_test') {
+if (!process.env.MONGO_URI.includes('fyp_test') && !process.env.MONGO_URI.includes('test')) {
   throw new Error('FATAL: Jest is not configured to use test database! Tests will not run.');
 }
 

@@ -29,9 +29,13 @@ const { startDeadlineReminders } = require("./utils/deadlineReminder");
 const app = express();
 const server = http.createServer(app);                      // â† NEW
 
-// Socket.IO setup
-const io = new Server(server, {                             // â† NEW
-  cors: { origin: "*", methods: ["GET", "POST"] }
+// Socket.IO setup with CORS configuration
+const io = new Server(server, {                             // † NEW
+  cors: { 
+    origin: (process.env.CORS_ORIGIN || "http://localhost:5173").split(",").map(origin => origin.trim()),
+    methods: ["GET", "POST"],
+    credentials: true
+  }
 });
 
 app.set("io", io);                                          // â† makes io accessible in controllers
@@ -47,7 +51,15 @@ io.on("connection", (socket) => {
 
 connectDB();
 
-app.use(cors());
+// Configure CORS with environment variables
+const corsOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173").split(",").map(origin => origin.trim());
+app.use(cors({
+  origin: corsOrigins,
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
